@@ -19,4 +19,8 @@ public abstract class TraductorGrafo{
 	 *         deseada
 	 */
 	public abstract String imprimirGrafoTraducido();
+
+	/** imprime la respuesta a si el grafo traducido es grafo dirigido o no dirigido
+	**/
+	public abstract void esDigrafo();
 }
