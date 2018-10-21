@@ -228,6 +228,9 @@ public class Prueba{
 		segundodigrafo = primerdigrafo.clone();
 
 		//tostring del grafo
+		primerdigrafo.agregarVertice("Narnia", "est en verdad muy lejos", 777.77);
+		//obterner vertice
+		System.out.println("numero y forma");
 		System.out.println(primerdigrafo.toString());
 		System.out.println(primerdigrafo.numeroDeVertices());
 		System.out.println(primerdigrafo.numeroDeLados());

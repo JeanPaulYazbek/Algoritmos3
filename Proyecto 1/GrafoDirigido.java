@@ -143,7 +143,7 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 		//revisamos si ya hay un vertice con ese id
 		for (Vertice<V> vertices: digrafo.keySet()){
 			 id = vertices.getId();
-			 if (id == clave){
+			 if (id.equals(clave)){
 			 	return false;
 			 }
 		}
@@ -204,7 +204,7 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 		for (ArrayList<Arco<L>> arcosDeEsteVertice: digrafo.values()){
 			 i = arcosDeEsteVertice.size();
 			 for(int k = 0; k< i; k++){
-			 	if (arcosDeEsteVertice.get(k).getId() == id){
+			 	if (arcosDeEsteVertice.get(k).getId().equals(id)){
 			 		return false;
 			 	}
 			 }
@@ -267,7 +267,7 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 		for (ArrayList<Arco<L>> arcosDeEsteVertice: digrafo.values()){
 			 i = arcosDeEsteVertice.size();
 			 for(int k = 0; k< i; k++){
-			 	if (arcosDeEsteVertice.get(k).getId() == id){
+			 	if (arcosDeEsteVertice.get(k).getId().equals(id)){
 			 		return arcosDeEsteVertice.get(k);
 			 	}
 			 }
@@ -284,7 +284,7 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 		for (ArrayList<Arco<L>> arcosDeEsteVertice: digrafo.values()){
 			 i = arcosDeEsteVertice.size();
 			 for(int k = 0; k< i; k++){
-			 	if (arcosDeEsteVertice.get(k).getId() == id){
+			 	if (arcosDeEsteVertice.get(k).getId().equals(id)){
 			 		arcosDeEsteVertice.remove(k);
 			 		return true;
 			 	}
@@ -304,7 +304,7 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 			int n = listadelados.size();
 			//buscamos en la lista de lados de u
 			for(int k =0; k<n; k++){
-				if (listadelados.get(k).getExtremoFinal().getId() == v){
+				if (listadelados.get(k).getExtremoFinal().getId().equals(v)){
 					return true;
 				}
 			}
@@ -328,7 +328,7 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 				 for(int k = i-1; k>=0; k--){
 				 	
 				 	
-			 		if (arcosDeEsteVertice.get(k).getExtremoFinal().getId() == id){
+			 		if (arcosDeEsteVertice.get(k).getExtremoFinal().getId().equals(id)){
 			 			arcosDeEsteVertice.remove(k);
 			 			
 				 	}
@@ -381,9 +381,9 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 			for (ArrayList<Arco<L>> arcosDeEsteVertice: digrafo.values()){//revisamos cada arco
 				 i = arcosDeEsteVertice.size();
 				 for(int k = 0; k< i; k++){
-			 		if(arcosDeEsteVertice.get(k).getExtremoFinal().getId() == id || arcosDeEsteVertice.get(k).getExtremoInicial().getId() == id){
+			 		if(arcosDeEsteVertice.get(k).getExtremoFinal().getId().equals(id) || arcosDeEsteVertice.get(k).getExtremoInicial().getId().equals(id)){
 			 			grado = grado + 1;//si el arco tiene el vertice sumamos 1
-			 			if(arcosDeEsteVertice.get(k).getExtremoFinal().getId() == id && arcosDeEsteVertice.get(k).getExtremoInicial().getId() == id){
+			 			if(arcosDeEsteVertice.get(k).getExtremoFinal().getId().equals(id) && arcosDeEsteVertice.get(k).getExtremoInicial().getId().equals(id)){
 			 				grado = grado +1;//si el arco es un bucle y tiene el vertice sumamos 1 mas 
 			 			}
 			 		}
@@ -425,7 +425,7 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 			for (ArrayList<Arco<L>> arcosDeEsteVertice: digrafo.values()){//buscamos en todos los arco
 				 i = arcosDeEsteVertice.size();
 				 for(int k = 0; k< i; k++){//vemos si el vertice incide
-			 		if(arcosDeEsteVertice.get(k).getExtremoInicial().getId() == id || arcosDeEsteVertice.get(k).getExtremoFinal().getId() == id){
+			 		if(arcosDeEsteVertice.get(k).getExtremoInicial().getId().equals(id) || arcosDeEsteVertice.get(k).getExtremoFinal().getId().equals(id)){
 			 			lados.add(arcosDeEsteVertice.get(k));//si incide lo agregamos
 			 		}
 			 			
