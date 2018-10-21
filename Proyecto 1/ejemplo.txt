@@ -1,0 +1,17 @@
+S
+S
+D
+5
+5
+Narnia 6.66 6.66
+Guatemala 6.66 6.66
+Colombia 6.66 6.66
+Venezuela 6.66 6.66
+Alemania 6.66 6.66
+NaVe 6.9 6.9 Narnia Venezuela
+NaNa 6.9 6.9 Narnia Narnia
+NaCo 6.9 6.9 Narnia Colombia
+AlNa 6.9 6.9 Alemania Narnia
+GuGu 6.9 6.9 Guatemala Guatemala
+
+
