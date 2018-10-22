@@ -2,7 +2,7 @@ import java.util.LinkedList;
 import java.util.ArrayList;
 
 public class BFS{
-  protected boolean finished = false;
+  protected boolean finished = true;
 
   public void bfs(int i,ArrayList<Integer> caminoHamiltoniano, int[][] grafo) {
     //parametros que usaremos para BFS
@@ -24,13 +24,22 @@ public class BFS{
         //criterio de parada
         if(caminoHamiltoniano.size() == grafo[0].length)
         {
-          System.out.print("Camino encontrado: ");
+          System.out.print("Arbol encontrado: ");
           int n = caminoHamiltoniano.size();
           for(int k = 0; k<n-1; k++)
           {
             System.out.print(caminoHamiltoniano.get(k)+"-");
+            if (0==grafo[caminoHamiltoniano.get(k)][caminoHamiltoniano.get(k+1)])
+            {
+              finished = false;
+            }
           }
           System.out.println(caminoHamiltoniano.get(n-1));
+          if (!finished)
+          {
+            System.out.print("No se identifico un camino Hamiltoniano en el Arbol");
+            return;
+          }
           System.out.print("El camino Hamiltoniano tiene " + caminoHamiltoniano.size() +" vertices");
           finished = true;
           return;
