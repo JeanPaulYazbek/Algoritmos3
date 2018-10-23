@@ -11,14 +11,18 @@ public class BFS{
     camino.add(i); //Encolamos el nodo al camino
     visited[i] = true; // Marcamos el nodo como visitado
     boolean esHamiltoniano = true;
-    String espacio = "";
+    int[] profundidad = new int[grafo[0].length];
 
     //iteracion
     while (camino.size() != 0) 
     {
       i = camino.poll(); // Decolamos el nodo
-      espacio +="  "; // Incrementamos el espacio
       caminoHamiltoniano.add(i); //Agregamos el nodo al camino Hamiltoniano
+      String espacio = "";
+      for(int k = 0; k<profundidad[i]+1; k++)
+      {
+        espacio +="  "; // Incrementamos el espacio por la profundidad
+      }
 
       for(int j = 0; j<grafo[0].length; j++)
       {
@@ -53,6 +57,7 @@ public class BFS{
         {
           visited[j] = true;
           camino.add(j);
+          profundidad[j]=profundidad[i]+1;
           System.out.println(espacio + i + "-" + j);
         }
       }
