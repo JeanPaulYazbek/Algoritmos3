@@ -133,11 +133,20 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 	{
 
 		int i = 0;//contador de lados
+		int temp;//tamaño de la lista de lados del vertice
 		for (ArrayList<Arista<L>> aristasDeEsteVertice: grafo.values())
 		{
-			i = i + aristasDeEsteVertice.size();
+			temp = arcosDeEsteVertice.size();
+			i = i + temp;
+			for(int k = 0; k< temp; k++)
+			{
+				if(aristasDeEsteVertice.get(k).getExtremo1().equals(aristasDeEsteVertice.get(k).getExtremo2()))
+				{
+					i = i +1;//si la arista es un bucle sumamos 1 mas
+				}
+			}
 		}
-		return i;
+		return i/2; //contamos cada lado 2 veces y los bucles valen por 2
 	}
 
 	//>>>3 funcion que agrega un vertice a partir de un objeto,
