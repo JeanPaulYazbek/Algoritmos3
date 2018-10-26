@@ -4,20 +4,22 @@ import java.util.ArrayList;
 public class BFS{
   protected boolean finished = false;
 
-  public void bfs(int i,ArrayList<Integer> caminoHamiltoniano, int[][] grafo) {
+  public void bfs(int i, int[][] grafo, boolean trun, int altura, boolean arb, boolean ord, boolean pred) {
     //parametros que usaremos para BFS
-    LinkedList<Integer> camino = new LinkedList<Integer>();
+    LinkedList<Integer> cola = new LinkedList<Integer>();
+    ArrayList<Integer> camino = new ArrayList<Integer>();
+    ArrayList<Integer> inalcanzables = new ArrayList<Integer>();
     boolean [] visited = new boolean[grafo[0].length];
-    camino.add(i); //Encolamos el nodo al camino
+    cola.add(i); //Encolamos el nodo
     visited[i] = true; // Marcamos el nodo como visitado
-    boolean esHamiltoniano = true;
+    boolean encontrado = true;
     int[] profundidad = new int[grafo[0].length];
 
     //iteracion
-    while (camino.size() != 0) 
+    while (cola.size() != 0) 
     {
-      i = camino.poll(); // Decolamos el nodo
-      caminoHamiltoniano.add(i); //Agregamos el nodo al camino Hamiltoniano
+      i = cola.poll(); // Decolamos el nodo
+      camino.add(i); //Agregamos el nodo al cola Hamiltoniano
       String espacio = "";
       for(int k = 0; k<profundidad[i]+1; k++)
       {
@@ -27,25 +29,25 @@ public class BFS{
       for(int j = 0; j<grafo[0].length; j++)
       {
         //criterio de parada
-        if(caminoHamiltoniano.size() == grafo[0].length)
+        if(camino.size() == grafo[0].length)
         {
           System.out.print("Arbol encontrado: ");
-          int n = caminoHamiltoniano.size();
+          int n = camino.size();
           for(int k = 0; k<n-1; k++)
           {
-            System.out.print(caminoHamiltoniano.get(k)+"-");
-            if (0==grafo[caminoHamiltoniano.get(k)][caminoHamiltoniano.get(k+1)])
+            System.out.print(camino.get(k)+"-");
+            if (0==grafo[camino.get(k)][camino.get(k+1)])
             {
               esHamiltoniano = false;
             }
           }
-          System.out.println(caminoHamiltoniano.get(n-1));
+          System.out.println(camino.get(n-1));
           if (!esHamiltoniano)
           {
-            System.out.print("No se identifico un camino Hamiltoniano en el Arbol");
+            System.out.print("No se identifico un cola Hamiltoniano en el Arbol");
             return;
           }
-          System.out.print("El camino Hamiltoniano tiene " + caminoHamiltoniano.size() +" vertices");
+          System.out.print("El cola Hamiltoniano tiene " + camino.size() +" vertices");
           finished = true;
           return;
         }
@@ -56,11 +58,33 @@ public class BFS{
         if (grafo[i][j]==1 && !visited[j])
         {
           visited[j] = true;
-          camino.add(j);
+          cola.add(j);
           profundidad[j]=profundidad[i]+1;
           System.out.println(espacio + i + "-" + j);
         }
       }
     }
+    for(int j = 0; j<grafo[0].length; j++)
+    {
+      if(!checkifexist(j,camino))
+      {
+        inalcanzables.add(j);
+      }
+    }
+    for(int j = 0; j<inalcanzables.size()-2; j++)
+    {
+      System.out.print(inalcanzables.get(j)+",");
+    }
+    System.out.print(inalcanzables.get(inalcanzables.size()-1));
+  }
+
+  public boolean checkifexist(int i, ArrayList<Integer> camino)
+  {
+    for(int j = 0; j<camino.size(); j++)
+    {
+      if (i==camino.get(j))
+        return true;
+    }
+    return false;
   }
 }
