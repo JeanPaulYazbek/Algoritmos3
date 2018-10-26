@@ -73,7 +73,7 @@ public class BFS{
     }
     for(int j = 0; j<inalcanzables.size()-2; j++)
     {
-      System.out.print(inalcanzables.get(j)+",");
+      System.out.print(inalcanzables.get(j)+", ");
     }
     System.out.print(inalcanzables.get(inalcanzables.size()-1));
   }

@@ -13,5 +13,3 @@ NaNa 6.9 6.9 Narnia Narnia
 NaCo 6.9 6.9 Narnia Colombia
 AlNa 6.9 6.9 Alemania Narnia
 GuGu 6.9 6.9 Guatemala Guatemala
-
-
