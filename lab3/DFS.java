@@ -3,7 +3,7 @@ import java.util.ArrayList;
 public class DFS{
   protected boolean finished = false;
   protected ArrayList<Integer> caminoHamiltoniano;
-	public void dfs(int i,  boolean[] visited, String espacio, int contador, ArrayList<Integer> camino, int[][] grafo) {
+  public void dfs(int i,  boolean[] visited, String espacio, int contador, ArrayList<Integer> camino, int[][] grafo) {
 
 		//criterio de parada
 		if(contador == grafo[i].length ){
@@ -31,12 +31,12 @@ public class DFS{
  		 	if (grafo[i][j]==1 && visited[j]){
  		 		System.out.println(espacio + i + "-" + j + " ya visitado");
  		 	}
-     	if (grafo[i][j]==1 && !visited[j]) {   
+     		if (grafo[i][j]==1 && !visited[j]) {   
      		System.out.println(espacio + i + "-" + j);
      		camino.add(j);
      		ArrayList<Integer> caminoExpandido = camino;
       	    dfs(j, visited, espacio + "  ", contador + 1, caminoExpandido, grafo); // Visit node
-      }
+     	   }
       }
     	}
     }

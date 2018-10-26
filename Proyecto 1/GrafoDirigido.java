@@ -197,7 +197,7 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 			return false;
 		}
 
-		//vertices estan pero arco con ese id ya esta
+		//arcos con el mismo id
 		String id = a.getId();
 		
 		int i;
