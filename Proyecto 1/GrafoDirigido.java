@@ -118,7 +118,7 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 	//>>>1 funcion que calcula el numero de vertices de un digrafo
 	public int numeroDeVertices(){
 
-		int i = 0; //contador de evrtices
+		int i = 0; //contador de vertices
 		for (Vertice<V> ids: digrafo.keySet()){
 			i = i + 1;//sumamos uno por cada vertice en el dicionario
 		}

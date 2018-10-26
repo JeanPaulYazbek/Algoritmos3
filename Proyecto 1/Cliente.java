@@ -245,6 +245,185 @@ public class Cliente{
 
 	}
 
+//>>>2.5 funcion que muestra el menu y realiza procesos logicos de a cuerdo a la operacion seleccionada
+	public <V, L> void menuNoDirigido(Scanner scan, GrafoNoDirigido<V,L> grafo, Transformer<String, V> transformer,  Transformer<String, L> transformerarista){
+		//Imprimimos el menu
+		System.out.println("Que operacion desea realizar sobre su nuevo grafo dirigido? presione el numero correspondiente a la operacion");
+		System.out.println("1. numero de vertices");
+		System.out.println("2. numero de lados");
+		System.out.println("3. agregar vertice");
+		System.out.println("4. obtener vertice");
+		System.out.println("5. esta vertice");
+		System.out.println("6. agregar arista");
+		System.out.println("7. obtener arista");
+		System.out.println("8. esta lado");
+		System.out.println("9. eliminar arista");
+		System.out.println("10. eliminar vertice");
+		System.out.println("11. vertices ");
+		System.out.println("12. lados");
+		System.out.println("13. grado");
+		System.out.println("14. adyacentes");
+		System.out.println("15. incidentes");
+		System.out.println("16. imprimir grafo");
+		System.out.println("17. salir");
+
+
+		int n = scan.nextInt();//leemos la opcion
+		int k;				   // variable que usaremos para opciones que involucren numeros, como grado.
+		String id;			   // variable que usaremos para las operaciones que requieran id de vertices
+		V dato;				   // variable que almacena el dato de un vertice en la operacion necesaria
+		Double peso;		   // variable que almacena el peso de un vertice en la operacion necesaria
+		String idarista;		   // "					id			"de una arista"							"	
+		L datoarista;			   //"					dato		"de una arista"                            "
+		Double pesoarista;       //"					peso		"de una arista"						    "
+		String vi;			   //"					vertice inicial" de una arista"						"
+		String vf;			   //"					vertice final" de una arista"							"
+		ArrayList<Vertice<V>> listavers;	//"					"almacena lista de vertices"		    "
+		ArrayList<Lado<L>> listalados;		//"					"almacena lista de lados"				"
+
+
+		//OPCIONES DE OPERACION: todas usan la funcion necesaria de GrafoNoDirigido
+		if(n==1){
+			k = grafo.numeroDeVertices();
+			System.out.println("El numero de vertices es: " + k);
+
+		}else if(n==2){
+			k = grafo.numeroDeLados();
+			System.out.println("El numero de lados es: " + k);
+
+		}else if(n==3){
+			System.out.println("Dime el id:");
+			id = scan.next();
+			System.out.println("Dime el dato");
+			dato = transformer.transform(scan.next());
+			System.out.println("Dime el peso");
+			peso = Double.parseDouble(scan.next());
+			grafo.agregarVertice(id, dato, peso);
+		}else if(n==4){
+			System.out.println("Dime el id");
+			id = scan.next();
+			try{
+				System.out.println("El vertice es: " + grafo.obtenerVertice(id).toString());
+			}catch(Exception e){
+				System.out.println("No hay tal vertice");
+			}
+		}else if(n==5){
+			System.out.println("Dime el id:");
+			id = scan.next();
+			if(grafo.estaVertice(id)){
+				System.out.println("Si esta");
+			}else{
+				System.out.println("No esta");
+			}
+
+		}else if(n==6){
+			System.out.println("Dime el id:");
+			idarista = scan.next();
+			System.out.println("Dime el dato");
+			datoarista = transformerarista.transform(scan.next());
+			System.out.println("Dime el peso");
+			pesoarista = Double.parseDouble(scan.next());
+			System.out.println("Dime el id inicial:");
+			vi = scan.next();
+			System.out.println("Dime el id final:");
+			vf = scan.next();
+			grafo.agregararista(idarista, datoarista, pesoarista, vi, vf);
+
+		}else if(n==7){
+			System.out.println("Dime el id:");
+			idarista = scan.next();
+			try{
+				System.out.println(grafo.obtenerarista(idarista).toString());
+			}catch(Exception e){
+				System.out.println("No hay tal arista");
+			}
+
+		}else if(n==8){
+			System.out.println("Dime el id inicial:");
+			vi = scan.next();
+			System.out.println("Dime el id final:");
+			vf = scan.next();
+			if(grafo.estaLado(vi, vf)){
+				System.out.println("Si esta");
+			}else{
+				System.out.println("No esta");
+			}
+
+		}else if(n==9){
+			System.out.println("Dime el id:");
+			idarista = scan.next();
+			grafo.eliminararista(idarista);
+
+		}else if(n==10){
+			System.out.println("Dime el id:");
+			id = scan.next();
+			grafo.eliminarVertice(id);
+
+		}else if(n==11){
+			listavers = grafo.vertices();
+			System.out.println("Los vertices son:");
+			k = listavers.size();
+			for(int i = 0; i<k; i++){
+				System.out.println(listavers.get(i).toString());
+			}
+
+
+		}else if(n==12){
+			listalados = grafo.lados();
+			System.out.println("Los lados son:");
+			k = listalados.size();
+			for(int i = 0; i<k; i++){
+				System.out.println(listalados.get(i).toString());
+			}
+
+		}else if(n==13){
+			System.out.println("Dime el id:");
+			id = scan.next();
+			try{
+				k = grafo.grado(id);
+				System.out.println("El grado es" + k);
+			}catch(Exception e){
+				System.out.println("No hay tal vertice");
+			}
+
+		}else if(n==14){
+			System.out.println("Dime el id:");
+			id = scan.next();
+			try{
+				listavers = grafo.adyacentes(id);
+				System.out.println("Los vertices adyacentes son:");
+				k = listavers.size();
+				for(int i = 0; i<k; i++){
+					System.out.println(listavers.get(i).toString());
+				}
+			}catch(Exception e){
+				System.out.println("No hay tal vertice");
+			}
+
+
+		}else if(n==15){
+			System.out.println("Dime el id:");
+			id = scan.next();
+			try{
+				listalados = grafo.incidentes(id);
+				System.out.println("Los lados incidentes son:");
+				n = listalados.size();
+				for(int i = 0; i<n; i++){
+					System.out.println(listalados.get(i).toString());
+				}
+			}catch(Exception e){
+				System.out.println("No hay tal vertice");			
+			}
+
+		}else if(n ==16){
+			System.out.println(grafo.toString());
+		
+		}else if(n==17){
+			System.out.println("Saliendo....");
+			terminar();
+		}
+	}
+
 	public static void main(String[] args)
 	throws IOException
 	{
@@ -332,36 +511,94 @@ public class Cliente{
 					System.out.println("Formato erroneo, cerrando...");
 					return;
 				}
-			}else if(tipografo.equals("N")){//AQUI VA LO TUYO JOSE
-				if(tipovertice.equals("S") && tipolado.equals("S")){
-
-				}else if(tipovertice.equals("S") && tipolado.equals("D")){
-
-				}else if(tipovertice.equals("S") && tipolado.equals("B")){
-
-				}else if(tipovertice.equals("D") && tipolado.equals("S")){
-
-				}else if(tipovertice.equals("D") && tipolado.equals("D")){
-
-				}else if(tipovertice.equals("D") && tipolado.equals("B")){
-
-				}else if(tipovertice.equals("B") && tipolado.equals("S")){
-
-				}else if(tipovertice.equals("B") && tipolado.equals("D")){
-
-				}else if(tipovertice.equals("B") && tipolado.equals("B")){
-
-				}else{
+			}
+////////////////////////////////////////////////////////////////////////////////
+			else if(tipografo.equals("N"))
+			{
+				if(tipovertice.equals("S") && tipolado.equals("S"))
+				{
+					GrafoNoDirigido<String, String> nuevoGrafoNoDirigido = new GrafoNoDirigido<String, String>();
+					while(profe.usando)
+					{
+						profe.menuNoDirigido(scan, nuevoGrafoNoDirigido, transformadorString, transformadorarcoString);	
+					}
+				}
+				else if(tipovertice.equals("S") && tipolado.equals("D"))
+				{
+					GrafoNoDirigido<String, Double> nuevoGrafoNoDirigido = new GrafoNoDirigido<String, Double>();
+					while(profe.usando)
+					{
+						profe.menuNoDirigido(scan, nuevoGrafoNoDirigido, transformadorString, transformadorarcoDouble);	
+					}
+				}
+				else if(tipovertice.equals("S") && tipolado.equals("B"))
+				{
+					GrafoNoDirigido<String, Boolean> nuevoGrafoNoDirigido = new GrafoNoDirigido<String, Boolean>();
+					while(profe.usando)
+					{
+						profe.menuNoDirigido(scan, nuevoGrafoNoDirigido, transformadorString, transformadorarcoBoolean);
+					}
+				}
+				else if(tipovertice.equals("D") && tipolado.equals("S"))
+				{
+					GrafoNoDirigido<Double, String> nuevoGrafoNoDirigido = new GrafoNoDirigido<Double, String>();
+					while(profe.usando)
+					{
+						profe.menuNoDirigido(scan, nuevoGrafoNoDirigido, transformadorDouble, transformadorarcoString);
+					}
+				}
+				else if(tipovertice.equals("D") && tipolado.equals("D"))
+				{
+					System.out.println("entro");
+					GrafoNoDirigido<Double, Double> nuevoGrafoNoDirigido = new GrafoNoDirigido<Double, Double>();
+					while(profe.usando)
+					{
+						profe.menuNoDirigido(scan, nuevoGrafoNoDirigido, transformadorDouble, transformadorarcoDouble);	
+					}
+				}
+				else if(tipovertice.equals("D") && tipolado.equals("B"))
+				{
+					GrafoNoDirigido<Double, Boolean> nuevoGrafoNoDirigido = new GrafoNoDirigido<Double, Boolean>();
+					while(profe.usando)
+					{
+						profe.menuNoDirigido(scan, nuevoGrafoNoDirigido, transformadorDouble, transformadorarcoBoolean);
+					}
+				}
+				else if(tipovertice.equals("B") && tipolado.equals("S"))
+				{
+					GrafoNoDirigido<Boolean, String> nuevoGrafoNoDirigido = new GrafoNoDirigido<Boolean, String>();
+					while(profe.usando)
+					{
+						profe.menuNoDirigido(scan, nuevoGrafoNoDirigido, transformadorBoolean, transformadorarcoString);
+					}
+				}
+				else if(tipovertice.equals("B") && tipolado.equals("D"))
+				{
+					GrafoNoDirigido<Boolean, Double> nuevoGrafoNoDirigido = new GrafoNoDirigido<Boolean, Double>();
+					while(profe.usando)
+					{
+						profe.menuNoDirigido(scan, nuevoGrafoNoDirigido, transformadorBoolean, transformadorarcoDouble);	
+					}
+				}
+				else if(tipovertice.equals("B") && tipolado.equals("B"))
+				{
+					GrafoNoDirigido<Boolean, Boolean> nuevoGrafoNoDirigido = new GrafoNoDirigido<Boolean, Boolean>();
+					while(profe.usando)
+					{
+						profe.menuNoDirigido(scan, nuevoGrafoNoDirigido, transformadorBoolean, transformadorarcoBoolean);
+					}
+				}
+				else
+				{
 					System.out.println("Formato erroneo, cerrando...");
 					return;
 				}
-
-			}else{
+			}
+			else
+			{
 				System.out.println("Formato erroneo, cerrando...");
 				return;
 			}
-
-
 
 		}else if(args.length ==1){//Caso en que se carga archivo
 			
@@ -486,35 +723,135 @@ public class Cliente{
 					System.out.println("Formato erroneo, cerrando...");
 					return;
 				}
-			}else if(tipografo.equals("N")){//AQUI VA LO TUYO JOSE
-				if(tipovertice.equals("S") && tipolado.equals("S")){
-
-				}else if(tipovertice.equals("S") && tipolado.equals("D")){
-
-				}else if(tipovertice.equals("S") && tipolado.equals("B")){
-
-				}else if(tipovertice.equals("D") && tipolado.equals("S")){
-
-				}else if(tipovertice.equals("D") && tipolado.equals("D")){
-
-				}else if(tipovertice.equals("D") && tipolado.equals("B")){
-
-				}else if(tipovertice.equals("B") && tipolado.equals("S")){
-
-				}else if(tipovertice.equals("B") && tipolado.equals("D")){
-
-				}else if(tipovertice.equals("B") && tipolado.equals("B")){
-
-				}else{
+////////////////////////////////////////////////////////////////////////////////
+			}else if(tipografo.equals("N"))
+			{
+				if(tipovertice.equals("S") && tipolado.equals("S"))
+				{
+					GrafoNoDirigido<String, String> nuevoGrafoNoDirigido = new GrafoNoDirigido<String, String>();
+					nuevoGrafoNoDirigido.cargarGrafo(args[0], transformadorString, transformadorarcoString);
+					while(profe.usando)
+					{
+						profe.menuNoDirigido(scan, nuevoGrafoNoDirigido, transformadorString, transformadorarcoString);
+					}
+				}
+				else if(tipovertice.equals("S") && tipolado.equals("D"))
+				{
+					GrafoNoDirigido<String, Double> nuevoGrafoNoDirigido = new GrafoNoDirigido<String, Double>();
+					nuevoGrafoNoDirigido.cargarGrafo(args[0], transformadorString, transformadorarcoDouble);
+					while(profe.usando)
+					{
+						profe.menuNoDirigido(scan, nuevoGrafoNoDirigido, transformadorString, transformadorarcoDouble);
+					}
+				}
+				else if(tipovertice.equals("S") && tipolado.equals("B"))
+				{
+					GrafoNoDirigido<String, Boolean> nuevoGrafoNoDirigido = new GrafoNoDirigido<String, Boolean>();
+					try{
+						nuevoGrafoNoDirigido.cargarGrafo(args[0], transformadorString, transformadorarcoBoolean);
+					}catch(Exception e){
+						System.out.println("Error de formato, cerrando...");
+						return;
+					}
+					while(profe.usando)
+					{
+						profe.menuNoDirigido(scan, nuevoGrafoNoDirigido, transformadorString, transformadorarcoBoolean);
+					}
+				}
+				else if(tipovertice.equals("D") && tipolado.equals("S"))
+				{
+					GrafoNoDirigido<Double, String> nuevoGrafoNoDirigido = new GrafoNoDirigido<Double, String>();
+					try{
+						nuevoGrafoNoDirigido.cargarGrafo(args[0], transformadorDouble, transformadorarcoString);
+					}catch(Exception e){
+						System.out.println("Error de formato, cerrando...");
+						return;
+					}
+					while(profe.usando)
+					{
+						profe.menuNoDirigido(scan, nuevoGrafoNoDirigido, transformadorDouble, transformadorarcoString);
+					}
+				}
+				else if(tipovertice.equals("D") && tipolado.equals("D"))
+				{
+					System.out.println("entro");
+					GrafoNoDirigido<Double, Double> nuevoGrafoNoDirigido = new GrafoNoDirigido<Double, Double>();
+					try{
+						nuevoGrafoNoDirigido.cargarGrafo(args[0], transformadorDouble, transformadorarcoDouble);
+					}catch(Exception e){
+						System.out.println("Error de formato, cerrando...");
+						return;
+					}
+					while(profe.usando)
+					{
+						profe.menuNoDirigido(scan, nuevoGrafoNoDirigido, transformadorDouble, transformadorarcoDouble);
+					}
+				}
+				else if(tipovertice.equals("D") && tipolado.equals("B"))
+				{
+					GrafoNoDirigido<Double, Boolean> nuevoGrafoNoDirigido = new GrafoNoDirigido<Double, Boolean>();
+					try{
+						nuevoGrafoNoDirigido.cargarGrafo(args[0], transformadorDouble, transformadorarcoBoolean);
+					}catch(Exception e){
+						System.out.println("Error de formato, cerrando...");
+						return;
+					}	
+					while(profe.usando)
+					{
+						profe.menuNoDirigido(scan, nuevoGrafoNoDirigido, transformadorDouble, transformadorarcoBoolean);
+					}
+				}
+				else if(tipovertice.equals("B") && tipolado.equals("S"))
+				{
+					GrafoNoDirigido<Boolean, String> nuevoGrafoNoDirigido = new GrafoNoDirigido<Boolean, String>();
+					try{
+						nuevoGrafoNoDirigido.cargarGrafo(args[0], transformadorBoolean, transformadorarcoString);
+					}catch(Exception e){
+						System.out.println("Error de formato, cerrando...");
+						return;
+					}
+					while(profe.usando)
+					{
+						profe.menuNoDirigido(scan, nuevoGrafoNoDirigido, transformadorBoolean, transformadorarcoString);
+					}
+				}
+				else if(tipovertice.equals("B") && tipolado.equals("D"))
+				{
+					GrafoNoDirigido<Boolean, Double> nuevoGrafoNoDirigido = new GrafoNoDirigido<Boolean, Double>();
+					try{
+						nuevoGrafoNoDirigido.cargarGrafo(args[0], transformadorBoolean, transformadorarcoDouble);
+					}catch(Exception e){
+						System.out.println("Error de formato, cerrando...");
+						return;
+					}
+					while(profe.usando)
+					{
+						profe.menuNoDirigido(scan, nuevoGrafoNoDirigido, transformadorBoolean, transformadorarcoDouble);
+					}
+				}
+				else if(tipovertice.equals("B") && tipolado.equals("B"))
+				{
+					GrafoNoDirigido<Boolean, Boolean> nuevoGrafoNoDirigido = new GrafoNoDirigido<Boolean, Boolean>();
+					try{
+						nuevoGrafoNoDirigido.cargarGrafo(args[0], transformadorBoolean, transformadorarcoBoolean);
+					}catch(Exception e){
+						System.out.println("Error de formato, cerrando...");
+						return;
+					}
+					while(profe.usando)
+					{
+						profe.menuNoDirigido(scan, nuevoGrafoNoDirigido, transformadorBoolean, transformadorarcoBoolean);
+					}
+				}
+				else
+				{
 					System.out.println("Formato erroneo, cerrando...");
 					return;
 				}
-
 			}else{
 				System.out.println("Formato erroneo, cerrando...");
 				return;
 			}
-
 		}else{//Formato erroneo
 			System.err.println("Uso: java Cliente <nombreArchivo> (para cargarGrafo grafo) ");
 			System.err.println("Uso: java Cliente (para crear grafo) ");

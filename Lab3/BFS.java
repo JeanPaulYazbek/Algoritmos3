@@ -10,27 +10,41 @@ public class BFS{
     boolean [] visited = new boolean[grafo[0].length];
     camino.add(i); //Encolamos el nodo al camino
     visited[i] = true; // Marcamos el nodo como visitado
-    String espacio = "";
+    boolean esHamiltoniano = true;
+    int[] profundidad = new int[grafo[0].length];
 
     //iteracion
     while (camino.size() != 0) 
     {
       i = camino.poll(); // Decolamos el nodo
-      espacio +="  "; // Incrementamos el espacio
       caminoHamiltoniano.add(i); //Agregamos el nodo al camino Hamiltoniano
+      String espacio = "";
+      for(int k = 0; k<profundidad[i]+1; k++)
+      {
+        espacio +="  "; // Incrementamos el espacio por la profundidad
+      }
 
       for(int j = 0; j<grafo[0].length; j++)
       {
         //criterio de parada
         if(caminoHamiltoniano.size() == grafo[0].length)
         {
-          System.out.print("Camino encontrado: ");
+          System.out.print("Arbol encontrado: ");
           int n = caminoHamiltoniano.size();
           for(int k = 0; k<n-1; k++)
           {
             System.out.print(caminoHamiltoniano.get(k)+"-");
+            if (0==grafo[caminoHamiltoniano.get(k)][caminoHamiltoniano.get(k+1)])
+            {
+              esHamiltoniano = false;
+            }
           }
           System.out.println(caminoHamiltoniano.get(n-1));
+          if (!esHamiltoniano)
+          {
+            System.out.print("No se identifico un camino Hamiltoniano en el Arbol");
+            return;
+          }
           System.out.print("El camino Hamiltoniano tiene " + caminoHamiltoniano.size() +" vertices");
           finished = true;
           return;
@@ -43,6 +57,7 @@ public class BFS{
         {
           visited[j] = true;
           camino.add(j);
+          profundidad[j]=profundidad[i]+1;
           System.out.println(espacio + i + "-" + j);
         }
       }

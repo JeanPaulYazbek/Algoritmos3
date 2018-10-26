@@ -1,7 +1,6 @@
 import java.util.ArrayList;
-public interface Grafo<V, L>{
-
-	
+public interface Grafo<V, L>
+{
 	public int numeroDeVertices();
 	public int numeroDeLados();
 	public Boolean agregarVertice(Vertice<V> v);
@@ -17,5 +16,4 @@ public interface Grafo<V, L>{
 	public ArrayList<Lado<L>> incidentes(String id);
 	public Grafo<V, L> clone();
 	public String toString();
-
 }
