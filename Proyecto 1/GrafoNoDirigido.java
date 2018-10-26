@@ -490,6 +490,7 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 	}
 
 	//>>>18 funcion que convierte  un grafo en String para impresion
+	//acomodar
 	public String toString(){
 		
 		String cadenaGrafo = "";
@@ -507,7 +508,7 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 				cadenaGrafo = cadenaGrafo+listadelados.get(k-1).getExtremo2().getId()+"\n";
 			}else{
 				cadenaGrafo = cadenaGrafo+"\n";
-			}	
+			}
 		}
 		return cadenaGrafo;
 	}
