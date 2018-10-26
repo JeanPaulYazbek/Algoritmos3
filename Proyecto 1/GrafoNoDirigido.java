@@ -5,10 +5,8 @@ import java.util.NoSuchElementException;
 import java.io.BufferedReader;
 import java.io.FileReader;
 
-
 public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 {
-
 	//grafo: representamos el grafo con un diccionario donde las claves son objetos
 	// tipo vertices, y los valores listas de objetos tipo lados
 	private Hashtable<Vertice<V>, ArrayList<Arista<L>>> grafo = new Hashtable<Vertice<V>,
@@ -22,9 +20,7 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 	public Boolean cargarGrafo(String archivo, Transformer<String, V> transformer,
 	  Transformer<String, L> transformerarista)
 	throws IOException
-	{
-		
-
+	{	
 		BufferedReader Lector = new BufferedReader(new FileReader(archivo));
 
 		String linea = Lector.readLine();//ya leimos V
@@ -85,8 +81,8 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 		}
 
 		String idarista;//guarda id del arista leido
-		L datoarista;	  //guarda dato del arista leido
-		double pesoarista;//guarda peso del arista leido
+		L datoarista;	  //guarda dato de la arista leida
+		double pesoarista;//guarda peso de la arista leida
 		String extremo1;		//guarda id del extremo 1 de la arista que leamos
 		String extremo2;		//guarda id "			" 2 "  				"
 		//AGREGAR LAS ARISTAS
@@ -111,7 +107,7 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 			}catch(Exception e){
 				return false;//si algunos de los datos es erroneo
 			}
-			agregarArista(idarista, datoarista, peso, , extremo2);
+			agregararista(idarista, datoarista, peso, extremo1, extremo2);
 		}
 		//se cargo el grafo
 		return true;
@@ -134,13 +130,15 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 
 		int i = 0;//contador de lados
 		int temp;//tamaño de la lista de lados del vertice
+		String id;
 		for (ArrayList<Arista<L>> aristasDeEsteVertice: grafo.values())
 		{
-			temp = arcosDeEsteVertice.size();
+			temp = aristasDeEsteVertice.size();
 			i = i + temp;
 			for(int k = 0; k< temp; k++)
 			{
-				if(aristasDeEsteVertice.get(k).getExtremo1().equals(aristasDeEsteVertice.get(k).getExtremo2()))
+				id = aristasDeEsteVertice.get(k).getExtremo1().getId();
+				if(aristasDeEsteVertice.get(k).getExtremo2().getId().equals(id))
 				{
 					i = i +1;//si la arista es un bucle sumamos 1 mas
 				}
@@ -180,7 +178,7 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 	}
 
 	//>>>5 funcion para obtener el objeto vertice con ese id en caso de que este
-	public Vertice obtenerVertice( String id)
+	public Vertice obtenerVertice(String id)
 	{
 		//chequeamos si algun vertice tiene ese id
 		for (Vertice<V> vertices: grafo.keySet())
@@ -210,11 +208,11 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 	}
 
 	//>>>7 funcion que agrega un objeto tipo arista al grafo
-	public Boolean agregarArista(Arista<L> a)
+	public Boolean agregararista(Arista<L> a)
 	{
 		//vertices no estan
-		String verticeA = a.getExtremoInicial().getId();
-		String verticeB = a.getExtremoFinal().getId();
+		String verticeA = a.getExtremo1().getId();
+		String verticeB = a.getExtremo2().getId();
 		if (!(estaVertice(verticeA)) || !(estaVertice(verticeB)))
 		{
 			return false;
@@ -239,8 +237,8 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 		// ya que hay un solo vertice en el grafo 
 		Vertice<V> verticeInicial = obtenerVertice(verticeA);
 		Vertice<V> verticeFinal = obtenerVertice(verticeB);
-		Vertice<V> vertice1 = a.getExtremoInicial();
-		Vertice<V> vertice2 = a.getExtremoFinal();
+		Vertice<V> vertice1 = a.getExtremo1();
+		Vertice<V> vertice2 = a.getExtremo2();
 		if ((verticeInicial.getPeso() != vertice1.getPeso())
 			||(verticeFinal.getPeso() != vertice2.getPeso()))
 		{
@@ -255,13 +253,18 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 		//insertar arista
 		ArrayList<Arista<L>> lados = grafo.get(verticeInicial);
 		lados.add(a);
-		grafo.put(verticeInicial, lados);
+		grafo.put(verticeInicial,lados);
+		if(!verticeA.equals(verticeB)) // si es un bucle solo se agrega una vez
+		{
+			lados = grafo.get(verticeFinal);
+			lados.add(a);
+			grafo.put(verticeFinal,lados);
+		}
 		return true;
-
 	}
 
 	//>>>8 funcion que agrega arista por informacion
-	public Boolean agregarArista(String id, L dato, double p, String vInicial, String vFinal)
+	public Boolean agregararista(String id, L dato, double p, String vInicial, String vFinal)
 	{
 
 		Vertice<V> verticeInicial;
@@ -283,21 +286,21 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 			return false;
 		}
 
-		//creamos el arista a introducir
+		//creamos la nueva arista a introducir
 		Arista<L> nuevoArista = new Arista<L>(id, dato, p, verticeInicial, verticeFinal);
 
 		//lo insertamos
-		return agregarArista(nuevoArista);
+		return agregararista(nuevoArista);
 	}
 
 	//>>>9 funcion que busca un arista por su id
-	public Arista<L> obtenerArista(String id)
+	public Arista<L> obtenerarista(String id)
 	{
 		int i;
 		//buscamos en todo el grafo si existe un arista con ese id
 		for (ArrayList<Arista<L>> aristasDeEsteVertice: grafo.values())
 		{
-			 i = aristasDeEsteVertice.size();
+			i = aristasDeEsteVertice.size();
 			for(int k = 0; k< i; k++)
 			{
 			 	if (aristasDeEsteVertice.get(k).getId().equals(id))
@@ -310,18 +313,39 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 	}
 
 	//>>>10 funcion que elimina arista por is
-	public Boolean eliminarArista(String id){
-
+	public Boolean eliminararista(String id)
+	{
 		int i;
+		int j = 0;
+		String id1;
 		//buscamos si existe ese arista en el garfo
-		for (ArrayList<Arista<L>> aristasDeEsteVertice: grafo.values()){
-			 i = aristasDeEsteVertice.size();
-			 for(int k = 0; k< i; k++){
-			 	if (aristasDeEsteVertice.get(k).getId().equals(id)){
-			 		aristasDeEsteVertice.remove(k);
-			 		return true;
+		for (ArrayList<Arista<L>> aristasDeEsteVertice: grafo.values())
+		{
+			i = aristasDeEsteVertice.size();
+			for (int k = 0; k< i; k++)
+			{
+			 	if (aristasDeEsteVertice.get(k).getId().equals(id))
+			 	{
+			 		j +=1;
+			 		id1 = aristasDeEsteVertice.get(k).getExtremo1().getId();
+					if (!aristasDeEsteVertice.get(k).getExtremo2().getId().equals(id1)
+						&& j==1)
+					{
+						aristasDeEsteVertice.remove(k);
+					}
+					else if (!aristasDeEsteVertice.get(k).getExtremo2().getId().equals(id1)
+						&& j==2)
+					{
+						aristasDeEsteVertice.remove(k);
+			 			return true;
+					}
+					else // si era un bucle entonces solo hay 1 arista que eliminar
+					{
+						aristasDeEsteVertice.remove(k);
+			 			return true;
+					}
 			 	}
-			 }
+			}
 		}
 		return false;
 	}
@@ -332,14 +356,14 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 		//si ambos vertices estan lo buscamos
 		if(estaVertice(u) && estaVertice(v))
 		{
-			//si el lado esta , esta en la lista de lados del vertice u
+			//si el lado esta, esta en la lista de lados del vertice u
 			Vertice<V> ver = obtenerVertice(u);
 			ArrayList<Arista<L>> listadelados = grafo.get(ver);
 			int n = listadelados.size();
 			//buscamos en la lista de lados de u
 			for(int k =0; k<n; k++)
 			{
-				if (listadelados.get(k).getExtremoFinal().getId().equals(v))
+				if (listadelados.get(k).getExtremo2().getId().equals(v))
 				{
 					return true;
 				}
@@ -362,10 +386,10 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 			{
 				i = aristasDeEsteVertice.size();
 				for(int k = i-1; k>=0; k--)
-				{ 	
-			 		if (aristasDeEsteVertice.get(k).getExtremoFinal().getId().equals(id))
+				{ 	//duda
+			 		if (aristasDeEsteVertice.get(k).getExtremo2().getId().equals(id))
 			 		{
-			 			aristasDeEsteVertice.remove(k);	
+			 			aristasDeEsteVertice.remove(k);
 				 	}
 				}
 			}
@@ -388,15 +412,28 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 	//>>>14 funcion que devuelve una lista de lados en el grafo
 	public ArrayList<Lado<L>> lados()
 	{
-
 		ArrayList<Lado<L>> listaLados = new ArrayList<Lado<L>>();
 		int i;
+		int j;
+		boolean duplicado;
 		for (ArrayList<Arista<L>> aristasDeEsteVertice: grafo.values())
 		{
 			i = aristasDeEsteVertice.size();
 			for(int k = 0; k< i; k++)
 			{
-		 		listaLados.add(aristasDeEsteVertice.get(k));//aqui agregamos cada arista		
+				j = listaLados.size();
+				duplicado = false;
+				for (int l = 0; l< j && !duplicado; l++) //buscamos si ya la habiamos agregado
+				{
+					if (aristasDeEsteVertice.get(k).getId().equals(listaLados.get(l).getId()))
+					{
+						duplicado = true;
+					}
+				}
+				if (!duplicado) // si no se encontraba ya en el arreglo
+		 		{
+		 			listaLados.add(aristasDeEsteVertice.get(k));//aqui agregamos cada arista
+		 		}		 			
 			}
 		}
 		return listaLados;
@@ -408,27 +445,8 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 		//procedemos solo si el vertice esta en el grafo
 		if (estaVertice(id))
 		{
-			ArrayList<Lado<L>> listaLados = new ArrayList<Lado<L>>();
-			int i;
-			int grado = 0;//grado comienza en 0
-			for (ArrayList<Arista<L>> aristasDeEsteVertice: grafo.values())
-			{//revisamos cada arista
-				i = aristasDeEsteVertice.size();
-				for(int k = 0; k< i; k++)
-				{
-			 		if(aristasDeEsteVertice.get(k).getExtremoFinal().getId().equals(id)
-			 		|| aristasDeEsteVertice.get(k).getExtremoInicial().getId().equals(id))
-			 		{
-			 			grado = grado + 1;//si el arista tiene el vertice sumamos 1
-			 			if(aristasDeEsteVertice.get(k).getExtremoFinal().getId().equals(id) 
-			 				&& aristasDeEsteVertice.get(k).getExtremoInicial().getId().equals(id))
-			 			{
-			 				grado = grado +1;//si el arista es un bucle y tiene el vertice sumamos 1 mas 
-			 			}
-			 		}
-				}
-			}
-			return grado;
+			ArrayList<Arista<L>> lados = grafo.get(obtenerVertice(id));
+			return lados.size();
 		}
 		throw new NoSuchElementException("No se encontro el vertice");
 	}
@@ -447,7 +465,6 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 				{//vemos si el arista esta
 					adyacentes.add(vertice);//agregamos el vertice adyacente
 				}
-
 			}
 			return adyacentes;
 		}
@@ -458,103 +475,21 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 	// incidentes del vertice en caso de que el vertice este
 	public ArrayList<Lado<L>> incidentes(String id)
 	{
-
-		ArrayList<Lado<L>> lados = new ArrayList<Lado<L>>();
-		if(estaVertice(id)){
-			int i;
-			for (ArrayList<Arista<L>> aristasDeEsteVertice: grafo.values())
-			{//buscamos en todos los arista
-				i = aristasDeEsteVertice.size();
-				for(int k = 0; k< i; k++)//vemos si el vertice incide
-				{
-			 		if(aristasDeEsteVertice.get(k).getExtremoInicial().getId().equals(id)
-			 		 || aristasDeEsteVertice.get(k).getExtremoFinal().getId().equals(id))
-			 		{
-			 			lados.add(aristasDeEsteVertice.get(k));//si incide lo agregamos
-			 		}		
-				}
+		if(estaVertice(id))
+		{
+			ArrayList<Lado<L>> lados = new ArrayList<Lado<L>>();
+			ArrayList<Arista<L>> aristas = grafo.get(obtenerVertice(id));
+			int i = aristas.size();
+			for(int k = 0; k< i; k++)
+			{
+				lados.add(aristas.get(k));
 			}
 			return lados;
 		}
 		throw new NoSuchElementException("No se encontro el vertice");
 	}
 
-	//>>>18 funcion que toma una clave de vertice y devuelve el grado exterior
-	// en caso de que este
-	public int gradoExterior(String id){
-
-		//procedemos si el vertice esta en el grafo
-		if (estaVertice(id)){
-			Vertice<V> vertice = obtenerVertice(id);
-			ArrayList<Arista<L>> listadelados = grafo.get(vertice);//lista de aristas del vertice
-			int grado = 0;
-			int n = listadelados.size();
-			for(int i = 0; i< n; i++){
-				grado = grado + 1;//sumamos uno por cada arista  que comienza en el vertice
-				
-			}
-			return grado;
-
-		}
-		throw new NoSuchElementException("No se encontro el vertice");
-	}
-
-	//>>>19 funcion que toma la clave de un vertice y calcula el grado interno 
-	//del vertice si esta en el grafo
-	public int gradoInterior(String id){
-
-		//procedemos si el vertice esta
-		if (estaVertice(id)) {
-			int grado = grado(id) - gradoExterior(id);//segun la teoria el grado
-			// interno es igual al grado menos el grado exterior
-			return grado;
-			
-		}
-		throw new NoSuchElementException("No se encontro el vertice");
-	}
-
-	//>>>20 funcion que toma la clave de un vertice y devuelve una lista de 
-	//vertices sucesores si el vertice esta en el grafo
-	public ArrayList<Vertice<V>> sucesores(String id){
-		
-		ArrayList<Vertice<V>> sucesores = new ArrayList<Vertice<V>>();
-
-		//procedemos solo si el vertice esta
-		if(estaVertice(id)){
-			String idadyacente;
-			for (Vertice<V> vertice: grafo.keySet()){//revisamos todo lado que
-			// comienze en el vertice anterior
-				idadyacente = vertice.getId();
-				if (estaLado(id, idadyacente) ){//si el lado esta
-					sucesores.add(vertice);//agregamos el vertice final
-				}
-
-			}
-			return sucesores;
-		}
-		throw new NoSuchElementException("No se encontro el vertice");
-	}
-
-	//>>>21 funcion analoga a "sucesores" pero calcula predecesores
-	public ArrayList<Vertice<V>> predecesores(String id){
-		
-		ArrayList<Vertice<V>> predecesores = new ArrayList<Vertice<V>>();
-
-		if(estaVertice(id)){
-			String idadyacente;
-			for (Vertice<V> vertice: grafo.keySet()){
-				idadyacente = vertice.getId();
-				if (estaLado(idadyacente, id) ){
-					predecesores.add(vertice);
-				}
-
-			}
-			return predecesores;
-		}
-		throw new NoSuchElementException("No se encontro el vertice");
-	}
-
-	//>>>22 funcion que convierte  un grafo en String para impresion
+	//>>>18 funcion que convierte  un grafo en String para impresion
 	public String toString(){
 		
 		String cadenaGrafo = "";
@@ -567,9 +502,9 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 			k = listadelados.size();
 			if (k != 0){
 				for(int j = 0; j<k-1; j++){
-					cadenaGrafo = cadenaGrafo+listadelados.get(j).getExtremoFinal().getId()+", ";
+					cadenaGrafo = cadenaGrafo+listadelados.get(j).getExtremo2().getId()+", ";
 				}
-				cadenaGrafo = cadenaGrafo+listadelados.get(k-1).getExtremoFinal().getId()+"\n";
+				cadenaGrafo = cadenaGrafo+listadelados.get(k-1).getExtremo2().getId()+"\n";
 			}else{
 				cadenaGrafo = cadenaGrafo+"\n";
 			}	
@@ -577,12 +512,11 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 		return cadenaGrafo;
 	}
 
-	//>>>23 funcion que clona un grafo en un nuevo objeto grafo
-	public Grafo<V, L> clone(){
-
-		GrafoDirigido<V, L> clon = new GrafoDirigido<V, L>();
+	//>>>19 funcion que clona un grafo en un nuevo objeto grafo
+	public Grafo<V, L> clone()
+	{
+		GrafoNoDirigido<V, L> clon = new GrafoNoDirigido<V, L>();
 		clon.grafo = grafo;
 		return clon;
-
 	}
 }

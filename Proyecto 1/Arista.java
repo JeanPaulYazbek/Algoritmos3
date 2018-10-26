@@ -1,4 +1,4 @@
-lpublic class Arista<E> extends Lado
+public class Arista<E> extends Lado
 {
 	protected String id; 	//id de la Arista
 	protected E dato;		// datos de la Arista
