@@ -1,7 +1,6 @@
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 /**Almacena un grafo que puede crecer din&aacute;micamente para prop&oacute;sitos
  * de traduci&oacute;n a Matriz de Adyacencias. Esta clase est&aacute; pensada para ser
  * usada al leer grafos en formato Lista de Adyacencias desde un archivo.
@@ -67,12 +66,14 @@ public class Grafo {
 			
 			this.agregarVertice( verticeInicial);
 		}
-		
-
+		//revisamos si ya fue agregado esta Arista
+		if (this.grafo[verticeInicial][verticeFinal] == 1 || this.grafo[verticeFinal][verticeInicial] == 1 ){
+			throw new IllegalArgumentException("La misma Arista no puede aparecer 2 veces");
+		}
 
 		//representamos la arista en la matriz
 		this.grafo[verticeInicial][verticeFinal] = 1;
-		
+		this.grafo[verticeFinal][verticeInicial] = 1;
 		return;
 	}
 	
