@@ -20,8 +20,6 @@ public class DeepWeb{
 		linea = Lector.readLine();//no necesitamos el numero de lados
 		linea = Lector.readLine();
 		
-			
-		
 		do{
 			crearGrafo(linea, (Grafo)salida);
 		
@@ -29,7 +27,6 @@ public class DeepWeb{
 		
 		return salida;
 	}
-
 
 	//ayuda a cargar el grafo linea por linea
 	private static void crearGrafo(String linea, Grafo grafo)
@@ -172,18 +169,145 @@ public class DeepWeb{
 				procedimientoDFS.dfsCliente(vertice, g.grafo, false, -1);
 					procedimientoDFS.noConexos();
 					procedimientoDFS.predecesores();
-			}	
+			}		
+		}
+////////////////////////////////////////////////////////////////////////////////
+		else if(args[2].equals("bfs"))
+		{
+			Grafo g = cargarGrafo(args[0]);
+			BFS procedimientoBFS = new BFS();
 
+			if(args.length == 3)
+			{
+				procedimientoBFS.bfsCliente(vertice, g.grafo, false, -1);
+				procedimientoBFS.noConexos();
+			}
+			else if(args[3].equals("--trunc"))
+			{
+				int cota = Integer.parseInt(args[4]);
+				if(args.length == 8)
+				{
+					procedimientoBFS.bfsCliente(vertice, g.grafo, false, cota);
+					procedimientoBFS.noConexos();
+					procedimientoBFS.bfsCliente(vertice, g.grafo, true, cota);
+					procedimientoBFS.orientacion();
+					procedimientoBFS.predecesores();
+				}
+				else if(args.length == 7)
+				{
+					if(args[5].equals("--arb"))
+					{
+						if(args[6].equals("--ord"))
+						{
+							procedimientoBFS.bfsCliente(vertice, g.grafo, false, cota);
+							procedimientoBFS.noConexos();
+							procedimientoBFS.bfsCliente(vertice, g.grafo, true, cota);
+							procedimientoBFS.orientacion();
+							
+						}
+						else if(args[6].equals("--pred"))
+						{
+							procedimientoBFS.bfsCliente(vertice, g.grafo, false, cota);
+							procedimientoBFS.noConexos();
+							procedimientoBFS.bfsCliente(vertice, g.grafo, true, cota);
+							procedimientoBFS.predecesores();
+						}
+					}
+					else if(args[5].equals("--ord"))
+					{
+						procedimientoBFS.bfsCliente(vertice, g.grafo, false, cota);
+						procedimientoBFS.noConexos();
+						procedimientoBFS.predecesores();
+					}
+				}
+				else if(args.length == 6)
+				{
+					if(args[5].equals("--arb"))
+					{
+						procedimientoBFS.bfsCliente(vertice, g.grafo, false, cota);
+						procedimientoBFS.noConexos();
+						procedimientoBFS.bfsCliente(vertice, g.grafo, true, cota);
+					}
+					else if(args[5].equals("--ord"))
+					{
+						procedimientoBFS.bfsCliente(vertice, g.grafo, false, cota);
+						procedimientoBFS.noConexos();
+						procedimientoBFS.orientacion();
+					}
+					else if(args[5].equals("--pred")){
+						procedimientoBFS.bfsCliente(vertice, g.grafo, false, cota);
+						procedimientoBFS.noConexos();
+						procedimientoBFS.predecesores();
+					}
+				}
+				else if(args.length == 5)
+				{
+					procedimientoBFS.bfsCliente(vertice, g.grafo, false, cota);
+					procedimientoBFS.noConexos();
+				}
+			}
+			else if(args[3].equals("--arb"))
+			{
+				if(args.length == 6)
+				{
+					procedimientoBFS.bfsCliente(vertice, g.grafo, false, -1);
+					procedimientoBFS.noConexos();
+					procedimientoBFS.bfsCliente(vertice, g.grafo, true, -1);
+					procedimientoBFS.orientacion();
+					procedimientoBFS.predecesores();
+				}
+				else if(args.length == 5)
+				{
+					if(args[4].equals("--ord"))
+					{
+						procedimientoBFS.bfsCliente(vertice, g.grafo, false, -1);
+						procedimientoBFS.noConexos();
+						procedimientoBFS.bfsCliente(vertice, g.grafo, true, -1);
+						procedimientoBFS.orientacion();
+					}
+					else if(args[4].equals("--pred"))
+					{
+						procedimientoBFS.bfsCliente(vertice, g.grafo, false, -1);
+						procedimientoBFS.noConexos();
+						procedimientoBFS.bfsCliente(vertice, g.grafo, true, -1);
+						procedimientoBFS.predecesores();
+					}
+				}
+				else if(args.length ==4)
+				{
+					procedimientoBFS.bfsCliente(vertice, g.grafo, false, -1);
+					procedimientoBFS.noConexos();
+					procedimientoBFS.bfsCliente(vertice, g.grafo, true, -1);
 
-			
-		}else if(args[2].equals("bfs")){
-
-		}else{
+				}
+			}
+			else if(args[3].equals("--ord"))
+			{
+				if (args.length == 5)
+				{
+					procedimientoBFS.bfsCliente(vertice, g.grafo, false, -1);
+					procedimientoBFS.noConexos();
+					procedimientoBFS.orientacion();
+					procedimientoBFS.predecesores();
+				}
+				else if(args.length == 4)
+				{
+					procedimientoBFS.bfsCliente(vertice, g.grafo, false, -1);
+					procedimientoBFS.noConexos();
+					procedimientoBFS.orientacion();
+				}
+			}
+			else if(args[3].equals("--pred"))
+			{
+				procedimientoBFS.bfsCliente(vertice, g.grafo, false, -1);
+				procedimientoBFS.noConexos();
+				procedimientoBFS.predecesores();
+			}
+		}
+		else
+		{
 			System.out.println("Formato no valido");
 			return;
 		}
-
-
-
 	}
 }
