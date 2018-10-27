@@ -11,10 +11,20 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 	//digrafo: representamos el grafo con un diccionario donde las claves son objetos tipo vertices , y los valores listas de objetos tipo lados
 	private Hashtable<Vertice<V>, ArrayList<Arco<L>>> digrafo = new Hashtable<Vertice<V>, ArrayList<Arco<L>>>();
 
-	//>>>constructor por defecto
+	/**
+	 * constructor por defecto
+	 */
 	GrafoDirigido(){
 	}
-	//>>>0 funcion que carga un grafo de un archivo de texto en el grafo
+	
+	/**
+	 * funcion que carga un grafo de un archivo de texto en el grafo
+	 * @param archivo nombre del archivo desde el que queremos cargar el grafo
+	 * @param transformer objeto de la clase Transformer que nos ayuda a convertir de String a tipo generico del vertice
+	 * @param transformerarco objeto de la clase Transformer que nos ayuda a convertir de String a tipo generico de arco
+	 * @return un booleano, true si se creo exitosamente el grafo, false si no
+	 * @throws IOException
+	 */
 	public Boolean cargarGrafo(String archivo, Transformer<String, V> transformer,  Transformer<String, L> transformerarco)
 	throws IOException
 	{
@@ -115,7 +125,10 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 		return true;
 	}
 
-	//>>>1 funcion que calcula el numero de vertices de un digrafo
+	/**
+	 * funcion que calcula el numero de vertices de un digrafo
+	 * @return regresa un entero que representa el numero de vertices
+	 */
 	public int numeroDeVertices(){
 
 		int i = 0; //contador de vertices
@@ -125,7 +138,10 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 		return i;
 	}
 
-	//>>>2 funcion que calcula el numero de lados
+	/**
+	 * funcion que calcula el numero de lados
+	 * @return entero que representa el numero de lados
+	 */
 	public int numeroDeLados(){
 
 		int i = 0;//contador de lados
@@ -135,7 +151,11 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 		return i;
 	}
 
-	//>>>3 funcion que agrega un vertice a partir de un objeto, si no se puede retorna false y si se puede retorna true
+	/**
+	 * funcion que agrega un vertice a partir de un objeto, si no se puede retorna false y si se puede retorna true
+	 * @param v objeto de la clase vertice que se quiere agregar al grafo
+	 * @return regresa true si se agrego exitosamente
+	 */
 	public Boolean agregarVertice(Vertice<V> v){
 
 		String clave = v.getId();//clave del vertice
@@ -153,14 +173,25 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 		return true;
 	}
 
-	//>>>4 funcion que agrega un vertice a partir de su informacion
+	/**
+	 * funcion que agrega un vertice a partir de su informacion
+	 * @param id es el id del vertice que queremos agregar
+	 * @param dato es el dato de tipo generico que queremos tener en el vertice
+	 * @param p es el peso del vertice
+	 * @return true si se agrega en vertice, false en otro caso
+	 */
 	public Boolean agregarVertice( String id, V dato, double p ){
 		//creamos un objeto vertice e intetamos agregarlo
 		Vertice<V> nuevoVertice = new Vertice<V>(id, dato, p);
 		return agregarVertice(nuevoVertice);
 	}
 
-	//>>>5 funcion para obtener el objeto vertice con ese id en caso de que este
+	
+	/**
+	 * funcion que obtiene un vertice segun su id
+	 * @param id id del vertice que buscamos
+	 * @return regresa el vertice que se busca o una excepcion en caso contrario
+	 */
 	public Vertice obtenerVertice( String id){
 
 		//chequeamos si algun vertice tiene ese id
@@ -173,7 +204,11 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 		throw new NoSuchElementException("No se encontro el vertice");
 	}
 
-	//>>>6 funcion que revisa si el vertice con ese id esta
+	/**
+	 * funcion que revisa si el vertice con ese id esta
+	 * @param id id del vertice que se desea verificar
+	 * @return true si esta false en otro caso
+	 */
 	public Boolean estaVertice(String id){
 
 		//revisamos si existe algun vertice con ese id en el grafo
@@ -186,7 +221,11 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 		return false;
 	}
 
-	//>>>7 funcion que agrega un objeto tipo arco al grafo
+	/**
+	 * funcion que agrega un objeto arco al grafo
+	 * @param a objeto arco que sera agregado
+	 * @return true si es agregado, false en otro caso
+	 */
 	public Boolean agregarArco(Arco<L> a){
 
 
@@ -232,7 +271,16 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 
 	}
 
-	//>>>8 funcion que agrega arco por informacion
+
+	/**
+	 * funcion que agrega arco por informacion
+	 * @param id id del arco que se quiere agregar
+	 * @param dato dato del tipo generico de arco que se quiere agregar
+	 * @param p	peso del arco que se quiere agregar
+	 * @param vInicial	id del vertice inicial del arco que se quiere agregar
+	 * @param vFinal id del vertice final del arco que se quiere agregar
+	 * @return	true si se agrego el arco, false en otro caso
+	 */
 	public Boolean agregarArco(String id, L dato, double p, String vInicial, String vFinal){
 
 		Vertice<V> verticeInicial;
@@ -259,10 +307,14 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 		return agregarArco(nuevoArco);
 	}
 
-	//>>>9 funcion que busca un arco por su id
+	/**
+	 * funcion que busca un arco por su id
+	 * @param id id del arco que se quiere obtener
+	 * @return objeto del tipo arco con el id solicitado, lanza una excepcion si no se encuentra
+	 */
 	public Arco<L> obtenerArco(String id){
 
-		int i;
+		int i;//variable que nos ayudara a contar el largo de cada lista de lados en el grafo
 		//buscamos en todo el grafo si existe un arco con ese id
 		for (ArrayList<Arco<L>> arcosDeEsteVertice: digrafo.values()){
 			 i = arcosDeEsteVertice.size();
@@ -276,7 +328,11 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 		throw new NoSuchElementException("No se encontro el arco");
 	}
 
-	//>>>10 funcion que elimina arco por is
+	/**
+	 * funcion que elimina arco por id 
+	 * @param id id del arco que se quiere eliminar
+	 * @return	true si se elimina exitosamente, false en otro caso
+	 */
 	public Boolean eliminarArco(String id){
 
 		int i;
@@ -293,7 +349,12 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 		return false;
 	}
 
-	//>>>11 funcion que revisa si un lado esta por el id de los vertices
+	/**
+	 * funcion que revisa si un lado esta por el id de los vertices
+	 * @param u id del vertice inicial del arco que se busca
+	 * @param v	id del vertice final que se busca
+	 * @return	true si esta en el grafo, false en otro caso
+	 */
 	public Boolean estaLado(String u, String v){
 
 		//si ambos vertices estan lo buscamos
@@ -313,7 +374,11 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 
 	}
 
-	//>>>12 funcion que elimina vertice por id
+	/**
+	 * funcion que elimina vertice por id
+	 * @param id id del vertice que se desea elimina
+	 * @return	true si se elimina , false en otro caso
+	 */
 	public Boolean eliminarVertice(String id){
 
 		//solo procedemos si el vertice esta en el grafo
@@ -341,7 +406,10 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 		return false;
 	}
 
-	//>>>13 funcion que devuelve una lista de objetos tipo vertice en el grafo
+	/**
+	 * funcion que devuelve una lista de objetos tipo vertice en el grafo
+	 * @return una lista con objetos vertices en el grafo, si no hay regresa una lista vacia 
+	 */
 	public ArrayList<Vertice<V>> vertices(){
 
 		ArrayList<Vertice<V>> listaVertices = new ArrayList<Vertice<V>>();
@@ -352,7 +420,10 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 		return listaVertices;
 	}
 
-	//>>>14 funcion que devuelve una lista de lados en el grafo
+	/**
+	 * funcion que devuelve una lista de lados en el grafo
+	 * @return una lista de arcos representados en el vertice, si no hay regresa una lista vacia
+	 */
 	public ArrayList<Lado<L>> lados(){
 
 		ArrayList<Lado<L>> listaLados = new ArrayList<Lado<L>>();
@@ -370,7 +441,11 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 
 	}
 
-	//>>>15 funcion que devuelve el grado de un vertice existente en el grafo
+	/**
+	 * funcion que devuelve el grado de un vertice existente en el grafo
+	 * @param id id del vertice que cuyo grado se quiere revisar
+	 * @return	entero que representa el grado del vertice, si no esta da una excepcion 
+	 */
 	public int grado(String id){
 
 		//procedemos solo si el vertice esta en el grafo
@@ -398,6 +473,11 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 	}
 
 	//>>>16 funcion que regresa una lista de vertices adyacentes a un vertice dada su clave
+	/**
+	 * 
+	 * @param id id del vertices cuyos adyacente se buscan
+	 * @return	lista de vertices adyacentes al vertice solicitado, en caso de que no este lanza una excepcion
+	 */
 	public ArrayList<Vertice<V>> adyacentes(String id){
 		
 		ArrayList<Vertice<V>> adyacentes = new ArrayList<Vertice<V>>();
@@ -416,7 +496,11 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 		throw new NoSuchElementException("No se encontro el vertice");
 	}
 
-	//>>>17 funcion que toma una clave vertice y devuelve una lista de arcos incidentes del vertice en caso de que el vertice este
+	/**
+	 * funcion que toma una clave vertice y devuelve una lista de arcos incidentes del vertice en caso de que el vertice este
+	 * @param id id del vertice cuyos arcos incidentes se desea solicitar
+	 * @return regresa una lista de arcos incidentes al vertice , si el vertice no esta lanza una excepcion
+	 */
 	public ArrayList<Lado<L>> incidentes(String id){
 
 		ArrayList<Lado<L>> lados = new ArrayList<Lado<L>>();
@@ -440,7 +524,11 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 
 	}
 
-	//>>>18 funcion que toma una clave de vertice y devuelve el grado exterior en caso de que este
+	/**
+	 * funcion que toma una clave de vertice y devuelve el grado exterior en caso de que este
+	 * @param id id del vertice cuyo grado exterior se desea chequear 
+	 * @return	el grado exterior del vertice, en caso de que no este se lanza una excepcion
+	 */
 	public int gradoExterior(String id){
 
 		//procedemos si el vertice esta en el grafo
@@ -459,7 +547,11 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 		throw new NoSuchElementException("No se encontro el vertice");
 	}
 
-	//>>>19 funcion que toma la clave de un vertice y calcula el grado interno del vertice si esta en el grafo
+	/**
+	 * funcion que toma la clave de un vertice y calcula el grado interno del vertice si esta en el grafo
+	 * @param id id del vertice cuyo grado interior se desea solicitar
+	 * @return	entero que representa el gardo interior del vertice , lanza una excepcion si no esta en el grafo.
+	 */
 	public int gradoInterior(String id){
 
 		//procedemos si el vertice esta
@@ -471,7 +563,11 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 		throw new NoSuchElementException("No se encontro el vertice");
 	}
 
-	//>>>20 funcion que toma la clave de un vertice y devuelve una lista de vertices sucesores si el vertice esta en el grafo
+	/**
+	 * funcion que toma la clave de un vertice y devuelve una lista de vertices sucesores si el vertice esta en el grafo
+	 * @param id id del vertice cuyos sucesores se quieren conocer
+	 * @return lista de vertices sucesores del vertice solicitado, lanza una excepcion si no esta
+	 */
 	public ArrayList<Vertice<V>> sucesores(String id){
 		
 		ArrayList<Vertice<V>> sucesores = new ArrayList<Vertice<V>>();
@@ -491,7 +587,11 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 		throw new NoSuchElementException("No se encontro el vertice");
 	}
 
-	//>>>21 funcion analoga a "sucesores" pero calcula predecesores
+	/**
+	 * funcion analoga a "sucesores" pero calcula predecesores
+	 * @param id id del vertice cuyos predecesores se desean conocer
+	 * @return una lista de vertices predecesores del vertice solicitado, lanza una excepcion si el vertice no esta en el grafo
+	 */
 	public ArrayList<Vertice<V>> predecesores(String id){
 		
 		ArrayList<Vertice<V>> predecesores = new ArrayList<Vertice<V>>();
@@ -510,7 +610,10 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 		throw new NoSuchElementException("No se encontro el vertice");
 	}
 
-	//>>>22 funcion que convierte  un grafo en String para impresion
+	/** 
+	 * funcion que convierte  un grafo en String para impresion
+	 * @return un string que representa el grafo en su estado actual
+	*/
 	public String toString(){
 		
 		String cadenaGrafo = "";
@@ -533,7 +636,10 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 		return cadenaGrafo;
 	}
 
-	//>>>23 funcion que clona un grafo en un nuevo objeto grafo
+	/**
+	 * funcion que clona un grafo en un nuevo objeto grafo
+	 * @return regresa un objeto tipo grafo con la forma del grafo actual
+	 */
 	public Grafo<V, L> clone(){
 
 		GrafoDirigido<V, L> clon = new GrafoDirigido<V, L>();
