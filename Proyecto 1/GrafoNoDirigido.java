@@ -253,12 +253,12 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 		//insertar arista
 		ArrayList<Arista<L>> lados = grafo.get(verticeInicial);
 		lados.add(a);
-		grafo.put(verticeInicial,lados);
+		grafo.put(verticeInicial,lados); // agregamos el original
 		if(!verticeA.equals(verticeB)) // si es un bucle solo se agrega una vez
 		{
 			lados = grafo.get(verticeFinal);
 			lados.add(a);
-			grafo.put(verticeFinal,lados);
+			grafo.put(verticeFinal,lados); // agregamos el duplicado
 		}
 		return true;
 	}
@@ -491,21 +491,40 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 
 	//>>>18 funcion que convierte  un grafo en String para impresion
 	//acomodar
-	public String toString(){
-		
+	public String toString()
+	{	
 		String cadenaGrafo = "";
 		ArrayList<Arista<L>> listadelados;
 		int k;
+		String idv;
 
-		for (Vertice<V> vertices: grafo.keySet()){
-			cadenaGrafo = cadenaGrafo + vertices.getId() + ": ";
+		for (Vertice<V> vertices: grafo.keySet())
+		{
+			idv = vertices.getId();
+			cadenaGrafo = cadenaGrafo + idv + ": ";
 			listadelados = grafo.get(vertices);
 			k = listadelados.size();
-			if (k != 0){
-				for(int j = 0; j<k-1; j++){
-					cadenaGrafo = cadenaGrafo+listadelados.get(j).getExtremo2().getId()+", ";
+			if (k != 0)
+			{
+				for(int j = 0; j<k-1; j++)
+				{
+					if(listadelados.get(j).getExtremo1().getId().equals(idv)) // es un bucle o un original
+					{
+						cadenaGrafo = cadenaGrafo+listadelados.get(j).getExtremo2().getId()+", ";
+					}
+					else // es un duplicado
+					{
+						cadenaGrafo = cadenaGrafo+listadelados.get(j).getExtremo1().getId()+", ";
+					}
 				}
-				cadenaGrafo = cadenaGrafo+listadelados.get(k-1).getExtremo2().getId()+"\n";
+				if(listadelados.get(k-1).getExtremo1().getId().equals(idv)) // es un bucle o un original
+				{
+					cadenaGrafo = cadenaGrafo+listadelados.get(k-1).getExtremo2().getId()+"\n";
+				}
+				else // es un duplicado
+				{
+					cadenaGrafo = cadenaGrafo+listadelados.get(k-1).getExtremo1().getId()+"\n";
+				}
 			}else{
 				cadenaGrafo = cadenaGrafo+"\n";
 			}
