@@ -748,6 +748,7 @@ public class Cliente{
 					return;
 				}
 ////////////////////////////////////////////////////////////////////////////////
+			// Caso No Dirigido
 			}else if(tipografo.equals("N"))
 			{
 				if(tipovertice.equals("S") && tipolado.equals("S"))
