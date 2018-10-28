@@ -12,11 +12,21 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 	private Hashtable<Vertice<V>, ArrayList<Arista<L>>> grafo = new Hashtable<Vertice<V>,
 	 ArrayList<Arista<L>>>();
 
-	//>>>constructor por defecto
+	/**
+	 * constructor por defecto
+	 */
 	GrafoNoDirigido()
 	{
 	}
-	//>>>0 funcion que carga un grafo de un archivo de texto en el grafo
+
+	/**
+	 * funcion que carga un grafo de un archivo de texto en el grafo
+	 * @param archivo nombre del archivo desde el que queremos cargar el grafo
+	 * @param transformer objeto de la clase Transformer que nos ayuda a convertir de String a tipo generico del vertice
+	 * @param transformerarco objeto de la clase Transformer que nos ayuda a convertir de String a tipo generico de arco
+	 * @return un booleano, true si se creo exitosamente el grafo, false si no
+	 * @throws IOException
+	 */
 	public Boolean cargarGrafo(String archivo, Transformer<String, V> transformer,
 	  Transformer<String, L> transformerarista)
 	throws IOException
@@ -113,7 +123,10 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 		return true;
 	}
 
-	//>>>1 funcion que calcula el numero de vertices de un grafo
+	/**
+	 * funcion que calcula el numero de vertices de un digrafo
+	 * @return regresa un entero que representa el numero de vertices
+	 */
 	public int numeroDeVertices()
 	{
 		int i = 0; //contador de vertices
@@ -124,7 +137,10 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 		return i;
 	}
 
-	//>>>2 funcion que calcula el numero de lados
+	/**
+	 * funcion que calcula el numero de lados
+	 * @return entero que representa el numero de lados
+	 */
 	public int numeroDeLados()
 	{
 
@@ -147,8 +163,11 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 		return i/2; //contamos cada lado 2 veces y los bucles valen por 2
 	}
 
-	//>>>3 funcion que agrega un vertice a partir de un objeto,
-	// si no se puede retorna false y si se puede retorna true
+	/**
+	 * funcion que agrega un vertice a partir de un objeto, si no se puede retorna false y si se puede retorna true
+	 * @param v objeto de la clase vertice que se quiere agregar al grafo
+	 * @return regresa true si se agrego exitosamente
+	 */
 	public Boolean agregarVertice(Vertice<V> v)
 	{
 		String clave = v.getId();//clave del vertice
@@ -169,7 +188,13 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 		return true;
 	}
 
-	//>>>4 funcion que agrega un vertice a partir de su informacion
+	/**
+	 * funcion que agrega un vertice a partir de su informacion
+	 * @param id es el id del vertice que queremos agregar
+	 * @param dato es el dato de tipo generico que queremos tener en el vertice
+	 * @param p es el peso del vertice
+	 * @return true si se agrega en vertice, false en otro caso
+	 */
 	public Boolean agregarVertice( String id, V dato, double p )
 	{
 		//creamos un objeto vertice e intetamos agregarlo
@@ -177,7 +202,11 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 		return agregarVertice(nuevoVertice);
 	}
 
-	//>>>5 funcion para obtener el objeto vertice con ese id en caso de que este
+	/**
+	 * funcion que obtiene un vertice segun su id
+	 * @param id id del vertice que buscamos
+	 * @return regresa el vertice que se busca o una excepcion en caso contrario
+	 */
 	public Vertice obtenerVertice(String id)
 	{
 		//chequeamos si algun vertice tiene ese id
@@ -191,7 +220,11 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 		throw new NoSuchElementException("No se encontro el vertice");
 	}
 
-	//>>>6 funcion que revisa si el vertice con ese id esta
+	/**
+	 * funcion que revisa si el vertice con ese id esta
+	 * @param id id del vertice que se desea verificar
+	 * @return true si esta false en otro caso
+	 */
 	public Boolean estaVertice(String id)
 	{
 
@@ -207,7 +240,11 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 		return false;
 	}
 
-	//>>>7 funcion que agrega un objeto tipo arista al grafo
+	/**
+	 * funcion que agrega un objeto arista al grafo
+	 * @param a objeto arista que sera agregado
+	 * @return true si es agregado, false en otro caso
+	 */
 	public Boolean agregararista(Arista<L> a)
 	{
 		//vertices no estan
@@ -263,7 +300,15 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 		return true;
 	}
 
-	//>>>8 funcion que agrega arista por informacion
+	/**
+	 * funcion que agrega arista por informacion
+	 * @param id id del arista que se quiere agregar
+	 * @param dato dato del tipo generico de arista que se quiere agregar
+	 * @param p	peso del arista que se quiere agregar
+	 * @param vInicial	id del vertice inicial del arista que se quiere agregar
+	 * @param vFinal id del vertice final del arista que se quiere agregar
+	 * @return	true si se agrego el arista, false en otro caso
+	 */
 	public Boolean agregararista(String id, L dato, double p, String vInicial, String vFinal)
 	{
 
@@ -293,7 +338,11 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 		return agregararista(nuevoArista);
 	}
 
-	//>>>9 funcion que busca un arista por su id
+	/**
+	 * funcion que busca un arista por su id
+	 * @param id id del arista que se quiere obtener
+	 * @return objeto del tipo arista con el id solicitado, lanza una excepcion si no se encuentra
+	 */
 	public Arista<L> obtenerarista(String id)
 	{
 		int i;
@@ -312,7 +361,11 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 		throw new NoSuchElementException("No se encontro el arista");
 	}
 
-	//>>>10 funcion que elimina arista por is
+	/**
+	 * funcion que elimina arista por id 
+	 * @param id id del arista que se quiere eliminar
+	 * @return	true si se elimina exitosamente, false en otro caso
+	 */
 	public Boolean eliminararista(String id)
 	{
 		int i;
@@ -350,7 +403,12 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 		return false;
 	}
 
-	//>>>11 funcion que revisa si un lado esta por el id de los vertices
+	/**
+	 * funcion que revisa si un lado esta por el id de los vertices
+	 * @param u id del vertice inicial del arco que se busca
+	 * @param v	id del vertice final que se busca
+	 * @return	true si esta en el grafo, false en otro caso
+	 */
 	public Boolean estaLado(String u, String v)
 	{
 		//si ambos vertices estan lo buscamos
@@ -372,7 +430,11 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 		return false;
 	}
 
-	//>>>12 funcion que elimina vertice por id
+	/**
+	 * funcion que elimina vertice por id
+	 * @param id id del vertice que se desea elimina
+	 * @return	true si se elimina , false en otro caso
+	 */
 	public Boolean eliminarVertice(String id)
 	{
 		//solo procedemos si el vertice esta en el grafo
@@ -398,7 +460,10 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 		return false;
 	}
 
-	//>>>13 funcion que devuelve una lista de objetos tipo vertice en el grafo
+	/**
+	 * funcion que devuelve una lista de objetos tipo vertice en el grafo
+	 * @return una lista con objetos vertices en el grafo, si no hay regresa una lista vacia 
+	 */
 	public ArrayList<Vertice<V>> vertices()
 	{
 		ArrayList<Vertice<V>> listaVertices = new ArrayList<Vertice<V>>();	
@@ -409,7 +474,10 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 		return listaVertices;
 	}
 
-	//>>>14 funcion que devuelve una lista de lados en el grafo
+	/**
+	 * funcion que devuelve una lista de lados en el grafo
+	 * @return una lista de aristas representados en el vertice, si no hay regresa una lista vacia
+	 */
 	public ArrayList<Lado<L>> lados()
 	{
 		ArrayList<Lado<L>> listaLados = new ArrayList<Lado<L>>();
@@ -439,7 +507,11 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 		return listaLados;
 	}
 
-	//>>>15 funcion que devuelve el grado de un vertice existente en el grafo
+	/**
+	 * funcion que devuelve el grado de un vertice existente en el grafo
+	 * @param id id del vertice que cuyo grado se quiere revisar
+	 * @return	entero que representa el grado del vertice, si no esta da una excepcion 
+	 */
 	public int grado(String id)
 	{
 		//procedemos solo si el vertice esta en el grafo
@@ -451,9 +523,13 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 		throw new NoSuchElementException("No se encontro el vertice");
 	}
 
-	//>>>16 funcion que regresa una lista de vertices adyacentes a un vertice dada su clave
-	public ArrayList<Vertice<V>> adyacentes(String id){
-		
+	/**
+	 * 
+	 * @param id id del vertices cuyos adyacente se buscan
+	 * @return	lista de vertices adyacentes al vertice solicitado, en caso de que no este lanza una excepcion
+	 */
+	public ArrayList<Vertice<V>> adyacentes(String id)
+	{	
 		ArrayList<Vertice<V>> adyacentes = new ArrayList<Vertice<V>>();
 		//procedemos solo si el vertice esta 
 		if(estaVertice(id)){
@@ -471,8 +547,11 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 		throw new NoSuchElementException("No se encontro el vertice");
 	}
 
-	//>>>17 funcion que toma una clave vertice y devuelve una lista de aristas
-	// incidentes del vertice en caso de que el vertice este
+	/**
+	 * funcion que toma una clave vertice y devuelve una lista de aritas incidentes del vertice en caso de que el vertice este
+	 * @param id id del vertice cuyos aristas incidentes se desea solicitar
+	 * @return regresa una lista de aristas incidentes al vertice , si el vertice no esta lanza una excepcion
+	 */
 	public ArrayList<Lado<L>> incidentes(String id)
 	{
 		if(estaVertice(id))
@@ -489,8 +568,10 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 		throw new NoSuchElementException("No se encontro el vertice");
 	}
 
-	//>>>18 funcion que convierte  un grafo en String para impresion
-	//acomodar
+	/** 
+	 * funcion que convierte  un grafo en String para impresion
+	 * @return un string que representa el grafo en su estado actual
+	*/
 	public String toString()
 	{	
 		String cadenaGrafo = "";
@@ -532,7 +613,10 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 		return cadenaGrafo;
 	}
 
-	//>>>19 funcion que clona un grafo en un nuevo objeto grafo
+	/**
+	 * funcion que clona un grafo en un nuevo objeto grafo
+	 * @return regresa un objeto tipo grafo con la forma del grafo actual
+	 */
 	public Grafo<V, L> clone()
 	{
 		GrafoNoDirigido<V, L> clon = new GrafoNoDirigido<V, L>();
