@@ -343,8 +343,6 @@ public class Prueba
 		primergrafonodirigido.agregarArista("Venezuela a Narnia", "se puede ir por tierra", 5.5555, "Venezuela", "Narnia");
 		grado = primergrafonodirigido.grado("Narnia");
 		System.out.println("grado:" + grado);
-		System.out.println("grado interno:" + gradointerno);
-		System.out.println("grado externo:" + gradoexterno);
 
 		//adyacentes
 		listadyacencias = new ArrayList<Vertice<String>> ();
