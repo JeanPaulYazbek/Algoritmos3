@@ -117,7 +117,7 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 			}catch(Exception e){
 				return false;//si algunos de los datos es erroneo
 			}
-			agregararista(idarista, datoarista, peso, extremo1, extremo2);
+			agregarArista(idarista, datoarista, peso, extremo1, extremo2);
 		}
 		//se cargo el grafo
 		return true;
@@ -245,7 +245,7 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 	 * @param a objeto arista que sera agregado
 	 * @return true si es agregado, false en otro caso
 	 */
-	public Boolean agregararista(Arista<L> a)
+	public Boolean agregarArista(Arista<L> a)
 	{
 		//vertices no estan
 		String verticeA = a.getExtremo1().getId();
@@ -309,7 +309,7 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 	 * @param vFinal id del vertice final del arista que se quiere agregar
 	 * @return	true si se agrego el arista, false en otro caso
 	 */
-	public Boolean agregararista(String id, L dato, double p, String vInicial, String vFinal)
+	public Boolean agregarArista(String id, L dato, double p, String vInicial, String vFinal)
 	{
 
 		Vertice<V> verticeInicial;
@@ -335,7 +335,7 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 		Arista<L> nuevoArista = new Arista<L>(id, dato, p, verticeInicial, verticeFinal);
 
 		//lo insertamos
-		return agregararista(nuevoArista);
+		return agregarArista(nuevoArista);
 	}
 
 	/**
@@ -343,7 +343,7 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 	 * @param id id del arista que se quiere obtener
 	 * @return objeto del tipo arista con el id solicitado, lanza una excepcion si no se encuentra
 	 */
-	public Arista<L> obtenerarista(String id)
+	public Arista<L> obtenerArista(String id)
 	{
 		int i;
 		//buscamos en todo el grafo si existe un arista con ese id
@@ -366,7 +366,7 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 	 * @param id id del arista que se quiere eliminar
 	 * @return	true si se elimina exitosamente, false en otro caso
 	 */
-	public Boolean eliminararista(String id)
+	public Boolean eliminarArista(String id)
 	{
 		int i;
 		int j = 0;

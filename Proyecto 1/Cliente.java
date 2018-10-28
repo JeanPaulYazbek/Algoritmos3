@@ -343,13 +343,13 @@ public class Cliente{
 			vi = scan.next();
 			System.out.println("Dime el id final:");
 			vf = scan.next();
-			grafo.agregararista(idarista, datoarista, pesoarista, vi, vf);
+			grafo.agregarArista(idarista, datoarista, pesoarista, vi, vf);
 
 		}else if(n==7){
 			System.out.println("Dime el id:");
 			idarista = scan.next();
 			try{
-				System.out.println(grafo.obtenerarista(idarista).toString());
+				System.out.println(grafo.obtenerArista(idarista).toString());
 			}catch(Exception e){
 				System.out.println("No hay tal arista");
 			}
@@ -368,7 +368,7 @@ public class Cliente{
 		}else if(n==9){
 			System.out.println("Dime el id:");
 			idarista = scan.next();
-			grafo.eliminararista(idarista);
+			grafo.eliminarArista(idarista);
 
 		}else if(n==10){
 			System.out.println("Dime el id:");
