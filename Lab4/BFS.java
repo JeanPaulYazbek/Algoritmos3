@@ -20,11 +20,11 @@ public class BFS{
    */
   public void bfs(int i, boolean[] visited, LinkedList<Integer> cola, ArrayList<Integer> camino, int[] profundidad, int[][] grafo, boolean arbol)
   {
+    orientacion[i] = t; //marcamos la orientacion del vertice i
+    t = t + 1;
     //iteracion
     while (cola.size() != 0)
     {
-      orientacion[i] = t; //marcamos la orientacion del vertice i
-      t = t + 1;
       i = cola.poll();
       camino.add(i);
       String espacio = "";
@@ -45,6 +45,8 @@ public class BFS{
           cola.add(j);
           predecesores[j] = i; //marcomos el predecesor del vertice j
           profundidad[j]=profundidad[i]+1;
+          orientacion[j] = t; //marcamos la orientacion del vertice i
+          t = t + 1;
           if(arbol)
           {
             System.out.println(espacio + i + "-" + j + " (arco de camino)");
@@ -197,7 +199,7 @@ public class BFS{
             return;
           }
           predecesores[j] = i; //marcomos el predecesor del vertice j
-          orientacion[i] = t; //marcamos la orientacion del vertice i
+          orientacion[j] = t; //marcamos la orientacion del vertice i
           t = t + 1;
           if(arbol)
           {
