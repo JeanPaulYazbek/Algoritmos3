@@ -44,6 +44,7 @@ public class BFS{
           visited[j] = true;
           cola.add(j);
           predecesores[j] = i; //marcomos el predecesor del vertice j
+          profundidad[j]=profundidad[i]+1;
           if(arbol)
           {
             System.out.println(espacio + i + "-" + j + " (arco de camino)");
@@ -164,12 +165,12 @@ public class BFS{
    */
   public void bfsTruncado(int i, boolean[] visited, LinkedList<Integer> cola, ArrayList<Integer> camino, int[] profundidad, int[][] grafo, boolean arbol, int cota)
   {
+    orientacion[i] = t; //marcamos la orientacion del vertice i
+    t = t + 1;
     //iteracion
     while (cola.size() != 0) 
     {
       i = cola.poll();
-      orientacion[i] = t; //marcamos la orientacion del vertice i
-      t = t + 1;
       camino.add(i);
       String espacio = "";
       for(int k = 0; k<profundidad[i]+1; k++)
@@ -191,11 +192,13 @@ public class BFS{
           visited[j] = true;
           cola.add(j);
           profundidad[j]=profundidad[i]+1;
-          if (profundidad[i]+1 > cota)
+          if (profundidad[j] > cota)
           {
             return;
           }
           predecesores[j] = i; //marcomos el predecesor del vertice j
+          orientacion[i] = t; //marcamos la orientacion del vertice i
+          t = t + 1;
           if(arbol)
           {
             System.out.println(espacio + i + "-" + j + " (arco de camino)");
