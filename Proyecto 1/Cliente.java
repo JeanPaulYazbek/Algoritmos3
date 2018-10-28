@@ -7,12 +7,21 @@ import java.io.IOException;
 public class Cliente{
 
 	Boolean usando = true;//VARIABLE: ayuda a determinar cuando se desea salir del programa
-	//>>>1. funcion que ayuda aterminar el programa
+	/**
+	 * funcion que que ayuda a terminar el programa
+	 */
 	public void terminar(){
 		usando = false;
 	}
 
-	//>>>2. funcion que muestra el menu y realiza procesos logicos de a cuerdo a la operacion seleccionada
+	/**
+	 * funcion que muestra el menu en caso de trabajar con un di
+	 * y realiza procesos logicos de a cuerdo a la operacion seleccionada
+	 * @param scan lee input del usuario
+	 * @param grafo grafo sobre el que se realizan las operaciones
+	 * @param transformer cambia datos de un tipo a otro
+	 * @param transformerarco cambia datos de un tipo a otro
+	 */	
 	public <V, L> void menuDirigido(Scanner scan, GrafoDirigido<V,L> grafo, Transformer<String, V> transformer,  Transformer<String, L> transformerarco){
 		//Imprimimos el menu
 		System.out.println("Que operacion desea realizar sobre su nuevo grafo dirigido? presione el numero correspondiente a la operacion");
@@ -245,7 +254,14 @@ public class Cliente{
 
 	}
 
-//>>>2.5 funcion que muestra el menu y realiza procesos logicos de a cuerdo a la operacion seleccionada
+	/**
+	 * funcion que muestra el menu en caso de trabajar con un grafo no dirigido
+	 * y realiza procesos logicos de a cuerdo a la operacion seleccionada
+	 * @param scan lee input del usuario
+	 * @param grafo grafo sobre el que se realizan las operaciones
+	 * @param transformer cambia datos de un tipo a otro
+	 * @param transformerarista cambia datos de un tipo a otro
+	 */	
 	public <V, L> void menuNoDirigido(Scanner scan, GrafoNoDirigido<V,L> grafo, Transformer<String, V> transformer,  Transformer<String, L> transformerarista){
 		//Imprimimos el menu
 		System.out.println("Que operacion desea realizar sobre su nuevo grafo dirigido? presione el numero correspondiente a la operacion");
@@ -423,7 +439,15 @@ public class Cliente{
 			terminar();
 		}
 	}
-
+////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * funcion que controla recibe la entrada del usuario acerca del tipo de
+	 * grafo (dirigido o no), vertice (String,Double,Boolean) y lado
+	 * (String,Double,Boolean) con los que se de desea a trabajar y llama a
+	 * a menuDirigido o menuNoDirigido dependiendo de las elecciones.
+	 * @param args
+	 * @throws IOException
+	 */
 	public static void main(String[] args)
 	throws IOException
 	{
