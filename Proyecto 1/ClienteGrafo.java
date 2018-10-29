@@ -4,7 +4,7 @@ import java.util.Scanner;
 import java.util.ArrayList;
 import java.io.IOException;
 
-public class Cliente{
+public class ClienteGrafo{
 
 	Boolean usando = true;//VARIABLE: ayuda a determinar cuando se desea salir del programa
 	/**
@@ -464,11 +464,11 @@ public class Cliente{
 
 		if(args.length == 0){//CASO CREAR GRAFO
 
-			System.out.println("Que tipo de dato de vertice desea almacenar? B(boolean) , D(double) o S(String)?");
+			System.out.println("Que tipo de dato de vertice desea almacenar? B(Boolean), D(Double) o S(String)?");
 			String tipovertice = scan.next();
-			System.out.println("Que tipo de dato de lado desea almacenar? B(boolean) , D(double) o S(String)?");
+			System.out.println("Que tipo de dato de lado desea almacenar? B(Boolean), D(Double) o S(String)?");
 			String tipolado = scan.next();
-			System.out.println("Que tipo de grafo desea almacenar? D(dirigido) o N(no dirigido)?");
+			System.out.println("Que tipo de grafo desea almacenar? D(Dirigido) o N(No Dirigido)?");
 			String tipografo = scan.next();
 			
 

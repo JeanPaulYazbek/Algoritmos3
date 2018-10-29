@@ -227,8 +227,6 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 	 * @return true si es agregado, false en otro caso
 	 */
 	public Boolean agregarArco(Arco<L> a){
-
-
 		//vertices no estan
 		String verticeA = a.getExtremoInicial().getId();
 		String verticeB = a.getExtremoFinal().getId();
@@ -395,7 +393,6 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 				 	
 			 		if (arcosDeEsteVertice.get(k).getExtremoFinal().getId().equals(id)){
 			 			arcosDeEsteVertice.remove(k);
-			 			
 				 	}
 				 }
 			}

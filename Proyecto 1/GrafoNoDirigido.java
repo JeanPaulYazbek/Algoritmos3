@@ -448,7 +448,7 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 			{
 				i = aristasDeEsteVertice.size();
 				for(int k = i-1; k>=0; k--)
-				{ 	//duda
+				{
 			 		if (aristasDeEsteVertice.get(k).getExtremo2().getId().equals(id))
 			 		{
 			 			aristasDeEsteVertice.remove(k);
