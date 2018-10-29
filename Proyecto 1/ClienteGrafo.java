@@ -452,7 +452,7 @@ public class ClienteGrafo{
 	throws IOException
 	{
 
-		Cliente profe = new Cliente();	//objeto cliente para llamar a los metodos
+		ClienteGrafo profe = new ClienteGrafo();	//objeto cliente para llamar a los metodos
 		Scanner scan = new Scanner(System.in).useDelimiter("\n");
 		//Transformadores del tipo generico respectivo:
 		Transformer<String, Double> transformadorarcoDouble= new TransformarDouble();
