@@ -519,7 +519,16 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 		if (estaVertice(id))
 		{
 			ArrayList<Arista<L>> lados = grafo.get(obtenerVertice(id));
-			return lados.size();
+			int grado = lados.size(); //almacenamos el numero de aristas	
+			for (int k = 0; k< grado; k++) //buscamos si hay un bucle
+			{
+				if(lados.get(k).getExtremo1().getId().equals(id) 
+					&& lados.get(k).getExtremo2().getId().equals(id) ) //hallamos un bucle
+				{
+					grado +=1;
+				}
+			}
+			return grado;
 		}
 		throw new NoSuchElementException("No se encontro el vertice");
 	}
