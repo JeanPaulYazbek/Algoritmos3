@@ -47,8 +47,14 @@ public class ClienteGrafo{
 		System.out.println("20. imprimir grafo");
 		System.out.println("21. salir");
 
-
-		int n = scan.nextInt();//leemos la opcion
+		int n;
+		try{
+			n = scan.nextInt();//leemos la opcion
+		}catch(Exception e){
+			System.out.println("eso no es un entero...");
+			scan.next();
+			return;
+		}
 		int k;				   // variable que usaremos para opciones que involucren numeros, como grado.
 		String id;			   // variable que usaremos para las operaciones que requieran id de vertices
 		V dato;				   // variable que almacena el dato de un vertice en la operacion necesaria
@@ -249,6 +255,9 @@ public class ClienteGrafo{
 		}else if(n==21){
 			System.out.println("Saliendo....");
 			terminar();
+		}else{
+			System.out.println("Eso no es una opcion");
+			return;
 		}
 
 
@@ -284,7 +293,14 @@ public class ClienteGrafo{
 		System.out.println("17. salir");
 
 
-		int n = scan.nextInt();//leemos la opcion
+		int n;
+		try{
+			n = scan.nextInt();//leemos la opcion
+		}catch(Exception e){
+			System.out.println("eso no es un entero...");
+			scan.next();
+			return;
+		}
 		int k;				   // variable que usaremos para opciones que involucren numeros, como grado.
 		String id;			   // variable que usaremos para las operaciones que requieran id de vertices
 		V dato;				   // variable que almacena el dato de un vertice en la operacion necesaria
@@ -437,6 +453,9 @@ public class ClienteGrafo{
 		}else if(n==17){
 			System.out.println("Saliendo....");
 			terminar();
+		}else{
+			System.out.println("Esa no es una opcion...");
+			return;
 		}
 	}
 ////////////////////////////////////////////////////////////////////////////////
