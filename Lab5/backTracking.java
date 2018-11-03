@@ -7,48 +7,109 @@ public class backTracking
 	protected ArrayList<int[]> accionesDeExito; //acciones que se tomaron durante el recorrido mas corto.
 
 	/**
-	* funcion que hace un recorrido dfs desde un vertice
-	* @param i vertice del que se comienza el dfs
-	* @param visited	lista para saber quien ha sido alcanzado
-	* @param espacio	espacion que aumenta con cada recursion para implementar el print
-	* @param contador contador que nos indica la profundidad de cada rama de la recursion
-	* @param camino camino formado en orden de descubrimiento en caso de necesitarlo
-	* @param grafo matriz de adyacensias que representa el grafo
-	* @param arbol true si se quiere imprimir la forma de arbol del recorrido, false si no
+	* @param puertas matriz de adyacencias que representa las aristas pasillos
+	* @param luces matriz de adyacencias que representa los arcos interruptores
+	* @param estado arreglo de n+1 elementos donde el ultimo representa la posicion actual
+	* y el resto representan si la luz de dicha habitacion esta encendida (1) o apagada (0)
+	* @param estados estados por los que se ha pasado durante el recorrido
+	* @param acciones acciones que se han realizado durante el recorrido
 	*/
-	public void recorridoADormitorio(int[][] luces,int[][] puertas)
+	public void recorridoADormitorio(int[][] luces,int[][] puertas,int [] estado,ArrayList<int[]> estados,ArrayList<int[]> acciones)
 	{
-		//recursión
-		if (estado==estadoDeExito)
-		{
-			if (acciones.size()==0)
-			{
-				accionesDeExito=acciones;
-				return recorridoADormitorio(luces,puertas,estado,accion,estados,acciones);
-			}
-			else if(acciones.size()>accionesDeExito.size())
-			{
-				accionesDeExito=acciones;
-				return recorridoADormitorio(luces,puertas,estado,accion,estados,acciones);
+		//almacenamos todas posibles acciones
+		n=luces.length;
+		posicionActual=estado[n+1];
+		int[] estadoPosible;
 
-			else if(accionesDeExito.size()>acciones.size())
+		for (int k = 0; k < n; k++)
+		{
+			estadoPosible = estado;
+			if (luces[posicionActual][k]==1)
 			{
-				return recorridoADormitorio(luces,puertas,estado,accion,estados,acciones);
+				if (estado[k]==0)
+				{
+					estadoPosible[k]=1;
+					if (!estadoRepetido(estados,estadoPosible))
+					{
+						acciones.add([1,k]);//puedes encender la habitacion k
+						if (exito(acciones,estadoPosible))
+						{
+							return;
+						}
+						estados.add(estadoPosible);
+						recorridoADormitorio(luces,puertas,estadoPosible,estados,acciones);
+					}
+				}
+				else if (estado[k]==1)&&(!k==posicionActual)
+				{
+					estadoPosible[k]=0;
+					if (!estadoRepetido(estados,estadoPosible))
+					{
+						acciones.add([0,k]);//puedes apagar la habitacion k
+						if (exito(acciones,estadoPosible))
+						{
+							return;
+						}
+						estados.add(estadoPosible);
+						recorridoADormitorio(luces,puertas,estadoPosible,estados,acciones);
+					}
+				}
+			}
+			estadoPosible = estado;
+			if (puertas[posicionActual][k]==1)
+			{
+				if (estado[k]==1)&&(!k==posicionActual)
+				{
+					estadoPosible[n]=k;
+					if (!estadoRepetido(estados,estadoPosible))
+					{
+						acciones.add([2,k]);//puedes moverte a la habitacion k
+						if (exito(acciones,estadoPosible))
+						{
+							return;
+						}
+						estados.add(estadoPosible);
+						recorridoADormitorio(luces,puertas,estadoPosible,estados,acciones);
+					}
+				}
 			}
 		}
+	}
 
-		//almacenamos todas posibles acciones
-		ArrayList<int[]> posiblesAcciones= new ArrayList<int[]>();
-		encender(luces,puertas,posiblesAcciones);
-		apagar(luces,puertas,posiblesAcciones);
-		mover(luces,puertas,posiblesAcciones);
+	public boolean Exito(ArrayList<int[]> acciones,int[] estado)
+	{
+		//condicion de exito
+		if (estado==estadoDeExito)
+		{
+			if (accionesDeExito.size()==0)
+			{
+				accionesDeExito=acciones;
+				return true;
+			}
+			else if(acciones.size()>=accionesDeExito.size())
+			{
+				return false;
+			}
+			else if(accionesDeExito.size()>acciones.size())
+			{
+				accionesDeExito=acciones;
+				return true;
+			}
+		}
+	}
 
-		//verificamos si alguna de dichas acciones lleva a un estado ya explorado
-		//ejecutamos las posibles acciones
-		//modificamos el estado
-		//agregamos el nuevo estado al registro de estados
-		//agregamos la accion a la lista de acciones
-		//llamada recursiva
+	public boolean estadoRepetido(ArrayList<int[]> estados,int[] estadoPosible)
+	{
+		//vemos si el estado posible ya se encuentra explorado
+		int n = estados.size();
+		for (int k = 0; k < n; k++)
+		{
+			if (estados.get(k)==estadoPosible)
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -143,5 +204,4 @@ public class backTracking
 			}
 		}
 	}
-	posiblesAcciones
 }
