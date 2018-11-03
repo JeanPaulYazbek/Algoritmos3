@@ -4,7 +4,7 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Opaco{
+public class Apagadores{
 	//Carga el grafo desde un archivo en forma de matriz de adyacencias y lo retorna como objeto de la clase grafo
 	static Grafo cargarGrafoLuces(String nombreArchivo)
 			throws IOException
@@ -21,14 +21,17 @@ public class Opaco{
 
 		matrizLuces.agregarVertice(numeroVertices-1);
 
-		for(int i = 0; i < numeroPuertas + 1; i++){
+		for(int i = 0; i < numeroPuertas + 1; i++)
+		{
 			linea = Lector.readLine();
 		}
 		
-		do{
+		do
+		{
 			crearGrafo(linea, (Grafo)matrizLuces, 1);
 		
-		}while((linea = Lector.readLine()) != null);
+		}
+		while((linea = Lector.readLine()) != null);
 		
 		return matrizLuces;
 	}
@@ -50,11 +53,13 @@ public class Opaco{
 		int contador = numeroPuertas;
 		linea = Lector.readLine(); //primera linea de puertas
 
-		do{
+		do
+		{
 			crearGrafo(linea, (Grafo)matrizPuertas, 0);
 			contador = contador - 1;
 			linea = Lector.readLine();
-		}while(contador != 0);
+		}
+		while(contador != 0);
 		
 		return matrizPuertas;
 	}
@@ -74,9 +79,12 @@ public class Opaco{
 		//agregamos el Arco a la estructura
 		try
 		{
-			if(tipo == 1){
+			if(tipo == 1)
+			{
 				grafo.agregarArco(verticeinicial, verticefinal);
-			}else{
+			}
+			else
+			{
 				grafo.agregarArista(verticeinicial, verticefinal);
 			}
 		}
@@ -84,8 +92,7 @@ public class Opaco{
 		{
 			System.out.println(e.getMessage());
 			System.exit(0);
-		}
-		
+		}	
 	}
 
 	public static void main(String[] args)
@@ -99,8 +106,9 @@ public class Opaco{
 
 		Grafo Luces = cargarGrafoLuces(args[0]);
 		Grafo Puertas = cargarGrafoPuertas(args[0]);
-		System.out.println(Arrays.deepToString(Luces.grafo));
-		System.out.println(Arrays.deepToString(Puertas.grafo));
 
+		backTracking donOpaco = new backTracking();
+		donOpaco.empezarCamino(Luces.grafo,Puertas.grafo);
+		donOpaco.mostrarCamino();
 	}
 }
