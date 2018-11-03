@@ -3,12 +3,8 @@ import java.util.Arrays;
 
 public class backTracking
 {
-	protected ArrayList<int[]> estados; //estados por los que se ha pasado durante el recorrido
-	protected ArrayList<int[]> acciones; //acciones que se tomaron durante el recorrido
-	protected int[] accion; //tupla en la que el primer elemento representa la accion (0 apagar,
-	//1 encender, 2 mover) y el segundo el objeto de dicha acción
-	protected int[] estado; //arreglo de n+1 elementos donde el ultimo representa la posicion actual
-	//y el resto representan si la luz de dicha habitacion esta encendida (1) o apagada (0).
+	protected int[] estadoDeExito; //condicion de parada todas las apagadas salvo la n y posicion igual n.
+	protected ArrayList<int[]> accionesDeExito; //acciones que se tomaron durante el recorrido mas corto.
 
 	/**
 	* funcion que hace un recorrido dfs desde un vertice
@@ -23,7 +19,36 @@ public class backTracking
 	public void recorridoADormitorio(int[][] luces,int[][] puertas)
 	{
 		//recursión
-		
+		if (estado==estadoDeExito)
+		{
+			if (acciones.size()==0)
+			{
+				accionesDeExito=acciones;
+				return recorridoADormitorio(luces,puertas,estado,accion,estados,acciones);
+			}
+			else if(acciones.size()>accionesDeExito.size())
+			{
+				accionesDeExito=acciones;
+				return recorridoADormitorio(luces,puertas,estado,accion,estados,acciones);
+
+			else if(accionesDeExito.size()>acciones.size())
+			{
+				return recorridoADormitorio(luces,puertas,estado,accion,estados,acciones);
+			}
+		}
+
+		//almacenamos todas posibles acciones
+		ArrayList<int[]> posiblesAcciones= new ArrayList<int[]>();
+		encender(luces,puertas,posiblesAcciones);
+		apagar(luces,puertas,posiblesAcciones);
+		mover(luces,puertas,posiblesAcciones);
+
+		//verificamos si alguna de dichas acciones lleva a un estado ya explorado
+		//ejecutamos las posibles acciones
+		//modificamos el estado
+		//agregamos el nuevo estado al registro de estados
+		//agregamos la accion a la lista de acciones
+		//llamada recursiva
 	}
 
 	/**
@@ -38,36 +63,20 @@ public class backTracking
 		{
 			return
 		}
+		ArrayList<int[]> estados; //estados por los que se ha pasado durante el recorrido
+		ArrayList<int[]> acciones; //acciones que se tomaron durante el recorrido
+		int[] accion; //tupla en la que el primer elemento representa la accion (0 apagar,
+		//1 encender, 2 mover) y el segundo el objeto de dicha acción
+		int[] estado; //arreglo de n+1 elementos donde el ultimo representa la posicion actual
+		//y el resto representan si la luz de dicha habitacion esta encendida (1) o apagada (0).
+
 		estado = new int[luces.length+1];
-		estado[0]=1;
-		estado[luces.length]=1;
+		estadoDeExito = estado;
+		estado[0]=1;//al principio solo esta encendida la luz del cuarto 0 y se encuentra en el cuarto 0
 		estados.add(estado);
-		recorridoADormitorio(luces,puertas);
-
-	boolean[] visited = new boolean[grafo.length];//creamos la lista de visitados del tamano del grafo
-
-	predecesores = new int[grafo.length];//creamos la lista de predecesores del tamano adecuado
-	Arrays.fill(predecesores, -1);//llenala de -1
-	predecesores[i] = i;//el primer vertice es su propio predecesor
-
-	orientacion = new int[grafo.length];//creamos la lista de orientacion del tamano adecuado
-	Arrays.fill(orientacion, -1);//llenamos de -1
-
-
-	ArrayList<Integer> camino = new ArrayList<Integer>();
-	camino.add(i);
-
-	if(arbol){
-		System.out.println("Arbol:");
-	}
-	if (cota == -1){//si no truncamos llamamos a dfs
-		this.dfs(i, visited, "  ", 0, camino, grafo, arbol);
-	}else{//si truncamos llamamos a dfsTrunacado
-		this.dfsTruncado(i, visited, " ", 0, camino, grafo, arbol, cota);
-	}
-
-	System.out.println("");
-
+		estadoDeExito[luces.length]=luces.length-1;//al final se encuentra en el cuarto n
+		estadoDeExito[luces.length-1]=1;//solo se encuentra encendida la luz del cuarto n
+		recorridoADormitorio(luces,puertas,estado,accion,estados,acciones);
 	}
 
 	/**
@@ -112,26 +121,27 @@ public class backTracking
 			System.out.println("El problema no puede ser resuelto.");
 			return
 		}
-		numeroDeAcciones=acciones.size();
-		int[] accion;
+		numeroDeAcciones=accionesDeExito.size();
+		int[] _accion;
 		int[] temp; 
 		System.out.println("El problema puede ser resuelto en "+numeroDeAcciones+" pasos");
 		for(int k = 0; k<numeroDeAcciones; k++)
 		{
-			accion=acciones.get(k);
-			temp=accion[1]+1;
-			if (accion[0]==0)
+			_accion=accionesDeExito.get(k);
+			temp=_accion[1]+1;
+			if (_accion[0]==0)
 			{
 				System.out.println("- Apaga la luz en la habitacion "+temp+".");
 			}
-			if (accion[0]==1)
+			if (_accion[0]==1)
 			{
 				System.out.println("- Enciende la luz en la habitacion "+temp+".");
 			}
-			if (accion[0]==2)
+			if (_accion[0]==2)
 			{
 				System.out.println("- Muevete a la habitacion "+temp+".");
 			}
 		}
 	}
+	posiblesAcciones
 }
