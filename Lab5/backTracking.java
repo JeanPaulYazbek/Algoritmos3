@@ -20,10 +20,13 @@ public class backTracking
 	{
 		estados.add(estado);
 		exito(estado,estadoDeExito,estados);
-		//llamada a posiblesAcciones
-		//for de las posibles
-		recorridoADormitorio(luces,puertas,siMeMuevo,estados,
-			profundidad+1,estadoDeExito);
+		ArrayList<int[]> accionesPosibles = posiblesAcciones(estados,estado,luces,puertas);
+		for (int k = 0; k < accionesPosibles.size(); k++)
+		{
+			recorridoADormitorio(luces,puertas,accionesPosibles.get(k),
+				estados,profundidad+1,estadoDeExito);
+		}
+		return;
 	}
 
 	public void mostrarEstados(ArrayList<int[]> estados)
@@ -38,12 +41,13 @@ public class backTracking
 	public ArrayList<int[]> posiblesAcciones(ArrayList<int[]> estados,int[] estado,int[][]luces,int[][]puertas)
 	{
 		ArrayList<int[]> estadosPosibles = new ArrayList<int[]>();
+		int n=luces.length;
+
 		int[] siApago = new int[n+1];
 		int[] siEnciendo = new int[n+1];
 		int[] siMeMuevo = new int[n+1];
 
 		//almacenamos todas posibles acciones
-		int n=luces.length;
 		int posicionActual=estado[n];
 		int k;
 
@@ -64,7 +68,8 @@ public class backTracking
 		{
 			siMeMuevo[k]=estado[k];
 		}
-
+		for (k = 0; k < luces.length; k++)
+		{
 			if (luces[posicionActual][k]==1)
 			{
 				if (estado[k]==0)
@@ -95,6 +100,8 @@ public class backTracking
 					}
 				}
 			}
+		}
+		mostrarEstados(estadosPosibles);
 		return estadosPosibles;
 	}
 
@@ -105,13 +112,11 @@ public class backTracking
 		{
 			if (noCamino) //Primera vez
 			{
-				mostrarEstados(estados);
 				camino=calcularCamino(estados);
 				noCamino=false;
 			}
 			if(camino.length>=estados.size()) //Demas veces
 			{
-				mostrarEstados(estados);
 				camino=calcularCamino(estados);
 			}
 		}
