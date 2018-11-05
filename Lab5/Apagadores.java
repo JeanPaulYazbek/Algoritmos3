@@ -5,7 +5,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Apagadores{
-	//Carga el grafo desde un archivo en forma de matriz de adyacencias y lo retorna como objeto de la clase grafo
+	//Carga el grafo desde un archivo en forma de matriz de adyacencias y
+	// lo retorna como objeto de la clase grafo
 	static Grafo cargarGrafoLuces(String nombreArchivo)
 			throws IOException
 	{
@@ -100,15 +101,19 @@ public class Apagadores{
 	{
     	//caso en el que no se escribio archivo ni metodo
     	if(args.length < 1){
-				System.err.println("Uso: java Opaco <archivo>");
+				System.err.println("Uso: java Apagadores <archivo>");
 				return;
 		}
 
 		Grafo Luces = cargarGrafoLuces(args[0]);
 		Grafo Puertas = cargarGrafoPuertas(args[0]);
 
+//		System.out.println("Luces, Dirigido");
+//		System.out.println(Arrays.deepToString(Luces.grafo));
+//		System.out.println("Puertas, NoDirigido");
+//		System.out.println(Arrays.deepToString(Puertas.grafo));
+
 		backTracking donOpaco = new backTracking();
-		donOpaco.empezarCamino(Luces.grafo,Puertas.grafo);
-		donOpaco.mostrarCamino();
+		donOpaco.pathMaker(Luces.grafo,Puertas.grafo);
 	}
 }
