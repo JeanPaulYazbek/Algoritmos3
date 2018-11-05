@@ -386,6 +386,7 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 						&& j==1)
 					{
 						aristasDeEsteVertice.remove(k);
+						break; //para no afectar la i de iteracion
 					}
 					else if (!aristasDeEsteVertice.get(k).getExtremo2().getId().equals(id1)
 						&& j==2)
