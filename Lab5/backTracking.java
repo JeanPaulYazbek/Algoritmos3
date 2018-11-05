@@ -21,13 +21,30 @@ public class backTracking
 		//almacenamos todas posibles acciones
 		int n=luces.length;
 		int posicionActual=estado[n];
-		int[] estadoPosible = new int[n+1];
+		int[] siApago = new int[n+1];
+		int[] siEnciendo = new int[n+1];
+		int[] siMeMuevo = new int[n+1];
 
 		//estadoPosible = estado;
 		for (int k = 0; k < n+1; k++)
 		{
-			estadoPosible[k]=estado[k];
+			siApago[k]=estado[k];
 		}
+
+		//estadoPosible = estado;
+		for (int k = 0; k < n+1; k++)
+		{
+			siEnciendo[k]=estado[k];
+		}
+
+		//estadoPosible = estado;
+		for (int k = 0; k < n+1; k++)
+		{
+			siMeMuevo[k]=estado[k];
+		}
+
+		estados.add(estado);
+		exito(estado,estadoDeExito,estados);
 
 		for (int k = 0; k < n; k++)
 		{
@@ -35,45 +52,33 @@ public class backTracking
 			{
 				if (estado[k]==0)
 				{
-					estadoPosible[k]=1;
-					if (!estadoRepetido(estados,estadoPosible))
+					siEnciendo[k]=1;
+					if (!estadoRepetido(estados,siEnciendo))
 					{
-						estados.add(estadoPosible);
-						exito(estadoPosible,estadoDeExito,estados);
-						recorridoADormitorio(luces,puertas,estadoPosible,estados,
+						recorridoADormitorio(luces,puertas,siEnciendo,estadosPosibles,
 							profundidad+1,estadoDeExito);
-						estados.remove( estados.size() - 1 );
 					}
-					estadoPosible[k]=0;				
 				}
 				if ((estado[k]==1)&&((k!=posicionActual)))
 				{
-					estadoPosible[k]=0;	
-					if (!estadoRepetido(estados,estadoPosible))
+					siApago[k]=0;	
+					if (!estadoRepetido(estados,siApago))
 					{
-						estados.add(estadoPosible);
-						exito(estadoPosible,estadoDeExito,estados);
-						recorridoADormitorio(luces,puertas,estadoPosible,estados,
+						recorridoADormitorio(luces,puertas,estadoPosible,estadosPosibles,
 							profundidad+1,estadoDeExito);
-						estados.remove( estados.size() - 1 );
 					}
-					estadoPosible[k]=1;
 				}
 			}
 			if (puertas[posicionActual][k]==1)
 			{
 				if ((estado[k]==1)&&((k!=posicionActual)))
 				{
-					estadoPosible[n]=k;	
+					siMeMuevo[n]=k;	
 					if (!estadoRepetido(estados,estadoPosible))
 					{
-						estados.add(estadoPosible);
-						exito(estadoPosible,estadoDeExito,estados);
-						recorridoADormitorio(luces,puertas,estadoPosible,estados,
+						recorridoADormitorio(luces,puertas,siMeMuevo,estadosPosibles,
 							profundidad+1,estadoDeExito);
-						estados.remove( estados.size() - 1 );
 					}
-					estadoPosible[n]=posicionActual;
 				}
 			}
 		}
