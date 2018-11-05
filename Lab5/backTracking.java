@@ -18,12 +18,33 @@ public class backTracking
 	public void recorridoADormitorio(int[][]luces,int[][]puertas,int[] estado,
 		ArrayList<int[]>estados,int profundidad,int[]estadoDeExito)
 	{
-		//almacenamos todas posibles acciones
-		int n=luces.length;
-		int posicionActual=estado[n];
+		estados.add(estado);
+		exito(estado,estadoDeExito,estados);
+		//llamada a posiblesAcciones
+		//for de las posibles
+		recorridoADormitorio(luces,puertas,siMeMuevo,estados,
+			profundidad+1,estadoDeExito);
+	}
+
+	public void mostrarEstados(ArrayList<int[]> estados)
+	{
+		for (int k = 0; k < estados.size(); k++)
+		{
+			System.out.print(Arrays.toString(estados.get(k)));
+		}
+		System.out.println("");
+	}
+
+	public ArrayList<int[]> posiblesAcciones(ArrayList<int[]> estados,int[] estado,int[][]luces,int[][]puertas)
+	{
+		ArrayList<int[]> estadosPosibles = new ArrayList<int[]>();
 		int[] siApago = new int[n+1];
 		int[] siEnciendo = new int[n+1];
 		int[] siMeMuevo = new int[n+1];
+
+		//almacenamos todas posibles acciones
+		int n=luces.length;
+		int posicionActual=estado[n];
 		int k;
 
 		//estadoPosible = estado;
@@ -44,11 +65,6 @@ public class backTracking
 			siMeMuevo[k]=estado[k];
 		}
 
-		estados.add(estado);
-		exito(estado,estadoDeExito,estados);
-
-		for (k = 0; k < n; k++)
-		{
 			if (luces[posicionActual][k]==1)
 			{
 				if (estado[k]==0)
@@ -56,8 +72,7 @@ public class backTracking
 					siEnciendo[k]=1;
 					if (!estadoRepetido(estados,siEnciendo))
 					{
-						recorridoADormitorio(luces,puertas,siEnciendo,estados,
-							profundidad+1,estadoDeExito);
+						estadosPosibles.add(siEnciendo);
 					}
 				}
 				if ((estado[k]==1)&&((k!=posicionActual)))
@@ -65,8 +80,7 @@ public class backTracking
 					siApago[k]=0;	
 					if (!estadoRepetido(estados,siApago))
 					{
-						recorridoADormitorio(luces,puertas,siApago,estados,
-							profundidad+1,estadoDeExito);
+						estadosPosibles.add(siApago);
 					}
 				}
 			}
@@ -77,21 +91,11 @@ public class backTracking
 					siMeMuevo[n]=k;	
 					if (!estadoRepetido(estados,siMeMuevo))
 					{
-						recorridoADormitorio(luces,puertas,siMeMuevo,estados,
-							profundidad+1,estadoDeExito);
+						estadosPosibles.add(siMeMuevo);
 					}
 				}
 			}
-		}
-	}
-
-	public void mostrarEstados(ArrayList<int[]> estados)
-	{
-		for (int k = 0; k < estados.size(); k++)
-		{
-			System.out.print(Arrays.toString(estados.get(k)));
-		}
-		System.out.println("");
+		return estadosPosibles;
 	}
 
 	public void exito(int[]estado,int[]estadoDeExito,
