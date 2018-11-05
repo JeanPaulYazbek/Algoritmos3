@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.util.Hashtable;
 
 public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 {
@@ -631,7 +632,7 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 	public Grafo<V, L> clone()
 	{
 		GrafoNoDirigido<V, L> clon = new GrafoNoDirigido<V, L>();
-		clon.grafo = grafo;
+		clon.grafo = (Hashtable)grafo.clone();
 		return clon;
 	}
 }

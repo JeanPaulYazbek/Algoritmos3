@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.util.Hashtable;
 
 
 public class GrafoDirigido<V, L> implements Grafo<V, L>{
@@ -640,7 +641,7 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 	public Grafo<V, L> clone(){
 
 		GrafoDirigido<V, L> clon = new GrafoDirigido<V, L>();
-		clon.digrafo = digrafo;
+		clon.digrafo = (Hashtable)digrafo.clone();
 		return clon;
 
 	}
