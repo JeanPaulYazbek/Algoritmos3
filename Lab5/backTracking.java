@@ -3,8 +3,9 @@ import java.util.Arrays;
 
 public class backTracking
 {
-	protected ArrayList<int[]> accionesDeExito = new ArrayList<int[]>();
+	protected ArrayList<int[]> accionesDeExito;
 	//estados por los que se paso durante el recorrido mas corto.
+	private  ArrayList<ArrayList<int[]>> mainList = new ArrayList<ArrayList<int[]>>();
 	
 	/**
 	* @param puertas matriz de adyacencias que representa las aristas pasillos
@@ -27,7 +28,7 @@ public class backTracking
 			estadoPosible[k]=estado[k];
 		}
 
-		mostrarEstados(estados);
+//		mostrarmainList(mainList);
 
 		for (int k = 0; k < n; k++)
 		{
@@ -88,22 +89,40 @@ public class backTracking
 		System.out.println("");
 	}
 
+	public void mostrarmainList(ArrayList<ArrayList<int[]>> estados)
+	{
+		for (int k = 0; k < estados.size(); k++)
+		{
+			System.out.print(Arrays.toString(estados.get(k).get(k)));
+		}
+		System.out.println("");
+	}
+
 	public void exito(int[]estado,int[]estadoDeExito,int[]noCamino,
 		ArrayList<int[]> estados)
 	{
 		if (Arrays.equals(estado,estadoDeExito))
 		{
+			int k;
 			if (Arrays.equals(accionesDeExito.get(0),noCamino)) //Primera vez
 			{
 				mostrarEstados(estados);
-				accionesDeExito.clear();
-				accionesDeExito.addAll(estados);
+				accionesDeExito.remove(0);
+				for(k = 0; k<estados.size(); k++)
+				{
+					accionesDeExito.add(estados.get(k));
+				}
+				mainList.add(accionesDeExito);
 			}
 			if(accionesDeExito.size()>estados.size()) //Demas veces
 			{
 				mostrarEstados(estados);
 				accionesDeExito.clear();
-				accionesDeExito.addAll(estados);
+				for(k = 0; k<estados.size(); k++)
+				{
+					accionesDeExito.add(estados.get(k));
+				}
+				mainList.add(accionesDeExito);
 			}
 		}
 	}
@@ -139,6 +158,7 @@ public class backTracking
 		// todas las apagadas salvo la n y posicion igual n.
 		int[] noCamino = {-1,-1};//caso en el que backTracking no llega a un 
 		//estado de exito.
+		accionesDeExito = new ArrayList<int[]>();
 		accionesDeExito.add(noCamino);//asumimos de entrada que no encontrara
 		// estado de exito
 		ArrayList<int[]> estados = new ArrayList<int[]>(); //estados por los que
