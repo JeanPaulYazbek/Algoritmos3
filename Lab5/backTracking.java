@@ -24,21 +24,22 @@ public class backTracking
 		int[] siApago = new int[n+1];
 		int[] siEnciendo = new int[n+1];
 		int[] siMeMuevo = new int[n+1];
+		int k;
 
 		//estadoPosible = estado;
-		for (int k = 0; k < n+1; k++)
+		for (k = 0; k < n+1; k++)
 		{
 			siApago[k]=estado[k];
 		}
 
 		//estadoPosible = estado;
-		for (int k = 0; k < n+1; k++)
+		for (k = 0; k < n+1; k++)
 		{
 			siEnciendo[k]=estado[k];
 		}
 
 		//estadoPosible = estado;
-		for (int k = 0; k < n+1; k++)
+		for (k = 0; k < n+1; k++)
 		{
 			siMeMuevo[k]=estado[k];
 		}
@@ -46,7 +47,7 @@ public class backTracking
 		estados.add(estado);
 		exito(estado,estadoDeExito,estados);
 
-		for (int k = 0; k < n; k++)
+		for (k = 0; k < n; k++)
 		{
 			if (luces[posicionActual][k]==1)
 			{
@@ -55,7 +56,7 @@ public class backTracking
 					siEnciendo[k]=1;
 					if (!estadoRepetido(estados,siEnciendo))
 					{
-						recorridoADormitorio(luces,puertas,siEnciendo,estadosPosibles,
+						recorridoADormitorio(luces,puertas,siEnciendo,estados,
 							profundidad+1,estadoDeExito);
 					}
 				}
@@ -64,7 +65,7 @@ public class backTracking
 					siApago[k]=0;	
 					if (!estadoRepetido(estados,siApago))
 					{
-						recorridoADormitorio(luces,puertas,estadoPosible,estadosPosibles,
+						recorridoADormitorio(luces,puertas,siApago,estados,
 							profundidad+1,estadoDeExito);
 					}
 				}
@@ -74,9 +75,9 @@ public class backTracking
 				if ((estado[k]==1)&&((k!=posicionActual)))
 				{
 					siMeMuevo[n]=k;	
-					if (!estadoRepetido(estados,estadoPosible))
+					if (!estadoRepetido(estados,siMeMuevo))
 					{
-						recorridoADormitorio(luces,puertas,siMeMuevo,estadosPosibles,
+						recorridoADormitorio(luces,puertas,siMeMuevo,estados,
 							profundidad+1,estadoDeExito);
 					}
 				}
@@ -98,7 +99,6 @@ public class backTracking
 	{
 		if (Arrays.equals(estado,estadoDeExito))
 		{
-			int k;
 			if (noCamino) //Primera vez
 			{
 				mostrarEstados(estados);
@@ -156,7 +156,6 @@ public class backTracking
 		// cuarto n
 		estadoDeExito[luces.length-1]=1;//solo se encuentra encendida la luz del
 		// cuarto n
-		estados.add(estado);
 		recorridoADormitorio(luces,puertas,estado,estados,0,estadoDeExito);
 		mostrarCamino();
 	}
@@ -198,8 +197,6 @@ public class backTracking
 	*/
 	public void mostrarCamino()
 	{
-		System.out.println("Puertas, NoDirigido");
-		System.out.println(Arrays.deepToString(camino));
 		if (noCamino)
 		{
 			System.out.println("El problema no puede ser resuelto.");
