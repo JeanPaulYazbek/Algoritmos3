@@ -108,11 +108,6 @@ public class Apagadores{
 		Grafo Luces = cargarGrafoLuces(args[0]);
 		Grafo Puertas = cargarGrafoPuertas(args[0]);
 
-//		System.out.println("Luces, Dirigido");
-//		System.out.println(Arrays.deepToString(Luces.grafo));
-//		System.out.println("Puertas, NoDirigido");
-//		System.out.println(Arrays.deepToString(Puertas.grafo));
-
 		backTracking donOpaco = new backTracking();
 		donOpaco.pathMaker(Luces.grafo,Puertas.grafo);
 	}

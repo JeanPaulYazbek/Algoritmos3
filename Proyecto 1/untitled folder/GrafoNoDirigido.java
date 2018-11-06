@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.util.Hashtable;
 
 public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 {
@@ -366,6 +367,7 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 	 * @param id id del arista que se quiere eliminar
 	 * @return	true si se elimina exitosamente, false en otro caso
 	 */
+
 	public Boolean eliminarArista(String id)
 	{
 		int i;
@@ -385,6 +387,7 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 						&& j==1)
 					{
 						aristasDeEsteVertice.remove(k);
+						break; //para no afectar la i de iteracion
 					}
 					else if (!aristasDeEsteVertice.get(k).getExtremo2().getId().equals(id1)
 						&& j==2)
@@ -631,7 +634,7 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 	public Grafo<V, L> clone()
 	{
 		GrafoNoDirigido<V, L> clon = new GrafoNoDirigido<V, L>();
-		clon.grafo = grafo;
+		clon.grafo = (Hashtable)grafo.clone();
 		return clon;
 	}
 }

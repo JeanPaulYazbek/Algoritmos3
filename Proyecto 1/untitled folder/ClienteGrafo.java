@@ -24,6 +24,7 @@ public class ClienteGrafo{
 	 */	
 	public <V, L> void menuDirigido(Scanner scan, GrafoDirigido<V,L> grafo, Transformer<String, V> transformer,  Transformer<String, L> transformerarco){
 		//Imprimimos el menu
+		System.out.println("\n");
 		System.out.println("Que operacion desea realizar sobre su nuevo grafo dirigido? presione el numero correspondiente a la operacion");
 		System.out.println("1. numero de vertices");
 		System.out.println("2. numero de lados");
@@ -47,8 +48,14 @@ public class ClienteGrafo{
 		System.out.println("20. imprimir grafo");
 		System.out.println("21. salir");
 
-
-		int n = scan.nextInt();//leemos la opcion
+		int n;
+		try{
+			n = scan.nextInt();//leemos la opcion
+		}catch(Exception e){
+			System.out.println("eso no es un entero...");
+			scan.next();
+			return;
+		}
 		int k;				   // variable que usaremos para opciones que involucren numeros, como grado.
 		String id;			   // variable que usaremos para las operaciones que requieran id de vertices
 		V dato;				   // variable que almacena el dato de un vertice en la operacion necesaria
@@ -75,9 +82,19 @@ public class ClienteGrafo{
 			System.out.println("Dime el id:");
 			id = scan.next();
 			System.out.println("Dime el dato");
-			dato = transformer.transform(scan.next());
+			try{
+				dato = transformer.transform(scan.next());
+			}catch(Exception e){
+				System.out.println("no es el tipo de dato adecuado...");
+				return;
+			}
 			System.out.println("Dime el peso");
-			peso = Double.parseDouble(scan.next());
+			try{
+				peso = Double.parseDouble(scan.next());
+			}catch(Exception e){
+				System.out.println("no es el tipo de dato adecuado...");
+				return;
+			}
 			grafo.agregarVertice(id, dato, peso);
 		}else if(n==4){
 			System.out.println("Dime el id");
@@ -100,9 +117,19 @@ public class ClienteGrafo{
 			System.out.println("Dime el id:");
 			idarco = scan.next();
 			System.out.println("Dime el dato");
-			datoarco = transformerarco.transform(scan.next());
+			try{
+				datoarco = transformerarco.transform(scan.next());
+			}catch(Exception e){
+				System.out.println("no es el tipo de dato adecuado...");
+				return;
+			}
 			System.out.println("Dime el peso");
-			pesoarco = Double.parseDouble(scan.next());
+			try{
+				pesoarco = Double.parseDouble(scan.next());
+			}catch(Exception e){
+				System.out.println("no es el tipo de dato adecuado...");
+				return;
+			}
 			System.out.println("Dime el id inicial:");
 			vi = scan.next();
 			System.out.println("Dime el id final:");
@@ -161,7 +188,7 @@ public class ClienteGrafo{
 			id = scan.next();
 			try{
 				k = grafo.grado(id);
-				System.out.println("El grado es" + k);
+				System.out.println("El grado es " + k);
 			}catch(Exception e){
 				System.out.println("No hay tal vertice");
 			}
@@ -249,6 +276,9 @@ public class ClienteGrafo{
 		}else if(n==21){
 			System.out.println("Saliendo....");
 			terminar();
+		}else{
+			System.out.println("Eso no es una opcion");
+			return;
 		}
 
 
@@ -264,6 +294,7 @@ public class ClienteGrafo{
 	 */	
 	public <V, L> void menuNoDirigido(Scanner scan, GrafoNoDirigido<V,L> grafo, Transformer<String, V> transformer,  Transformer<String, L> transformerarista){
 		//Imprimimos el menu
+		System.out.println("\n");
 		System.out.println("Que operacion desea realizar sobre su nuevo grafo dirigido? presione el numero correspondiente a la operacion");
 		System.out.println("1. numero de vertices");
 		System.out.println("2. numero de lados");
@@ -284,7 +315,14 @@ public class ClienteGrafo{
 		System.out.println("17. salir");
 
 
-		int n = scan.nextInt();//leemos la opcion
+		int n;
+		try{
+			n = scan.nextInt();//leemos la opcion
+		}catch(Exception e){
+			System.out.println("eso no es un entero...");
+			scan.next();
+			return;
+		}
 		int k;				   // variable que usaremos para opciones que involucren numeros, como grado.
 		String id;			   // variable que usaremos para las operaciones que requieran id de vertices
 		V dato;				   // variable que almacena el dato de un vertice en la operacion necesaria
@@ -295,8 +333,7 @@ public class ClienteGrafo{
 		String vi;			   //"					vertice inicial" de una arista"						"
 		String vf;			   //"					vertice final" de una arista"							"
 		ArrayList<Vertice<V>> listavers;	//"					"almacena lista de vertices"		    "
-		ArrayList<Lado<L>> listalados;		//"					"almacena lista de lados"				"
-
+		ArrayList<Lado<L>> listalados;		//"					"almacena lista de lados"
 
 		//OPCIONES DE OPERACION: todas usan la funcion necesaria de GrafoNoDirigido
 		if(n==1){
@@ -308,12 +345,21 @@ public class ClienteGrafo{
 			System.out.println("El numero de lados es: " + k);
 
 		}else if(n==3){
-			System.out.println("Dime el id:");
 			id = scan.next();
 			System.out.println("Dime el dato");
-			dato = transformer.transform(scan.next());
+			try{
+				dato = transformer.transform(scan.next());
+			}catch(Exception e){
+				System.out.println("no es el tipo de dato adecuado...");
+				return;
+			}
 			System.out.println("Dime el peso");
-			peso = Double.parseDouble(scan.next());
+			try{
+				peso = Double.parseDouble(scan.next());
+			}catch(Exception e){
+				System.out.println("no es el tipo de dato adecuado...");
+				return;
+			}
 			grafo.agregarVertice(id, dato, peso);
 		}else if(n==4){
 			System.out.println("Dime el id");
@@ -336,12 +382,22 @@ public class ClienteGrafo{
 			System.out.println("Dime el id:");
 			idarista = scan.next();
 			System.out.println("Dime el dato");
-			datoarista = transformerarista.transform(scan.next());
+			try{
+				datoarista = transformerarista.transform(scan.next());
+			}catch(Exception e){
+				System.out.println("no es el tipo de dato adecuado...");
+				return;
+			}
 			System.out.println("Dime el peso");
-			pesoarista = Double.parseDouble(scan.next());
-			System.out.println("Dime el id inicial:");
+			try{
+				pesoarista = Double.parseDouble(scan.next());
+			}catch(Exception e){
+				System.out.println("no es el tipo de dato adecuado...");
+				return;
+			}			
+			System.out.println("Dime el id 1:");
 			vi = scan.next();
-			System.out.println("Dime el id final:");
+			System.out.println("Dime el id 2:");
 			vf = scan.next();
 			grafo.agregarArista(idarista, datoarista, pesoarista, vi, vf);
 
@@ -355,9 +411,9 @@ public class ClienteGrafo{
 			}
 
 		}else if(n==8){
-			System.out.println("Dime el id inicial:");
+			System.out.println("Dime el id 1:");
 			vi = scan.next();
-			System.out.println("Dime el id final:");
+			System.out.println("Dime el id 2:");
 			vf = scan.next();
 			if(grafo.estaLado(vi, vf)){
 				System.out.println("Si esta");
@@ -397,7 +453,7 @@ public class ClienteGrafo{
 			id = scan.next();
 			try{
 				k = grafo.grado(id);
-				System.out.println("El grado es" + k);
+				System.out.println("El grado es " + k);
 			}catch(Exception e){
 				System.out.println("No hay tal vertice");
 			}
@@ -437,6 +493,9 @@ public class ClienteGrafo{
 		}else if(n==17){
 			System.out.println("Saliendo....");
 			terminar();
+		}else{
+			System.out.println("Esa no es una opcion...");
+			return;
 		}
 	}
 ////////////////////////////////////////////////////////////////////////////////

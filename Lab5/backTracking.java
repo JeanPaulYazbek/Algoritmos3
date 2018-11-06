@@ -3,10 +3,10 @@ import java.util.Arrays;
 
 public class backTracking
 {
-	//estados por los que se paso durante el recorrido mas corto.	
-	protected int[][] camino;
-	protected boolean noCamino=true;
-	protected int[] estadoIndeseable;
+	protected int[][] camino; //camino mas corto encontrado hasta ahora
+	protected boolean noCamino=true; //aun no se ha encontrado un camino
+	protected int[] estadoIndeseable; //estado [0,...,0]
+	protected int [] estadoDeExito; //condicion de parada
 
 	/**
 	* @param puertas matriz de adyacencias que representa las aristas pasillos
@@ -17,42 +17,38 @@ public class backTracking
 	* @param estados estados por los que se ha pasado durante el recorrido
 	*/
 	public void recorridoADormitorio(int[][]luces,int[][]puertas,int[] estado,
-		int[][] estados,int profundidad,int[]estadoDeExito)
+		int[][] estados)
 	{
 		estados[estados.length-1]=estado.clone();
-		exito(estado,estadoDeExito,estados);
+		exito(estado,estados);
 		int[][] accionesPosibles = posiblesAcciones(estados,estado,luces,puertas);
-		int k;
+		int i;
+		int j;
 
-		for (k = 0; k < accionesPosibles.length; k++)
+		for (i = 0; i < accionesPosibles.length; i++)
 		{
-			if (accionesPosibles[k][0]==1)
-			{
-				estado[accionesPosibles[k][1]]=1;
-			}
-			else if (accionesPosibles[k][0]==0)
-			{
-				estado[accionesPosibles[k][1]]=0;
-			}
-			else
-			{
-				estado[estado.length-1]=accionesPosibles[k][1];
-			}
 			int[][]nuevosEstados= new int[estados.length+1][estados[0].length+1];
-			for (k = 0; k < estados.length; k++)
+
+			for (j = 0; j < estados.length; j++)
 			{
-				nuevosEstados[k]=estados[k];
+				nuevosEstados[j]=estados[j].clone();
 			}			
-			recorridoADormitorio(luces,puertas,estado,
-				nuevosEstados,profundidad+1,estadoDeExito);
+			recorridoADormitorio(luces,puertas,accionesPosibles[i],nuevosEstados);
 		}
 		return;
 	}
 
+	/**
+	* funcion que calcula las acciones validas posibles desde el estado actual
+	* @param estados matriz de estados del recorrido
+	* @param estado estado actual
+	* @param puertas matriz de adyacencias que representa las aristas pasillos
+	* @param luces matriz de adyacencias que representa los arcos interruptores
+	*/
 	public int[][] posiblesAcciones(int[][] estados,int[] estado,int[][]luces,int[][]puertas)
 	{
 		int n=luces.length;
-		int[][] estadosPosibles = new int[3*n][2];
+		int[][] estadosPosibles = new int[3*n][n+1];
 		int[] siApago;
 		int[] siEnciendo;
 		int[] siMeMuevo;
@@ -62,7 +58,7 @@ public class backTracking
 		int k;
 		int j=0;
 
-		for (k = 0; k < luces.length; k++)
+		for (k = 0; k < n; k++)
 		{
 
 			siApago = estado.clone();
@@ -76,8 +72,7 @@ public class backTracking
 					siEnciendo[k]=1;
 					if (!estadoRepetido(estados,siEnciendo))
 					{
-						estadosPosibles[j][0]=1;
-						estadosPosibles[j][1]=k;
+						estadosPosibles[j]=siEnciendo.clone();
 						j+=1;						
 					}
 				}
@@ -86,8 +81,7 @@ public class backTracking
 					siApago[k]=0;
 					if (!estadoRepetido(estados,siApago))
 					{
-						estadosPosibles[j][0]=0;
-						estadosPosibles[j][1]=k;
+						estadosPosibles[j]=siApago.clone();
 						j+=1;
 					}
 				}
@@ -99,24 +93,27 @@ public class backTracking
 					siMeMuevo[n]=k;
 					if (!estadoRepetido(estados,siMeMuevo))
 					{
-						estadosPosibles[j][0]=2;
-						estadosPosibles[j][1]=k;
+						estadosPosibles[j]=siMeMuevo.clone();
 						j+=1;
 					}
 				}
 			}
 		}
-		int[][] estadosPosiblesReales = new int[j][2];
+		int[][] estadosPosiblesReales = new int[j][n+1];
 		for (k = 0; k < j; k++)
 		{
-			estadosPosiblesReales[k] = estadosPosibles[k];
+			estadosPosiblesReales[k] = estadosPosibles[k].clone();
 		}
-		System.out.println(Arrays.deepToString(estadosPosiblesReales));
 		return estadosPosiblesReales;
 	}
 
-	public void exito(int[]estado,int[]estadoDeExito,
-		int[][] estados)
+	/**
+	* funcion que verifica si el estado actual es el estado de exito
+	* y almacena el dicho camino (sucesion de estados) si es el mas corto
+	* @param estados matriz de estados del recorrido
+	* @param estadoPosible estado candidato que queremos saber si ya existe en el recorrido
+	*/
+	public void exito(int[]estado,int[][] estados)
 	{
 		if (Arrays.equals(estado,estadoDeExito))
 		{
@@ -132,6 +129,12 @@ public class backTracking
 		}
 	}
 
+	/**
+	* funcion que verifica si un estado se encuentra en la matriz de estados
+	* @param estados matriz de estados del recorrido
+	* @param estadoPosible estado candidato que queremos saber si ya existe en el recorrido
+	* @return un booleano, true si estaba repetido, false si no
+	*/
 	public boolean estadoRepetido(int[][] estados,int[] estadoPosible)
 	{
 		if (Arrays.equals(estadoPosible,estadoIndeseable))
@@ -168,7 +171,7 @@ public class backTracking
 			return;
 		}
 
-		int[] estadoDeExito = new int[luces.length+1];//condicion de parada
+		estadoDeExito = new int[luces.length+1];//condicion de parada
 		// todas las apagadas salvo la n y posicion igual n.
 		// estado de exito
 		int[][] estados = new int[1][1]; //estados por los que
@@ -184,7 +187,7 @@ public class backTracking
 		// cuarto n
 		estadoDeExito[luces.length-1]=1;//solo se encuentra encendida la luz del
 		// cuarto n
-		recorridoADormitorio(luces,puertas,estado,estados,0,estadoDeExito);
+		recorridoADormitorio(luces,puertas,estado,estados);
 		mostrarCamino();
 	}
 
@@ -250,6 +253,11 @@ public class backTracking
 		}
 	}
 
+	/**
+	* funcion que tomando los estados del recorrido calcula las acciones ejecutadas
+	* y las devuelve en una matriz
+	* @param estados matriz de estados
+	*/
 	public int[][] calcularCamino(int[][]estados)
 	{
 		int n = estados.length;
