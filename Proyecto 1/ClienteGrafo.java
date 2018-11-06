@@ -24,6 +24,7 @@ public class ClienteGrafo{
 	 */	
 	public <V, L> void menuDirigido(Scanner scan, GrafoDirigido<V,L> grafo, Transformer<String, V> transformer,  Transformer<String, L> transformerarco){
 		//Imprimimos el menu
+		System.out.println("\n");
 		System.out.println("Que operacion desea realizar sobre su nuevo grafo dirigido? presione el numero correspondiente a la operacion");
 		System.out.println("1. numero de vertices");
 		System.out.println("2. numero de lados");
@@ -167,7 +168,7 @@ public class ClienteGrafo{
 			id = scan.next();
 			try{
 				k = grafo.grado(id);
-				System.out.println("El grado es" + k);
+				System.out.println("El grado es " + k);
 			}catch(Exception e){
 				System.out.println("No hay tal vertice");
 			}
@@ -273,6 +274,7 @@ public class ClienteGrafo{
 	 */	
 	public <V, L> void menuNoDirigido(Scanner scan, GrafoNoDirigido<V,L> grafo, Transformer<String, V> transformer,  Transformer<String, L> transformerarista){
 		//Imprimimos el menu
+		System.out.println("\n");
 		System.out.println("Que operacion desea realizar sobre su nuevo grafo dirigido? presione el numero correspondiente a la operacion");
 		System.out.println("1. numero de vertices");
 		System.out.println("2. numero de lados");
@@ -355,9 +357,9 @@ public class ClienteGrafo{
 			datoarista = transformerarista.transform(scan.next());
 			System.out.println("Dime el peso");
 			pesoarista = Double.parseDouble(scan.next());
-			System.out.println("Dime el id inicial:");
+			System.out.println("Dime el id 1:");
 			vi = scan.next();
-			System.out.println("Dime el id final:");
+			System.out.println("Dime el id 2:");
 			vf = scan.next();
 			grafo.agregarArista(idarista, datoarista, pesoarista, vi, vf);
 
@@ -371,9 +373,9 @@ public class ClienteGrafo{
 			}
 
 		}else if(n==8){
-			System.out.println("Dime el id inicial:");
+			System.out.println("Dime el id 1:");
 			vi = scan.next();
-			System.out.println("Dime el id final:");
+			System.out.println("Dime el id 2:");
 			vf = scan.next();
 			if(grafo.estaLado(vi, vf)){
 				System.out.println("Si esta");
@@ -413,7 +415,7 @@ public class ClienteGrafo{
 			id = scan.next();
 			try{
 				k = grafo.grado(id);
-				System.out.println("El grado es" + k);
+				System.out.println("El grado es " + k);
 			}catch(Exception e){
 				System.out.println("No hay tal vertice");
 			}
