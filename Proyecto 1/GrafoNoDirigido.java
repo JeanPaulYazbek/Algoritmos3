@@ -367,6 +367,7 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 	 * @param id id del arista que se quiere eliminar
 	 * @return	true si se elimina exitosamente, false en otro caso
 	 */
+
 	public Boolean eliminarArista(String id)
 	{
 		int i;

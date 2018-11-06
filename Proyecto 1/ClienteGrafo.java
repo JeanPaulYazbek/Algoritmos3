@@ -82,9 +82,19 @@ public class ClienteGrafo{
 			System.out.println("Dime el id:");
 			id = scan.next();
 			System.out.println("Dime el dato");
-			dato = transformer.transform(scan.next());
+			try{
+				dato = transformer.transform(scan.next());
+			}catch(Exception e){
+				System.out.println("no es el tipo de dato adecuado...");
+				return;
+			}
 			System.out.println("Dime el peso");
-			peso = Double.parseDouble(scan.next());
+			try{
+				peso = Double.parseDouble(scan.next());
+			}catch(Exception e){
+				System.out.println("no es el tipo de dato adecuado...");
+				return;
+			}
 			grafo.agregarVertice(id, dato, peso);
 		}else if(n==4){
 			System.out.println("Dime el id");
@@ -107,9 +117,19 @@ public class ClienteGrafo{
 			System.out.println("Dime el id:");
 			idarco = scan.next();
 			System.out.println("Dime el dato");
-			datoarco = transformerarco.transform(scan.next());
+			try{
+				datoarco = transformerarco.transform(scan.next());
+			}catch(Exception e){
+				System.out.println("no es el tipo de dato adecuado...");
+				return;
+			}
 			System.out.println("Dime el peso");
-			pesoarco = Double.parseDouble(scan.next());
+			try{
+				pesoarco = Double.parseDouble(scan.next());
+			}catch(Exception e){
+				System.out.println("no es el tipo de dato adecuado...");
+				return;
+			}
 			System.out.println("Dime el id inicial:");
 			vi = scan.next();
 			System.out.println("Dime el id final:");
@@ -313,8 +333,7 @@ public class ClienteGrafo{
 		String vi;			   //"					vertice inicial" de una arista"						"
 		String vf;			   //"					vertice final" de una arista"							"
 		ArrayList<Vertice<V>> listavers;	//"					"almacena lista de vertices"		    "
-		ArrayList<Lado<L>> listalados;		//"					"almacena lista de lados"				"
-
+		ArrayList<Lado<L>> listalados;		//"					"almacena lista de lados"
 
 		//OPCIONES DE OPERACION: todas usan la funcion necesaria de GrafoNoDirigido
 		if(n==1){
@@ -326,12 +345,21 @@ public class ClienteGrafo{
 			System.out.println("El numero de lados es: " + k);
 
 		}else if(n==3){
-			System.out.println("Dime el id:");
 			id = scan.next();
 			System.out.println("Dime el dato");
-			dato = transformer.transform(scan.next());
+			try{
+				dato = transformer.transform(scan.next());
+			}catch(Exception e){
+				System.out.println("no es el tipo de dato adecuado...");
+				return;
+			}
 			System.out.println("Dime el peso");
-			peso = Double.parseDouble(scan.next());
+			try{
+				peso = Double.parseDouble(scan.next());
+			}catch(Exception e){
+				System.out.println("no es el tipo de dato adecuado...");
+				return;
+			}
 			grafo.agregarVertice(id, dato, peso);
 		}else if(n==4){
 			System.out.println("Dime el id");
@@ -354,9 +382,19 @@ public class ClienteGrafo{
 			System.out.println("Dime el id:");
 			idarista = scan.next();
 			System.out.println("Dime el dato");
-			datoarista = transformerarista.transform(scan.next());
+			try{
+				datoarista = transformerarista.transform(scan.next());
+			}catch(Exception e){
+				System.out.println("no es el tipo de dato adecuado...");
+				return;
+			}
 			System.out.println("Dime el peso");
-			pesoarista = Double.parseDouble(scan.next());
+			try{
+				pesoarista = Double.parseDouble(scan.next());
+			}catch(Exception e){
+				System.out.println("no es el tipo de dato adecuado...");
+				return;
+			}			
 			System.out.println("Dime el id 1:");
 			vi = scan.next();
 			System.out.println("Dime el id 2:");
