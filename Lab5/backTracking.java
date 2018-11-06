@@ -6,6 +6,7 @@ public class backTracking
 	//estados por los que se paso durante el recorrido mas corto.	
 	protected int[][] camino;
 	protected boolean noCamino=true;
+	protected int[] estadoIndeseable;
 
 	/**
 	* @param puertas matriz de adyacencias que representa las aristas pasillos
@@ -16,60 +17,58 @@ public class backTracking
 	* @param estados estados por los que se ha pasado durante el recorrido
 	*/
 	public void recorridoADormitorio(int[][]luces,int[][]puertas,int[] estado,
-		ArrayList<int[]>estados,int profundidad,int[]estadoDeExito)
+		int[][] estados,int profundidad,int[]estadoDeExito)
 	{
-		estados.add(estado);
+		estados[estados.length-1]=estado.clone();
 		exito(estado,estadoDeExito,estados);
-		ArrayList<int[]> accionesPosibles = posiblesAcciones(estados,estado,luces,puertas);
-		for (int k = 0; k < accionesPosibles.size(); k++)
+		int[][] accionesPosibles = posiblesAcciones(estados,estado,luces,puertas);
+		int k;
+
+		for (k = 0; k < accionesPosibles.length; k++)
 		{
-			recorridoADormitorio(luces,puertas,accionesPosibles.get(k),
-				estados,profundidad+1,estadoDeExito);
+			if (accionesPosibles[k][0]==1)
+			{
+				estado[accionesPosibles[k][1]]=1;
+			}
+			else if (accionesPosibles[k][0]==0)
+			{
+				estado[accionesPosibles[k][1]]=0;
+			}
+			else
+			{
+				estado[estado.length-1]=accionesPosibles[k][1];
+			}
+			int[][]nuevosEstados= new int[estados.length+1][estados[0].length+1];
+			for (k = 0; k < estados.length; k++)
+			{
+				nuevosEstados[k]=estados[k];
+			}			
+			recorridoADormitorio(luces,puertas,estado,
+				nuevosEstados,profundidad+1,estadoDeExito);
 		}
 		return;
 	}
 
-	public void mostrarEstados(ArrayList<int[]> estados)
+	public int[][] posiblesAcciones(int[][] estados,int[] estado,int[][]luces,int[][]puertas)
 	{
-		for (int k = 0; k < estados.size(); k++)
-		{
-			System.out.print(Arrays.toString(estados.get(k)));
-		}
-		System.out.println("");
-	}
-
-	public ArrayList<int[]> posiblesAcciones(ArrayList<int[]> estados,int[] estado,int[][]luces,int[][]puertas)
-	{
-		ArrayList<int[]> estadosPosibles = new ArrayList<int[]>();
 		int n=luces.length;
-
-		int[] siApago = new int[n+1];
-		int[] siEnciendo = new int[n+1];
-		int[] siMeMuevo = new int[n+1];
+		int[][] estadosPosibles = new int[3*n][2];
+		int[] siApago;
+		int[] siEnciendo;
+		int[] siMeMuevo;
 
 		//almacenamos todas posibles acciones
 		int posicionActual=estado[n];
 		int k;
+		int j=0;
 
-		//estadoPosible = estado;
-		for (k = 0; k < n+1; k++)
-		{
-			siApago[k]=estado[k];
-		}
-
-		//estadoPosible = estado;
-		for (k = 0; k < n+1; k++)
-		{
-			siEnciendo[k]=estado[k];
-		}
-
-		//estadoPosible = estado;
-		for (k = 0; k < n+1; k++)
-		{
-			siMeMuevo[k]=estado[k];
-		}
 		for (k = 0; k < luces.length; k++)
 		{
+
+			siApago = estado.clone();
+			siEnciendo = estado.clone();
+			siMeMuevo = estado.clone();
+
 			if (luces[posicionActual][k]==1)
 			{
 				if (estado[k]==0)
@@ -77,15 +76,19 @@ public class backTracking
 					siEnciendo[k]=1;
 					if (!estadoRepetido(estados,siEnciendo))
 					{
-						estadosPosibles.add(siEnciendo);
+						estadosPosibles[j][0]=1;
+						estadosPosibles[j][1]=k;
+						j+=1;						
 					}
 				}
 				if ((estado[k]==1)&&((k!=posicionActual)))
 				{
-					siApago[k]=0;	
+					siApago[k]=0;
 					if (!estadoRepetido(estados,siApago))
 					{
-						estadosPosibles.add(siApago);
+						estadosPosibles[j][0]=0;
+						estadosPosibles[j][1]=k;
+						j+=1;
 					}
 				}
 			}
@@ -93,20 +96,27 @@ public class backTracking
 			{
 				if ((estado[k]==1)&&((k!=posicionActual)))
 				{
-					siMeMuevo[n]=k;	
+					siMeMuevo[n]=k;
 					if (!estadoRepetido(estados,siMeMuevo))
 					{
-						estadosPosibles.add(siMeMuevo);
+						estadosPosibles[j][0]=2;
+						estadosPosibles[j][1]=k;
+						j+=1;
 					}
 				}
 			}
 		}
-		mostrarEstados(estadosPosibles);
-		return estadosPosibles;
+		int[][] estadosPosiblesReales = new int[j][2];
+		for (k = 0; k < j; k++)
+		{
+			estadosPosiblesReales[k] = estadosPosibles[k];
+		}
+		System.out.println(Arrays.deepToString(estadosPosiblesReales));
+		return estadosPosiblesReales;
 	}
 
 	public void exito(int[]estado,int[]estadoDeExito,
-		ArrayList<int[]> estados)
+		int[][] estados)
 	{
 		if (Arrays.equals(estado,estadoDeExito))
 		{
@@ -115,22 +125,30 @@ public class backTracking
 				camino=calcularCamino(estados);
 				noCamino=false;
 			}
-			if(camino.length>=estados.size()) //Demas veces
+			if(camino.length>=estados.length) //Demas veces
 			{
 				camino=calcularCamino(estados);
 			}
 		}
 	}
 
-	public boolean estadoRepetido(ArrayList<int[]> estados,int[] estadoPosible)
+	public boolean estadoRepetido(int[][] estados,int[] estadoPosible)
 	{
-		//vemos si el estado posible ya se encuentra explorado
-		int n = estados.size();
-		for (int k = 0; k < n; k++)
+		if (Arrays.equals(estadoPosible,estadoIndeseable))
 		{
-			if (Arrays.equals(estados.get(k),estadoPosible))
+			return false;
+		}
+		else
+		{
+			//vemos si el estado posible ya se encuentra explorado
+			int n = estados.length;
+
+			for (int k = 0; k < n; k++)
 			{
-				return true;
+				if (Arrays.equals(estados[k],estadoPosible))
+				{
+					return true;
+				}
 			}
 		}
 		return false;
@@ -146,19 +164,20 @@ public class backTracking
 	{
 		if (!recorridoPosible(luces,puertas))
 		{
+			System.out.println("El problema no puede ser resuelto.");
 			return;
 		}
 
 		int[] estadoDeExito = new int[luces.length+1];//condicion de parada
 		// todas las apagadas salvo la n y posicion igual n.
 		// estado de exito
-		ArrayList<int[]> estados = new ArrayList<int[]>(); //estados por los que
+		int[][] estados = new int[1][1]; //estados por los que
 		// se ha pasado durante el recorrido
 		int[] estado = new int[luces.length+1]; //arreglo de n+1 elementos donde
 		// el ultimo representa la posicion actual
 		//y el resto representan si la luz de dicha habitacion esta encendida
 		// (1) o apagada (0).
-
+		estadoIndeseable = new int[luces.length+1];
 		estado[0]=1;//al principio solo esta encendida la luz del cuarto 0 y se
 		// encuentra en el cuarto 0
 		estadoDeExito[luces.length]=luces.length-1;//al final se encuentra en el
@@ -231,18 +250,18 @@ public class backTracking
 		}
 	}
 
-	public int[][] calcularCamino(ArrayList<int[]>estados)
+	public int[][] calcularCamino(int[][]estados)
 	{
-		int n = estados.size();
+		int n = estados.length;
 		int[][] camino = new int[n-1][2];
 		int[] accion = new int[2];
-		int m = estados.get(0).length;
+		int m = estados[0].length;
 		int [] estadoA;
 		int [] estadoB;
 		for(int k = 0; k<n-1; k++)
 		{
-			estadoA=estados.get(k);
-			estadoB=estados.get(k+1);
+			estadoA=estados[k];
+			estadoB=estados[k+1];
 
 			if(!(estadoA[m-1]==estadoB[m-1]))
 			{	
