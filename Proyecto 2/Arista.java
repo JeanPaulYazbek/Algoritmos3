@@ -23,13 +23,18 @@ public class Arista<E> extends Lado
 		this.u = u;
 	}
 
-	public Arista(Arista<E> original){
+	/**
+	 * crea arista por constructor
+	 * @param original arista original a partir de la cual crearemos la copia
+	 * @param grafocopia grafo del cual sacaremos los vertices clonados para las nuevas aristas
+	 */
+	public Arista(Arista<E> original, GrafoNoDirigido grafocopia){
 
 		this.dato = original.dato;
 		this.id = original.id;
 		this.p = original.p;
-		this.v = original.v;
-		this.u = original.u;
+		this.v = grafocopia.obtenerVertice(original.v.getId());
+		this.u = grafocopia.obtenerVertice(original.u.getId());
 	}
 
 	/**
@@ -75,6 +80,10 @@ public class Arista<E> extends Lado
 	public E getDato()
 	{
 		return dato;
+	}
+
+	public void changeDato(E nuevodato){
+		this.dato = nuevodato;
 	}
 
 	/**

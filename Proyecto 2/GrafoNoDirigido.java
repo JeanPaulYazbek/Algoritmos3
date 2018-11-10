@@ -116,7 +116,9 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 			}catch(Exception e){
 				return false;//si algunos de los datos es erroneo
 			}
-			agregarArista(idarista, datoarista, peso, extremo1, extremo2);
+			if(!(vertice[2].equals("0"))){//si no tiene capacidad 0 la arista, si lo tuviese no es recorrible
+				agregarArista(idarista, datoarista, peso, extremo1, extremo2);
+			}
 		}
 		//se cargo el grafo
 		return true;
@@ -509,6 +511,39 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 	}
 
 	/**
+	 * funcion que devuelve una lista de aristas en el grafo
+	 * @return una lista de aristas representados en el vertice, si no hay regresa una lista vacia
+	 */
+	public ArrayList<Arista<L>> aristas()
+	{
+		ArrayList<Arista<L>> listaLados = new ArrayList<Arista<L>>();
+		int i;
+		int j;
+		boolean duplicado;
+		for (ArrayList<Arista<L>> aristasDeEsteVertice: grafo.values())
+		{
+			i = aristasDeEsteVertice.size();
+			for(int k = 0; k< i; k++)
+			{
+				j = listaLados.size();
+				duplicado = false;
+				for (int l = 0; l< j && !duplicado; l++) //buscamos si ya la habiamos agregado
+				{
+					if (aristasDeEsteVertice.get(k).getId().equals(listaLados.get(l).getId()))
+					{
+						duplicado = true;
+					}
+				}
+				if (!duplicado) // si no se encontraba ya en el arreglo
+		 		{
+		 			listaLados.add(aristasDeEsteVertice.get(k));//aqui agregamos cada arista
+		 		}		 			
+			}
+		}
+		return listaLados;
+	}
+
+	/**
 	 * funcion que devuelve el grado de un vertice existente en el grafo
 	 * @param id id del vertice que cuyo grado se quiere revisar
 	 * @return	entero que representa el grado del vertice, si no esta da una excepcion 
@@ -635,21 +670,46 @@ public class GrafoNoDirigido<V, L> implements Grafo<V, L>
 		return clon;
 	}
 
+	/**
+	 * funcion que agrega arista por informacion
+	 * @param original tabla de hash del grafo original 
+	 * @return tabla de hash copia para el grafo clon
+	 */
 	public Hashtable<Vertice<V>, ArrayList<Arista<L>>> deepCopy( Hashtable<Vertice<V>, ArrayList<Arista<L>>> original) {
 
-   		Hashtable<Vertice<V>, ArrayList<Arista<L>>> copy = new  Hashtable<Vertice<V>, ArrayList<Arista<L>>>();
+   		GrafoNoDirigido<V, L> clonTemporal = new GrafoNoDirigido<V, L>();//clon temporal para los vertices clonados
 
+   		//agregamos todos los nuevos vertices copiados
   		for (Vertice<V> i: original.keySet()) {
-        	 ArrayList<Arista<L>> list = original.get(i);
         	 Vertice<V> copiaVertice = new Vertice<V>(i);
-     		 ArrayList<Arista<L>> copiaListaAristas = new ArrayList<Arista<L>>();
+        	 clonTemporal.agregarVertice(copiaVertice);    		     		
+   		}
+
+   		//agregamos todas las nuevas aristas
+   		for (Vertice<V> i: original.keySet()) {
+        	 ArrayList<Arista<L>> list = original.get(i);
      		 int n = list.size();
      		 for(int j =0; j<n; j++){
-     		 	Arista<L> copiaArista = new Arista<L>(list.get(j));
-     		 	copiaListaAristas.add(copiaArista);
+     		 	Arista<L> copiaArista = new Arista<L>(list.get(j), clonTemporal);
+     		 	clonTemporal.agregarArista(copiaArista);
      		 }
-      		 copy.put(copiaVertice, copiaListaAristas);
+      		 
    		}
-    	return copy;
+
+    	return clonTemporal.grafo;
+	}
+
+	/**
+	 * funcion que resetea los costos y predecesores de los vertices de un grafo
+	 */
+	public void resetVertices(){
+
+		ArrayList<Vertice<V>> vertices = this.vertices();
+		for(Vertice<V> vert: vertices){
+
+			vert.costo = 9999999.00;
+			vert.predecesor = null;
+			vert.aristaPredecesora = null;
+		}
 	}
 }

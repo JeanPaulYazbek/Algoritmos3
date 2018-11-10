@@ -3,6 +3,9 @@ public class Vertice<E> {
 	private String id; //atributo id de los vertices
 	private E dato;    //atributo dato de los vertices
 	private double p;	//atributo peso de los vertices
+	protected double costo; //atributo costo de los vertices
+	protected Vertice<E> predecesor; // predecesor de los vertices
+	protected Arista<E> aristaPredecesora;// arista predecesora de los vertices
 
 	/**
 	 * contructor para crear un vertice con todos los atributos 
@@ -14,12 +17,20 @@ public class Vertice<E> {
 		this.id = id;
 		this.dato = dato;
 		this.p = p;
+		this.costo = 9999999.00;
+		this.predecesor = null;
 	}
 
+	/**
+	 * contructor para crear un vertice con todos los atributos 
+	 * @param original vertice original al parit del cual se crea la copia
+	 */
 	public Vertice(Vertice<E> original){
 		this.id = original.id;
 		this.dato = original.dato;
 		this.p = original.p;
+		this.costo = original.costo;
+		this.predecesor = this.predecesor;
 	}
 
 	/**
@@ -44,6 +55,30 @@ public class Vertice<E> {
 	 */
 	public E getDato(){
 		return dato;
+	}
+
+	/**
+	 * metodo para obtener el costo de un vertice
+	 * @return costo del vertice
+	 */
+	public double getCosto(){
+		return costo;
+	}
+
+	/**
+	 * metodo para obtener el predecesor de un vertice
+	 * @return predecesor del vertice
+	 */
+	public Vertice<E> getPredecesor(){
+		return predecesor;
+	}
+
+	/**
+	 * metodo para obtener la arista predecesora de un vertice
+	 * @return aristaPredecesora del vertice
+	 */
+	public Arista<E> getAristaPredecesora(){
+		return aristaPredecesora;
 	}
 
 	/**
