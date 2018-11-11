@@ -51,17 +51,18 @@ public class GrafoNoDirigido<V,L> implements Grafo<V,L>
 		for(int k = 0; k<numeroVertices; k++)
 		{
 			linea = Lector.readLine();//a partir de aqui son vertices
-			String[] vertice = linea.split(" ");
 
-			if(vertice.length != 2){//en caso de formato erroneo por cantidad de elementos
+			String[] coordenadas = linea.split(" ");
+
+			if(coordenadas.length != 2){//en caso de formato erroneo por cantidad de elementos
 				return false;
 			}
 			double posicionX;
 			double posicionY;
 			//BUSCAMOS ERRORES DE FORMATO
 			try{
-				posicionX = Double.parseDouble(vertice[0]);
-				posicionY = Double.parseDouble(vertice[1]);
+				posicionX = Double.parseDouble(coordenadas[0]);
+				posicionY = Double.parseDouble(coordenadas[1]);
 			}catch(Exception e){
 				return false;//si algunos de los datos es erroneo
 			}
