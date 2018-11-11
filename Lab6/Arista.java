@@ -12,10 +12,10 @@ public class Arista<E>
 	 */
 	Arista(int id, Vertice v, Vertice u, double distancia)
 	{
-		this.id = 9999999;
+		this.id = id;
 		this.v = v;
 		this.u = u;
-		this.distancia = 9999999.00;
+		this.distancia = distancia;
 	}
 	/**
 	 * metodo que obtiene el id de una arista

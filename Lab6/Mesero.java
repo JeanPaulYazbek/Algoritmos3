@@ -6,6 +6,14 @@ import java.util.Arrays;
 
 public class Mesero
 {
+	/**
+	 * funcion que dado dada la entrada correcta del cliente muestra
+	 * hace los llamados correspondientes para mostrar en pantalla
+	 * los caminos mas cortos desde la cocina a las mesas siguiendo
+	 * el formato Nodo <i>: n1->n2->…->nL <L> lados (costo <C>)
+	 * @param args argumentos con los que se llama a Mesero.java
+	 * @throws IOException
+	 */
 	public static void main(String[] args)
 	throws IOException
 	{
@@ -23,7 +31,9 @@ public class Mesero
 		int cocina = Integer.parseInt(args[1]);
 		//aplicamos el metodo de busqueda de caminos mas cortos
 		PathFinder bellMan = new PathFinder();
+//		System.out.println(restaurante.toString());
 		bellMan.bellman(restaurante,cocina);
+		//mostramos los caminos con el formato solicitado
 		bellMan.showPath(restaurante,cocina);
 	}
 }

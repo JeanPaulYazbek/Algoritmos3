@@ -1,10 +1,10 @@
 public class Vertice<E>
 {
 	private int id; //atributo id de los vertices
-	private int posicionX; //atributo posicionX de los vertices
-	private int posicionY; //atributo posicionY de los vertices
+	private double posicionX; //atributo posicionX de los vertices
+	private double posicionY; //atributo posicionY de los vertices
 	protected double costo; //atributo costo de los vertices
-	protected Vertice<E> predecesor; // predecesor de los vertices
+	protected int predecesor; // predecesor de los vertices
 	protected Arista<E> aristaPredecesora;// arista predecesora de los vertices
 
 	/**
@@ -13,13 +13,13 @@ public class Vertice<E>
 	 * @param posicionX coordenada X del vertice
 	 * @param posicionY coordenada Y del vertice
 	 */
-	Vertice(int id, int x, int y)
+	Vertice(int id, double x, double y)
 	{
-		this.id = 9999999;
-		this.posicionX = 9999999;
-		this.posicionY = 9999999;
+		this.id = id;
+		this.posicionX = x;
+		this.posicionY = y;
 		this.costo = 9999999.00;
-		this.predecesor = null;
+		this.predecesor = -1;
 	}
 	/**
 	 * metodo para obterner el id de un vertice
@@ -33,7 +33,7 @@ public class Vertice<E>
 	 * metodo para obtener la coordenada X de un vertice
 	 * @return coordenada X
 	 */
-	public int posicionX()
+	public double posicionX()
 	{
 		return posicionX;
 	}
@@ -41,7 +41,7 @@ public class Vertice<E>
 	 * metodo para obtener la coordenada Y de un vertice
 	 * @return coordenada Y
 	 */
-	public int posicionY()
+	public double posicionY()
 	{
 		return posicionY;
 	}
@@ -57,7 +57,7 @@ public class Vertice<E>
 	 * metodo para obtener el predecesor de un vertice
 	 * @return predecesor del vertice
 	 */
-	public Vertice<E> getPredecesor()
+	public int getPredecesor()
 	{
 		return predecesor;
 	}

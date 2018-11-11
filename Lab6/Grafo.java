@@ -28,7 +28,7 @@ public interface Grafo<V, L>
 	 * @param p peso del vertice a agregar
 	 * @return true si se agrega, false en otro caso
 	 */
-	public Boolean agregarVertice(int id,int posicionX,int posicionY);
+	public Boolean agregarVertice(int id,double posicionX,double posicionY);
 	/**
 	 * funcion que obtiene vertice de un grafo
 	 * @param id id del vertice que se busca
