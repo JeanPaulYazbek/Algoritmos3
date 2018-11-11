@@ -63,8 +63,8 @@ public class PathFinder{
 		String line;
 		Vertice<Integer> v;
 		int j;
-		DecimalFormat formateador = new DecimalFormat("####.####");
-
+		DecimalFormat formateador = new DecimalFormat("0.0#");
+		String toPrint;
 		for(int k = 0; k< n; k++)
 		{
 			v = grafoCaso.obtenerVertice(k);
@@ -76,7 +76,9 @@ public class PathFinder{
 				v=grafoCaso.obtenerVertice(v.getPredecesor());
 				j+=1;
 			}
-			System.out.println("Nodo "+k+": "+verticeInicial+line+"\t"+"\t"+j+" lados (costo "+formateador.format(grafoCaso.obtenerVertice(k).getCosto())+")");
+			line="Nodo "+k+": "+verticeInicial+line+"\t"+j+" lados (costo "
+				+formateador.format(grafoCaso.obtenerVertice(k).getCosto())+")";
+			System.out.println(line);
 		}
 	}
 }

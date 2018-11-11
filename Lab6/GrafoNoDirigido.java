@@ -342,20 +342,20 @@ public class GrafoNoDirigido<V,L> implements Grafo<V,L>
 				{
 					if(listadelados.get(j).getExtremo1().getId()==(idv)) // es un bucle o un original
 					{
-						cadenaGrafo = cadenaGrafo+listadelados.get(j).getExtremo2().getId()+", ";
+						cadenaGrafo = cadenaGrafo+listadelados.get(j).getExtremo2().getId()+"("+listadelados.get(j).distancia()+"),";
 					}
 					else // es un duplicado
 					{
-						cadenaGrafo = cadenaGrafo+listadelados.get(j).getExtremo1().getId()+", ";
+						cadenaGrafo = cadenaGrafo+listadelados.get(j).getExtremo1().getId()+"("+listadelados.get(j).distancia()+"),";
 					}
 				}
 				if(listadelados.get(k-1).getExtremo1().getId()==(idv)) // es un bucle o un original
 				{
-					cadenaGrafo = cadenaGrafo+listadelados.get(k-1).getExtremo2().getId()+"\n";
+					cadenaGrafo = cadenaGrafo+listadelados.get(k-1).getExtremo2().getId()+"("+listadelados.get(k-1).distancia()+")"+"\n";
 				}
 				else // es un duplicado
 				{
-					cadenaGrafo = cadenaGrafo+listadelados.get(k-1).getExtremo1().getId()+"\n";
+					cadenaGrafo = cadenaGrafo+listadelados.get(k-1).getExtremo1().getId()+"("+listadelados.get(k-1).distancia()+")"+"\n";
 				}
 			}else{
 				cadenaGrafo = cadenaGrafo+"\n";
