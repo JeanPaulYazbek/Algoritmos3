@@ -3,9 +3,22 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 
 
-public class Hidrocapital{
+public class EncontrarAgua{
 
-
+	/**
+	 * funcion que toma un archivo de casos, un grafo base de campus, un edificio inicial y una cantidad de gente, y luego modela el grafo de cada caso 
+	 * uno por uno y en el momento en el que lo modela se lo transmite a la funcion bellman para desplazar gente al bano mas cercano hasta que se quede 
+	 * sin gente o hasta que no queden banos disponibles o no queden banos alcanzables, luego pasa al siguiente caso hasta quedarse sin caso.
+	 * NOTA: cabe destacar que los grafos de los casos se modelan de una manera particular, ademas de eliminar las aristas afectadas por las lluvias
+	 * se agrega un vertice bano conectado por una arista escalera ancada edificio con agua y la capacidad y distancia de dichas escaleras vienen dados por 
+	 * la capacidad y pisos del edificio en donde esta el bano. Esto se realizo asi para facilitar la aplicacion del algotirmo de Bellman sobre el grafo del
+	 * caso.
+	 * @param nombreArchivo es el String que representa el nombre del archivo que contiene los casos sobre la situacion del campus en un tiempo particular
+	 * @param grafoOriginal es el grafo original que representa el campus y a partir del cual se crearan los casos particulares
+	 * @param edificioInicial id del edificio desde el cual se quieren encontrar banos con agua
+	 * @param numeroGente cuanta gente desea conseguir un bano cercano
+	 * @return	no regresa nada pero realiza todas las impresiones necesarias para informar las rutas de los banos
+	 */
 	public static void CargarGrafoCaso(String nombreArchivo, GrafoNoDirigido<Integer, Integer> grafoOriginal, String edificioInicial, int numeroGente)
 	throws IOException
 	{	
@@ -29,8 +42,8 @@ public class Hidrocapital{
 			String[] lineaNumeroCaminos = linea.split(" ");
 			int numeroCaminoEliminados = Integer.parseInt(lineaNumeroCaminos[0]);//guardamos el numero de caminos no utilizables
 
-			int contadorEdificios = numeroEdificiosAgua;
-			int contadorCaminos = numeroCaminoEliminados;
+			int contadorEdificios = numeroEdificiosAgua;//contador para iterar sobre todos los vertices en el archivo
+			int contadorCaminos = numeroCaminoEliminados;//contador para iterar sobre todos los lados en el archivo
 
 
 			//AGREGAMOS VERTICES BANO PARA CADA EDIFICIO CON AGUA
@@ -120,15 +133,18 @@ public class Hidrocapital{
 			linea = Lector.readLine();//linea con el dia por ejemplo "jueves"
 		}
 
-
-		System.out.println(grafoOriginal.toString());
-
 	}
+
+	/**
+	* En este metodo tomamos todos los datos del cliente, Archivo del campus, Archivo de casos, id del edificio inicial, numero de gente 
+	* desplazar y se carga el grafo de campus para luego pasar toda esta informacion al metodo CargarGrafoCaso.
+	* @param args es el arreglo con la informacion en el comando de llamada del programa, por ejemplo (java EncontrarAgua campus.txt casos.txt ENE 200)
+	*/
 	public static void main(String[] args)
 	throws IOException
 	{
 
-			//Transformadores para la conversion
+			//Transformadores para la conversion de archivo a grafo
 			Transformer<String, Integer> transformadorarcoDouble= new TransformarInteger();
 			Transformer<String, Integer> transformadorDouble= new TransformarInteger();
 			//creamos el grafo de la universidad base

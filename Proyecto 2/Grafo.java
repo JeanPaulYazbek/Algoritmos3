@@ -5,15 +5,13 @@ public interface Grafo<V, L>
 	/**
 	 * funcion que carga un grafo de un archivo de texto en el grafo
 	 * @param archivo nombre del archivo desde el que queremos cargar el grafo
-	 * @param transformer objeto de la clase Transformer que nos ayuda a
-	 * convertir de String a tipo generico del vertice
-	 * @param transformerarco objeto de la clase Transformer que nos ayuda a 
-	 *convertir de String a tipo generico de arco
+	 * @param transformer objeto de la clase Transformer que nos ayuda a convertir de String a tipo generico del vertice
+	 * @param transformerarco objeto de la clase Transformer que nos ayuda a convertir de String a tipo generico de arco
 	 * @return un booleano, true si se creo exitosamente el grafo, false si no
 	 * @throws IOException
 	 */
-	public Boolean cargarGrafo(String archivo)
-		throws IOException;
+	public Boolean cargarGrafo(String archivo, Transformer<String, V> transformer,
+	 Transformer<String, L> transformerarista)throws IOException;
 
 	/**
 	 * funcion que devuelve el numero de vertices de un grafo

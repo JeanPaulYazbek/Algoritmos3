@@ -2,6 +2,15 @@ import java.util.ArrayList;
 
 public class Bellman{
 
+	/**
+	 * funcion que toma un grafo y un vertice inicial y una cantidad de gente , luego calcula el camino mas corto a cada alcanzable y deduce
+	 * en base a las capacidades de las aristas cuanta gente puede llegar al bano mas cercano y modifica la capacidad de las aristas y vertices
+	 * en base a la cantidad de gente que paso.
+	 * @param grafoCaso es el grafo del caso particular por ejemplo el del "jueves", cabe destacar que este grafo incluye vertices bano y aristas escaleras
+	 * @param verticeInicial id del vertice desde el que se desean encontrar los banos
+	 * @param genteCaso cuanta gente se desea trasladar en ese instante
+	 * @return	si existe al menos un bano alcanzable devuelve el numero de gente desplazada al bano mas cercano, sino existe devuelve -1 
+	 */
 	public int bellman(GrafoNoDirigido<Integer, Integer> grafoCaso, String verticeInicial, int genteCaso){
 
 		grafoCaso.resetVertices();//reseteamos los costos y predecesores de todos los vertices para aplicar bellman
@@ -83,12 +92,18 @@ public class Bellman{
 				anterior = anterior.getPredecesor();//pasamos al siguiente predecesor 
 			}
 
+			//modificamos la capacidad del edificio del bano 
+			Vertice<Integer> edificioBano = sanitarioMasCercano.getPredecesor();//buscamos el edificio con bano es decir el predecesor del bano
+			int nuevaCapacidad = edificioBano.getDato() - capacidadMinima;//guardamos la nueva capacidad
+			edificioBano.changeDato(nuevaCapacidad);//cambiamos la capacidad
+
 			String personasTrasladadas = "     " + String.valueOf(capacidadMinima) + " personas a " + destino;//imprimimos cuanta gente fue trasladada y a donde
 			System.out.println(personasTrasladadas);
 
 			anterior = sanitarioMasCercano;//volvemos de nuevo al predecesor del bano
 			String rutaSanitario = "          Ruta: " ;//inicio de la impresion de la ruta
 			ArrayList<String> edificios = new ArrayList<String>(); 
+
 			//aqui modificaremos la capacidad de cada arista segun la cantidad de gente que paso y ademas hacemos los prints necesarios
 			while (!(anterior.getId().equals(verticeInicial))){
 

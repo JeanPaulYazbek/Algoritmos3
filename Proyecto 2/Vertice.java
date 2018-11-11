@@ -81,6 +81,11 @@ public class Vertice<E> {
 		return aristaPredecesora;
 	}
 
+
+	public void changeDato(E nuevodato){
+
+		this.dato = nuevodato;
+	}
 	/**
 	 * metodo para presentar todos los atributos del vertice en una sola cadena String
 	 * @return string que representa el vertice
