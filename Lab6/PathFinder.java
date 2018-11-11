@@ -3,7 +3,7 @@ import java.text.DecimalFormat;
 
 public class PathFinder{
 
-	public int bellman(GrafoNoDirigido<Integer,Integer> grafoCaso, int verticeInicial)
+	public void bellman(GrafoNoDirigido<Integer,Integer> grafoCaso, int verticeInicial)
 	{
 		int nrovertices = grafoCaso.numeroDeVertices();//guardamos la cantidad
 		// de mesas
@@ -30,7 +30,7 @@ public class PathFinder{
 					//a v sumado con el costo de un camino entre v y w 
 					camino.getExtremo2().costo = camino.getExtremo1().costo
 					 + camino.distancia();//modificamos los costos de los vertices
-					camino.getExtremo2().predecesor = camino.getExtremo1();
+					camino.getExtremo2().predecesor = camino.getExtremo1().getId();
 					//modificamos por quien se llega al vertice
 					camino.getExtremo2().aristaPredecesora = camino;
 					//modificamos por que arista se llega al vertice w
@@ -43,7 +43,7 @@ public class PathFinder{
 					//a w sumado con el costo de un camino entre v y w 
 					camino.getExtremo1().costo = camino.getExtremo2().costo 
 					+ camino.distancia();//modificamos los costos de los vertices
-					camino.getExtremo1().predecesor = camino.getExtremo2();
+					camino.getExtremo1().predecesor = camino.getExtremo2().getId();
 					//modificamos por quien se llega al vertice
 					camino.getExtremo1().aristaPredecesora = camino;
 					cambio = true;//marcamos que hubo cambios
@@ -51,6 +51,7 @@ public class PathFinder{
 			}
 			i = i + 1;
 		}
+
 	}
 
 	/**
@@ -66,18 +67,16 @@ public class PathFinder{
 
 		for(int k = 0; k< n; k++)
 		{
-			v = grafoCaso.obtenerVertice(k).getPredecesor();
+			v = grafoCaso.obtenerVertice(k);
 			line="";
 			j=0;
-			while(v != null)
+			while(v.getPredecesor() != -1)
 			{
-				line="->"+Integer.toString(v.getId());
-				v=grafoCaso.obtenerVertice(k).getPredecesor().getPredecesor();
+				line="->"+Integer.toString(v.getId())+line;
+				v=grafoCaso.obtenerVertice(v.getPredecesor());
 				j+=1;
 			}
-
-			System.out.print("Nodo "+k+": "+verticeInicial+line+"\t"+j+
-				" lados (costo "+formateador.format(grafoCaso.obtenerVertice(k).getCosto())+")");
+			System.out.println("Nodo "+k+": "+verticeInicial+line+"\t"+"\t"+j+" lados (costo "+formateador.format(grafoCaso.obtenerVertice(k).getCosto())+")");
 		}
 	}
 }

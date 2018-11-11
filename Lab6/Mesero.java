@@ -23,6 +23,7 @@ public class Mesero
 		int cocina = Integer.parseInt(args[1]);
 		//aplicamos el metodo de busqueda de caminos mas cortos
 		PathFinder bellMan = new PathFinder();
+//		System.out.println(restaurante.toString());
 		bellMan.bellman(restaurante,cocina);
 		bellMan.showPath(restaurante,cocina);
 	}

@@ -56,11 +56,12 @@ public class GrafoNoDirigido<V,L> implements Grafo<V,L>
 			if(vertice.length != 2){//en caso de formato erroneo por cantidad de elementos
 				return false;
 			}
-
+			double posicionX;
+			double posicionY;
 			//BUSCAMOS ERRORES DE FORMATO
 			try{
-				int posicionX = Integer.parseInt(vertice[0]);
-				int posicionY = Integer.parseInt(vertice[1]);
+				posicionX = Double.parseDouble(vertice[0]);
+				posicionY = Double.parseDouble(vertice[1]);
 			}catch(Exception e){
 				return false;//si algunos de los datos es erroneo
 			}
@@ -94,10 +95,12 @@ public class GrafoNoDirigido<V,L> implements Grafo<V,L>
 				return false;
 			}
 
+			int extremo1;
+			int extremo2;
 			//BUSCAMOS ERRORES DE FORMATO
 			try{
-				int extremo1= Integer.parseInt(vertice[0]);
-				int extremo2= Integer.parseInt(vertice[1]);
+				extremo1= Integer.parseInt(vertice[0]);
+				extremo2= Integer.parseInt(vertice[1]);
 			}catch(Exception e){
 				return false;//si algunos de los datos es erroneo
 			}
@@ -139,7 +142,7 @@ public class GrafoNoDirigido<V,L> implements Grafo<V,L>
 	 * @param p es el peso del vertice
 	 * @return true si se agrega en vertice, false en otro caso
 	 */
-	public Boolean agregarVertice(int id,int posicionX,int posicionY)
+	public Boolean agregarVertice(int id,double posicionX,double posicionY)
 	{
 		//creamos un objeto vertice e intetamos agregarlo
 		Vertice<V> nuevoVertice = new Vertice<V>(id,posicionX,posicionY);
@@ -314,5 +317,49 @@ public class GrafoNoDirigido<V,L> implements Grafo<V,L>
 			}
 		}
 		return listaLados;
+	}
+	/** 
+	 * funcion que convierte  un grafo en String para impresion
+	 * @return un string que representa el grafo en su estado actual
+	*/
+	public String toString()
+	{	
+		String cadenaGrafo = "";
+		ArrayList<Arista<L>> listadelados;
+		int k;
+		int idv;
+
+		for (Vertice<V> vertices: grafo.keySet())
+		{
+			idv = vertices.getId();
+			cadenaGrafo = cadenaGrafo + idv + ": ";
+			listadelados = grafo.get(vertices);
+			k = listadelados.size();
+			if (k != 0)
+			{
+				for(int j = 0; j<k-1; j++)
+				{
+					if(listadelados.get(j).getExtremo1().getId()==(idv)) // es un bucle o un original
+					{
+						cadenaGrafo = cadenaGrafo+listadelados.get(j).getExtremo2().getId()+", ";
+					}
+					else // es un duplicado
+					{
+						cadenaGrafo = cadenaGrafo+listadelados.get(j).getExtremo1().getId()+", ";
+					}
+				}
+				if(listadelados.get(k-1).getExtremo1().getId()==(idv)) // es un bucle o un original
+				{
+					cadenaGrafo = cadenaGrafo+listadelados.get(k-1).getExtremo2().getId()+"\n";
+				}
+				else // es un duplicado
+				{
+					cadenaGrafo = cadenaGrafo+listadelados.get(k-1).getExtremo1().getId()+"\n";
+				}
+			}else{
+				cadenaGrafo = cadenaGrafo+"\n";
+			}
+		}
+		return cadenaGrafo;
 	}
 }
