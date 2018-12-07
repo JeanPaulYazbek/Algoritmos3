@@ -36,7 +36,7 @@ public interface Grafo<V, L>
 	 * @param p peso del vertice a agregar
 	 * @return true si se agrega, false en otro caso
 	 */
-	public Boolean agregarVertice( String id, V dato, int p );
+	public Boolean agregarVertice(String strPosicionUltimoCaracter,V intPosicionUltimoCaracter,int posicionPrimerCaracter,int contenido,boolean operador);
 	/**
 	 * funcion que obtiene vertice de un grafo
 	 * @param id id del vertice que se busca

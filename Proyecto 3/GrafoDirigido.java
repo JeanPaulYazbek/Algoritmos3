@@ -28,9 +28,8 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 	 */
 	public Boolean cargarGrafo(String archivo, Transformer<String, V> transformer,  Transformer<String, L> transformerarco)
 	throws IOException
-	{
-		
-
+	{		
+/*
 		BufferedReader Lector = new BufferedReader(new FileReader(archivo));
 
 		String linea = Lector.readLine();//ya leimos V
@@ -123,8 +122,8 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 
 		}
 		//se cargo el grafo
-		return true;
-		
+*/
+		return true;		
 	}
 
 	/**
@@ -182,9 +181,9 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 	 * @param p es el posicionPrimerCaracter del vertice
 	 * @return true si se agrega en vertice, false en otro caso
 	 */
-	public Boolean agregarVertice( String id, V dato, int p ){
+	public Boolean agregarVertice( String id, V dato, int p,int contenido,boolean operador){
 		//creamos un objeto vertice e intetamos agregarlo
-		Vertice<V> nuevoVertice = new Vertice<V>(id, dato, p);
+		Vertice<V> nuevoVertice = new Vertice<V>(id,dato,p,contenido,operador);
 		return agregarVertice(nuevoVertice);
 	}
 

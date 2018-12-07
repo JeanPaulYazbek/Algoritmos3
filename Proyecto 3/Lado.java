@@ -26,4 +26,4 @@ public abstract class Lado<E>{
 	public abstract String toString();
 
 
-} 
+}

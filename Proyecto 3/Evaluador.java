@@ -9,8 +9,8 @@ public class Evaluador
 	{
 		GrafoDirigido<Integer,Integer> expresionActual = new GrafoDirigido<Integer,Integer>();
 
-//		System.out.println(args[0]);
-		String entrada = args[0]+" ";
+		BufferedReader Lector = new BufferedReader(new FileReader(args[0]));
+		String entrada = Lector.readLine()+" ";//ya leimos V
 		int n = entrada.length()-1;
 		int k = 0;
 		String actual="";
@@ -30,7 +30,7 @@ public class Evaluador
 				{
 					if (!(actual.equals("")))
 					{
-						expresionActual.agregarVertice(actual,k,(k-(actual.length())+1));
+						expresionActual.agregarVertice(String.valueOf(k),k,k-(actual.length())+1,Integer.parseInt(actual),false);
 					}
 					actual="";
 				}
@@ -45,7 +45,7 @@ public class Evaluador
 				{
 					if (!(actual.equals("")))
 					{
-						expresionActual.agregarVertice(actual,k,-1);
+						expresionActual.agregarVertice(String.valueOf(k),k,k-(actual.length())+1,Integer.parseInt(actual),false);
 					}
 					actual="-";
 				}
@@ -55,14 +55,22 @@ public class Evaluador
 			{
 				if (!(actual.equals("")))
 				{
-					expresionActual.agregarVertice(actual,k,-1);
+					expresionActual.agregarVertice(String.valueOf(k),k,k-(actual.length())+1,Integer.parseInt(actual),false);
 				}
 //				System.out.println(actual+"agregado");
 				actual="";
 			}
-//			System.out.println(actual);
+			System.out.println(actual);
 			k+=1;
 		}
+		k = 0;
+		actual="";
+		nuevoCaracter="";
+		//Segundo detectamos las operaciones de mayor precedencia
+//		while(k<n)
+//		{
+
+//		}
 		System.out.println(expresionActual.toString());
 	}
 }

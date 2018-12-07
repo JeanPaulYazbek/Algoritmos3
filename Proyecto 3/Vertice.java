@@ -5,6 +5,8 @@ public class Vertice<E> {
 	private int posicionPrimerCaracter;	//atributo peso de los vertices
 	protected double costo; //atributo costo de los vertices
 	protected Vertice<E> predecesor; // predecesor de los vertices
+	private boolean operador;	//atributo peso de los vertices
+	private int contenido;	//atributo peso de los vertices
 //	protected Arista<E> aristaPredecesora;// arista predecesora de los vertices
 
 	/**
@@ -13,11 +15,13 @@ public class Vertice<E> {
 	 * @param dato dato del vertice a crear
 	 * @param p peso del vertice
 	 */
-	Vertice(String id,E posicionUltimoCaracter,int posicionPrimerCaracter)
+	Vertice(String strPosicionUltimoCaracter,E intPosicionUltimoCaracter,int posicionPrimerCaracter,int contenido,boolean operador)
 	{
-		this.id = id;
-		this.posicionUltimoCaracter = posicionUltimoCaracter;
+		this.id = strPosicionUltimoCaracter;
+		this.posicionUltimoCaracter = intPosicionUltimoCaracter;
 		this.posicionPrimerCaracter = posicionPrimerCaracter;
+		this.operador=operador;
+		this.contenido=contenido;
 		this.costo = 9999999.00;
 		this.predecesor = null;
 	}
@@ -30,6 +34,8 @@ public class Vertice<E> {
 		this.id = original.id;
 		this.posicionUltimoCaracter = original.posicionUltimoCaracter;
 		this.posicionPrimerCaracter = original.posicionPrimerCaracter;
+		this.contenido = original.contenido;
+		this.operador = original.operador;
 		this.costo = original.costo;
 		this.predecesor = this.predecesor;
 	}
@@ -46,7 +52,15 @@ public class Vertice<E> {
 	 * metodo para obtener el peso de un vertice
 	 * @return peso del vertice
 	 */
-	public int posicionPrimerCaracter(){
+	public int getPosicionPrimerCaracter(){
+		return posicionPrimerCaracter;
+	}
+
+	/**
+	 * metodo para obtener el peso de un vertice
+	 * @return peso del vertice
+	 */
+	public int getContenido(){
 		return posicionPrimerCaracter;
 	}
 
@@ -81,7 +95,6 @@ public class Vertice<E> {
 //	public Arista<E> getAristaPredecesora(){
 //		return aristaPredecesora;
 //	}
-
 
 	public void changeDato(E nuevodato){
 
