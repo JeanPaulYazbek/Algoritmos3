@@ -66,7 +66,7 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 
 		String id;//guarda ids que leamos
 		V dato;//guarda datos que leamos
-		double peso;//guarda peso que leamos
+		int posicionPrimerCaracter;//guarda posicionPrimerCaracter que leamos
 		//AGREGAR LOS VERTICES
 		for(int k = 0; k<numeroVertices; k++){
 
@@ -80,7 +80,7 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 			//BUSCAMOS ERRORES DE FORMATO
 			try{
 				id  = vertice[0];
-				peso = Double.valueOf(vertice[2]);
+				posicionPrimerCaracter = Integer.valueOf(vertice[2]);
 			 	dato = transformer.transform(vertice[1]);//debemos transformar al tipo adecuado
 				
 				
@@ -88,13 +88,13 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 				return false;//si algunos de los datos es erroneo
 			}
 
-			agregarVertice(id, dato, peso);
+			agregarVertice(id, dato, posicionPrimerCaracter);
 
 		}
 
 		String idarco;//guarda id del arco leido
 		L datoarco;	  //guarda dato del arco leido
-		double pesoarco;//guarda peso del arco leido
+		int posicionPrimerCaracterarco;//guarda posicionPrimerCaracter del arco leido
 		String vi;		//guarda id del vertice inicial del arco que leamos
 		String vf;		//guarda id "			" final "  				"
 		//AGREGAR LOS ARCOS
@@ -110,7 +110,7 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 			//BUSCAMOS ERRORES DE FORMATO
 			try{
 				idarco  = vertice[0];
-				peso = Double.valueOf(vertice[2]);
+				posicionPrimerCaracter = Integer.valueOf(vertice[2]);
 			 	datoarco = transformerarco.transform(vertice[1]);
 				vi = vertice[3];
 				vf = vertice[4];
@@ -119,7 +119,7 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 				return false;//si algunos de los datos es erroneo
 			}
 
-			agregarArco(idarco, datoarco, peso, vi, vf);
+			agregarArco(idarco, datoarco, posicionPrimerCaracter, vi, vf);
 
 		}
 		//se cargo el grafo
@@ -179,10 +179,10 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 	 * funcion que agrega un vertice a partir de su informacion
 	 * @param id es el id del vertice que queremos agregar
 	 * @param dato es el dato de tipo generico que queremos tener en el vertice
-	 * @param p es el peso del vertice
+	 * @param p es el posicionPrimerCaracter del vertice
 	 * @return true si se agrega en vertice, false en otro caso
 	 */
-	public Boolean agregarVertice( String id, V dato, double p ){
+	public Boolean agregarVertice( String id, V dato, int p ){
 		//creamos un objeto vertice e intetamos agregarlo
 		Vertice<V> nuevoVertice = new Vertice<V>(id, dato, p);
 		return agregarVertice(nuevoVertice);
@@ -256,9 +256,9 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 		Vertice<V> verticeFinal = obtenerVertice(verticeB);
 		Vertice<V> vertice1 = a.getExtremoInicial();
 		Vertice<V> vertice2 = a.getExtremoFinal();
-		if ((verticeInicial.getPeso() != vertice1.getPeso())||(verticeFinal.getPeso() != vertice2.getPeso())){
-			return false;
-		}
+//		if ((verticeInicial.getposicionUltimoCaracter() != vertice1.getposicionUltimoCaracter())||(verticeFinal.getposicionPrimerCaracter() != vertice2.getposicionPrimerCaracter())){
+//			return false;
+//		}
 		if ((verticeInicial.getDato() != vertice1.getDato())||(verticeFinal.getDato() != vertice2.getDato())){
 			return false;
 		}
@@ -276,7 +276,7 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 	 * funcion que agrega arco por informacion
 	 * @param id id del arco que se quiere agregar
 	 * @param dato dato del tipo generico de arco que se quiere agregar
-	 * @param p	peso del arco que se quiere agregar
+	 * @param p	posicionPrimerCaracter del arco que se quiere agregar
 	 * @param vInicial	id del vertice inicial del arco que se quiere agregar
 	 * @param vFinal id del vertice final del arco que se quiere agregar
 	 * @return	true si se agrego el arco, false en otro caso

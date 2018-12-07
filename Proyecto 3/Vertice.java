@@ -1,11 +1,11 @@
 public class Vertice<E> {
 
 	private String id; //atributo id de los vertices
-	private E dato;    //atributo dato de los vertices
-	private double p;	//atributo peso de los vertices
+	private E posicionUltimoCaracter;    //atributo dato de los vertices
+	private int posicionPrimerCaracter;	//atributo peso de los vertices
 	protected double costo; //atributo costo de los vertices
 	protected Vertice<E> predecesor; // predecesor de los vertices
-	protected Arista<E> aristaPredecesora;// arista predecesora de los vertices
+//	protected Arista<E> aristaPredecesora;// arista predecesora de los vertices
 
 	/**
 	 * contructor para crear un vertice con todos los atributos 
@@ -13,10 +13,11 @@ public class Vertice<E> {
 	 * @param dato dato del vertice a crear
 	 * @param p peso del vertice
 	 */
-	Vertice(String id, E dato, double p){
+	Vertice(String id,E posicionUltimoCaracter,int posicionPrimerCaracter)
+	{
 		this.id = id;
-		this.dato = dato;
-		this.p = p;
+		this.posicionUltimoCaracter = posicionUltimoCaracter;
+		this.posicionPrimerCaracter = posicionPrimerCaracter;
 		this.costo = 9999999.00;
 		this.predecesor = null;
 	}
@@ -27,8 +28,8 @@ public class Vertice<E> {
 	 */
 	public Vertice(Vertice<E> original){
 		this.id = original.id;
-		this.dato = original.dato;
-		this.p = original.p;
+		this.posicionUltimoCaracter = original.posicionUltimoCaracter;
+		this.posicionPrimerCaracter = original.posicionPrimerCaracter;
 		this.costo = original.costo;
 		this.predecesor = this.predecesor;
 	}
@@ -37,8 +38,16 @@ public class Vertice<E> {
 	 * metodo para obtener el peso de un vertice
 	 * @return peso del vertice
 	 */
-	public double getPeso(){
-		return p;
+	public E getDato(){
+		return posicionUltimoCaracter;
+	}
+
+	/**
+	 * metodo para obtener el peso de un vertice
+	 * @return peso del vertice
+	 */
+	public int posicionPrimerCaracter(){
+		return posicionPrimerCaracter;
 	}
 
 	/**
@@ -47,14 +56,6 @@ public class Vertice<E> {
 	 */
 	public String getId(){
 		return id;
-	}
-
-	/**
-	 * metodo para obtener el Dato de un vertice
-	 * @return dato del vertice
-	 */
-	public E getDato(){
-		return dato;
 	}
 
 	/**
@@ -77,25 +78,24 @@ public class Vertice<E> {
 	 * metodo para obtener la arista predecesora de un vertice
 	 * @return aristaPredecesora del vertice
 	 */
-	public Arista<E> getAristaPredecesora(){
-		return aristaPredecesora;
-	}
+//	public Arista<E> getAristaPredecesora(){
+//		return aristaPredecesora;
+//	}
 
 
 	public void changeDato(E nuevodato){
 
-		this.dato = nuevodato;
+		this.posicionUltimoCaracter = nuevodato;
 	}
 	/**
 	 * metodo para presentar todos los atributos del vertice en una sola cadena String
 	 * @return string que representa el vertice
 	 */
-	public String toString(){
+	public String toString()
+	{
 		String x = id;
-		String y = String.valueOf(dato);
-		String z = String.valueOf(p);
-
-		String informacionVertice = x + " " + y + " " + z;
+		String y = String.valueOf(posicionUltimoCaracter);
+		String informacionVertice = x + " " + y;
 		return informacionVertice;
 	}
 }
