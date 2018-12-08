@@ -10,11 +10,11 @@ class Test
         switch (operator)
         { 
         case "SUM":
-            return 1;
+            return 2;
 
         case "MIN":
         case "MAX":
-            return 2;
+            return 1;
 
         case "+":
         case "-":
@@ -52,6 +52,7 @@ class Test
         Stack<String> stackPRE = new Stack<>();
         String operatorPRE = new String("");
         boolean anteriorEraOperando=false;
+        int esUnario=0;
         exp+=" ";
 
         for (int i = 0; i<exp.length()-1; ++i)
@@ -92,19 +93,32 @@ class Test
             {
                 stack.push("(");
                 anteriorEraOperando=false;
+                if (esUnario>0)
+                {
+                    operatorPRE = stackPRE.pop();
+                    while (!stack.isEmpty() && Prec(operatorPRE) <= Prec(stack.peek()))
+                    {
+                        result += stack.pop()+ " ";
+                    }
+                    stack.push(operatorPRE);
+                }
             }
-              
+
             //  If the scanned character is an ')', pop and output from the stack  
             // until an '(' is encountered. 
             else if (newCharacter.equals(")"))
-            { 
+            {
                 anteriorEraOperando=false;
                 while (!stack.isEmpty() && stack.peek() != "(")
                     result += stack.pop()+ " ";
                 if (!stack.isEmpty() && stack.peek() != "(")
                     return "Invalid Expression"; // invalid expression                 
                 else
-                    stack.pop();
+                    if (esUnario<1)
+                    {
+                        stack.pop();
+                        esUnario-=1;
+                    }
             }
             else if (newCharacter.equals(","))
             {
@@ -117,13 +131,24 @@ class Test
             }
             else // an operator is encountered 
             {
-                if (newCharacter.equals("M")||newCharacter.equals("S"))
+                if (newCharacter.equals("M"))
                 {
                     i++;
                     newCharacter+=String.valueOf(exp.charAt(i));
                     i++;
                     newCharacter+=String.valueOf(exp.charAt(i));
                     stackPRE.push(String.valueOf(newCharacter));
+                    System.out.println(newCharacter);
+                }
+                else if(newCharacter.equals("S"))
+                {
+                    i++;
+                    newCharacter+=String.valueOf(exp.charAt(i));
+                    i++;
+                    newCharacter+=String.valueOf(exp.charAt(i));
+                    stackPRE.push(String.valueOf(newCharacter));
+                    esUnario+=1;
+                    System.out.println(newCharacter);
                 }
                 else
                 {
@@ -134,6 +159,8 @@ class Test
                     stack.push(newCharacter);
                 }
             }
+            System.out.println(stackPRE.size());
+            System.out.println(result);
         }
         // pop all the operators from the stack 
         while (!stack.isEmpty()) 
@@ -144,7 +171,7 @@ class Test
     // Driver method  
     public static void main(String[] args)  
     { 
-        String exp = "-2*23+6-MIN(MAX(5,7),4*8)";
+        String exp = "-1*MAX(SUM(5),SUM(MIN(5,4)))";
         // output expected -2 23 * 6 + 1 -
         // original output 223*6+1-
         // actual output 0 23 -2*1 +6-
