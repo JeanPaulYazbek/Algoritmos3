@@ -10,49 +10,52 @@ public class ExpressionTree
         this.left = left;
         this.right = right;
     }
+
     public String getExpr()
     {
-        return expr;
+        return String.valueOf(expr);
     }
 
     public ExpressionTree evaluate()
     {
-        int result = 0;
+        int result=0;
+        int izq = Integer.valueOf(String.valueOf(this.left.getExpr()));
+        int der = Integer.valueOf(String.valueOf(this.right.getExpr()));
         String operator = expr;
+
         switch (operator)
         {
         case "SUM":
-            int n = Integer.parseInt(this.right.expr);
-            for (int i = 1; i<=n; ++i)
+            for (int i = 1; i<=der; ++i)
             {
                 result+=i;
             }
         case "MIN":
-            if (Integer.parseInt(this.right.expr)>Integer.parseInt(this.left.expr))
+            if (der>izq)
             {
-                result=(Integer.parseInt(this.left.expr));
+                result=0+izq;
             }
             else
             {
-                result=(Integer.parseInt(this.right.expr));
+                result=0+der;
             }
         case "MAX":
-            if (Integer.parseInt(this.right.expr)>Integer.parseInt(this.left.expr))
+            if (der>izq)
             {
-                result=(Integer.parseInt(this.right.expr));
+                result=0+der;
             }
             else
             {
-                result=(Integer.parseInt(this.left.expr));
+                result=0+izq;
             }
         case "+":
-            result=Integer.parseInt(this.right.expr)+Integer.parseInt(this.left.expr);
+            result=0+izq+der;
         case "-":
-            result=Integer.parseInt(this.right.expr)-Integer.parseInt(this.left.expr);
+            result=0+izq-(der);
         case "*":
-            result=Integer.parseInt(this.right.expr)*Integer.parseInt(this.left.expr);
+            result=0+(izq*der);
         }
-        ExpressionTree solution = new ExpressionTree(""+result, null, null);
+        ExpressionTree solution = new ExpressionTree(""+result,null,null);
         return solution;
     }
 }
