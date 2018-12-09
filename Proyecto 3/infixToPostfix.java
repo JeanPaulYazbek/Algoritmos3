@@ -1,7 +1,7 @@
 import java.util.Stack;
 import java.io.IOException;
 
-class Test 
+public class infixToPostfix
 { 
     // A utility function to return precedence of a given operator 
     // Higher returned value means higher precedence 
@@ -9,39 +9,36 @@ class Test
     {
         switch (operator)
         { 
-        case "SUM":
-            return 1;
-
-        case "MIN":
-        case "MAX":
-            return 2;
-
-        case "+":
-        case "-":
-            return 3;
-
-        case "*":
-            return 4;
+            case "SUM":
+                return 1;
+            case "MIN":
+            case "MAX":
+                return 2;
+            case "+":
+            case "-":
+                return 3;
+            case "*":
+                return 4;
         }
         return -1;
     }
 
-    public static boolean isNumeric(String str)  
+    public static boolean isNumeric(String str)
     {  
-      try  
-      {  
-        double d = Double.parseDouble(str);  
-      }  
-      catch(NumberFormatException nfe)  
-      {  
-        return false;  
-      }  
-      return true;  
+        try
+        {
+            double d = Double.parseDouble(str);
+        }
+        catch(NumberFormatException nfe)
+        {
+            return false;
+        }
+        return true;  
     }
 
     // The main method that converts given infix expression 
     // to postfix expression.  
-    static String infixToPostfix(String exp)
+    static String infixToPostfixFunction(String exp)
     {
         // initializing empty String for result
         String result = new String("");
@@ -159,10 +156,91 @@ class Test
     // Driver method  
     public static void main(String[] args)  
     { 
-        String exp = "-MAX(SUM(5),SUM(-MIN(5,4)))";
+        String input = "-MAX(SUM(5),SUM(-MIN(5,4)))";
         // output expected -2 23 * 6 + 1 -
         // original output 223*6+1-
         // actual output 0 23 -2*1 +6-
-        System.out.println(infixToPostfix(exp)); 
+        String exp = infixToPostfixFunction(input);
+        System.out.println(exp);
+        String[] expresion = exp.split(" ");
+        System.out.println(solve(tree_constructor(expresion)));
+    }
+
+    public static boolean check_operator(String operator)
+    {
+        switch (operator)
+        { 
+            case "SUM":
+            case "MIN":
+            case "MAX":
+            case "+":
+            case "-":
+            case "*":
+            return true;
+        }
+        return false;
+    }
+    public static boolean check_operand(String str)
+    {
+        try
+        {
+            double d = Double.parseDouble(str);
+        }
+        catch(NumberFormatException nfe)
+        {
+            return false;
+        }
+        return true;
+    }
+    public static ExpressionTree solve(ExpressionTree node)
+    {
+        ExpressionTree result = new ExpressionTree("",null,null);
+        if (check_operator(node.left.expr) && check_operator(node.right.expr))
+        {
+            result = new ExpressionTree(node.expr, solve(node.left), solve(node.right));
+        }
+        else if (check_operator(node.left.expr) && check_operand(node.right.expr))
+        {
+            result = new ExpressionTree(node.expr, solve(node.left), node.right);
+        }
+        else if (check_operator(node.left.expr) && check_operand(node.right.expr))
+        {
+            result = new ExpressionTree(node.expr, solve(node.left), node.right);
+        }
+        else if (check_operator(node.right.expr) && check_operand(node.left.expr))
+        {
+            result = new ExpressionTree(node.expr, node.left, solve(node.right));
+        }
+        else if (check_operand(node.left.expr) &&  check_operand(node.right.expr))
+        {
+            result = new ExpressionTree(node.expr, node.left, node.right);
+        }
+        return result.evaluate();
+    }
+    public static ExpressionTree tree_constructor(String[] expresion)
+    {
+        Stack<ExpressionTree> stack_tree = new Stack<>();
+        ExpressionTree operand;
+        for (int i = 0; i<expresion.length; ++i)
+        {
+            if (check_operand(expresion[i]))
+            {
+                operand = new ExpressionTree(expresion[i], null, null);
+                stack_tree.push(operand);
+            }
+            else if (check_operator(expresion[i]))
+            {
+                operand = new ExpressionTree(expresion[i], null, null);
+                stack_tree.push(operand);
+                if (stack_tree.size() > 1)
+                {
+                    ExpressionTree operand2 = stack_tree.pop();
+                    ExpressionTree operand1 = stack_tree.pop();
+                    ExpressionTree operator = new  ExpressionTree(expresion[i], operand1, operand2);
+                    stack_tree.push(operator);
+                }
+            }
+        }
+        return stack_tree.pop();
     }
 }
