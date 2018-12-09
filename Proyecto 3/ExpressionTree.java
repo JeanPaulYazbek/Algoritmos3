@@ -24,10 +24,22 @@ public class ExpressionTree
 
         if (expr.equals("SUM"))
         {
-            for (int i = 1; i<=der; ++i)
+            if (der<0)
             {
-                result+=(i);
-            }            
+                der*=-1;
+                for (int i = 1; i<=der; ++i)
+                {
+                    result+=(i);
+                }
+                result*=-1;
+            }
+            else
+            {
+                for (int i = 1; i<=der; ++i)
+                {
+                    result+=(i);
+                }
+            }
         }
         else if (expr.equals("MIN"))
         {
