@@ -1,7 +1,8 @@
 import java.util.Stack;
 import java.io.IOException;
+import java.util.Arrays;
 
-public class infixToPostfix
+public class InfixToPostfix
 { 
     // A utility function to return precedence of a given operator 
     // Higher returned value means higher precedence 
@@ -74,6 +75,7 @@ public class infixToPostfix
                 {
                     current="-";
                     exp = exp.substring(0, i+1) + "1*" + exp.substring(i+1, exp.length());
+//                    System.out.println(exp);
                 }
                 else
                 {
@@ -96,7 +98,7 @@ public class infixToPostfix
             // until an '(' is encountered. 
             else if (newCharacter.equals(")"))
             {
-                anteriorEraOperando=false;
+//                anteriorEraOperando=false;
                 while (!stack.isEmpty() && stack.peek() != "(")
                     result += stack.pop()+ " ";
                 if (!stack.isEmpty() && stack.peek() != "(")
@@ -116,6 +118,7 @@ public class infixToPostfix
             }
             else // an operator is encountered
             {
+                anteriorEraOperando=false;
                 if (newCharacter.equals("M"))
                 {
                     i++;
@@ -133,7 +136,7 @@ public class infixToPostfix
                     newCharacter+=String.valueOf(exp.charAt(i));
                     stackPRE.push(String.valueOf(newCharacter));
                     exp = exp.substring(0, i+2) + "0," + exp.substring(i+2, exp.length());
-                    System.out.println(exp);
+//                    System.out.println(exp);
                 }
                 else
                 {
@@ -153,17 +156,23 @@ public class infixToPostfix
         return result;
     }
 ////////////////////////////////////////////////////////////////////////////////
-    // Driver method  
-    public static void main(String[] args)  
+    // Driver method
+    public static String driver(String args)
     { 
-        String input = "2";
+        String input = args;
         // output expected -2 23 * 6 + 1 -
         // original output 223*6+1-
         // actual output 0 23 -2*1 +6-
         String exp = infixToPostfixFunction(input);
-        System.out.println(exp);
+//        System.out.println(exp);
         String[] expresion = exp.split(" ");
-        System.out.println(solve(tree_constructor(expresion)).getExpr());
+        if (expresion.length<3)
+        {
+            System.out.println(Arrays.toString(expresion)+"Is Not A Expression");
+            return null;
+        }
+//        System.out.println(Arrays.toString(expresion));
+        return solve(tree_constructor(expresion)).getExpr();
     }
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -198,23 +207,19 @@ public class infixToPostfix
     public static ExpressionTree solve(ExpressionTree node)
     {
         ExpressionTree result = new ExpressionTree("",null,null);
-        if (check_operator(node.left.expr) && check_operator(node.right.expr))
+        if ((check_operator(node.left.expr) && check_operator(node.right.expr)))
         {
             result = new ExpressionTree(node.expr, solve(node.left), solve(node.right));
         }
-        else if (check_operator(node.left.expr) && check_operand(node.right.expr))
+        else if ((check_operator(node.left.expr) && check_operand(node.right.expr)))
         {
             result = new ExpressionTree(node.expr, solve(node.left), node.right);
         }
-        else if (check_operator(node.left.expr) && check_operand(node.right.expr))
-        {
-            result = new ExpressionTree(node.expr, solve(node.left), node.right);
-        }
-        else if (check_operator(node.right.expr) && check_operand(node.left.expr))
+        else if ((check_operand(node.left.expr) && check_operator(node.right.expr)))
         {
             result = new ExpressionTree(node.expr, node.left, solve(node.right));
         }
-        else if (check_operand(node.left.expr) &&  check_operand(node.right.expr))
+        else if ((check_operand(node.left.expr) && check_operand(node.right.expr)))
         {
             result = new ExpressionTree(node.expr, node.left, node.right);
         }
@@ -222,21 +227,20 @@ public class infixToPostfix
 //        System.out.println(result.right.getExpr());
 //        System.out.println(result.left.getExpr());
         return result.evaluate();
-
     }
 
     public static ExpressionTree tree_constructor(String[] expresion)
     {
+        int n = expresion.length;
         Stack<ExpressionTree> stack_tree = new Stack<>();
-        ExpressionTree operand;
-        for (int i = 0; i<expresion.length; ++i)
+        for (int i = 0; i<n; ++i)
         {
             if (check_operand(expresion[i]))
             {
-                operand = new ExpressionTree(expresion[i], null, null);
+                ExpressionTree operand = new ExpressionTree(expresion[i], null, null);
                 stack_tree.push(operand);
             }
-            else if (check_operator(expresion[i]))
+            if (check_operator(expresion[i]))
             {
                 if (stack_tree.size() > 1)
                 {

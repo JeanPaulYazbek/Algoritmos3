@@ -21,41 +21,50 @@ public class ExpressionTree
         int result=0;
         int izq = Integer.valueOf(String.valueOf(this.left.getExpr()));
         int der = Integer.valueOf(String.valueOf(this.right.getExpr()));
-        String operator = expr;
 
-        switch (operator)
+        if (expr.equals("SUM"))
         {
-        case "SUM":
             for (int i = 1; i<=der; ++i)
             {
-                result+=i;
-            }
-        case "MIN":
-            if (der>izq)
-            {
-                result=0+izq;
-            }
-            else
-            {
-                result=0+der;
-            }
-        case "MAX":
-            if (der>izq)
-            {
-                result=0+der;
-            }
-            else
-            {
-                result=0+izq;
-            }
-        case "+":
-            result=0+izq+der;
-        case "-":
-            result=0+izq-(der);
-        case "*":
-            result=0+(izq*der);
+                result+=(i);
+            }            
         }
-        ExpressionTree solution = new ExpressionTree(""+result,null,null);
+        else if (expr.equals("MIN"))
+        {
+            if (der>izq)
+            {
+                result=0+(izq);
+            }
+            else
+            {
+                result=0+(der);
+            }
+        }
+        else if (expr.equals("MAX"))
+        {
+            if (der>izq)
+            {
+                result=0+(der);
+            }
+            else
+            {
+                result=0+(izq);
+            }
+        }
+        else if (expr.equals("+"))
+        {
+            result=0+(izq+(der));
+        }
+        else if (expr.equals("-"))
+        {
+            result=0+(izq-(der));
+        }
+        else if (expr.equals("*"))
+        {
+            result=0+(izq*(der));
+        }
+//        System.out.println(result);
+        ExpressionTree solution = new ExpressionTree(String.valueOf(result),null,null);
         return solution;
     }
 }
