@@ -25,6 +25,7 @@ public class USBDataFlow
 		}
 		GrafoDirigido<String,String> nuevoGrafoDirigido = new GrafoDirigido<String,String>();
 		nuevoGrafoDirigido.cargarGrafo(args[0]);
+		System.out.println(nuevoGrafoDirigido.toString());
 //		nuevoGrafoDirigido.OrdenTopologicoDfs();
 //		nuevoGrafoDirigido.resolverMatriz();
 //		nuevoGrafoDirigido.imprimirMatriz();

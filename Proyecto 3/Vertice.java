@@ -3,9 +3,10 @@ public class Vertice<E> {
 	private String id; //atributo id de los vertices
 	protected E dato;    //atributo dato de los vertices
 	protected int orden;	//atributo orden topoligo
+	protected int eval;
 	protected String color; //atributo colo para dfs visita
 	private double p;
-	private String expr;
+	protected String expr;
 	protected double costo; //atributo costo de los vertices
 	protected Vertice<E> predecesor; // predecesor de los vertices
 	protected Arista<E> aristaPredecesora;// arista predecesora de los vertices
@@ -20,6 +21,7 @@ public class Vertice<E> {
 		this.id = id;
 		this.dato = dato;
 		this.expr = new String("");
+		this.eval = Integer.MAX_VALUE;
 		this.p = p;
 		this.costo = 9999999.00;
 		this.predecesor = null;

@@ -4,8 +4,7 @@ import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.io.BufferedReader;
 import java.io.FileReader;
-
-
+import static java.lang.Math.*;
 
 public class GrafoDirigido<V, L> implements Grafo<V, L>{
 
@@ -50,28 +49,20 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 		}
 		//AGREGAR LOS VERTICES
 		String idVertice;
+		String columna;
 		V dato =  null;
-		String[] le;
-		char[] alphabetUp  = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
-		int mod26;
-		int repetecion;
-		for(int i = 0; i<numeroLineas; i++)
+
+		for(int j = 0; j<numeroExpresiones; j++)
 		{
-			for(int j = 1; j<numeroExpresiones+1; j++)
+			columna=translateCol(j+1);
+			for(int i = 1; i<numeroLineas+1; i++)
 			{
-				idVertice="";
-				mod26 = j%26;
-				repetecion = j/26;
-				while (repetecion>=0)
-				{
-					idVertice+=alphabetUp[mod26];
-					repetecion-=1;
-				}
-				idVertice += String.valueOf(i);//el id del vertice sera el orden en que lo encontremos
+				idVertice = columna + String.valueOf(i);
 				agregarVertice(idVertice, dato, 0.0);
 			}
-
 		}
+		System.out.println(toString());
+
 		//AGREGAR LOS ARCOS
 		String idarco;//guarda id del arco leido
 		L datoarco = null;	  //guarda dato del arco leido
@@ -83,27 +74,21 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 		String verticeActual;
 		int match;
 		//AGREGAR LOS ARCOS
-		for(int i = 0; i<numeroLineas; i++)
+		for(int j = 0; j<numeroExpresiones; j++)
 		{
 			linea = Lector.readLine();//a partir de aqui son vertices
-			String[] vertice = linea.split(" ");
-			for(int j = 0; j<numeroExpresiones; j++)
+			String[] expresiones = linea.split(" ");
+			columna=translateCol(j+1);
+
+			for(int i = 1; i<numeroLineas+1; i++)
 			{
-				idVertice="";
-				mod26 = j%26;
-				repetecion = j/26;
-				while (repetecion>=0)
-				{
-					idVertice+=alphabetUp[mod26];
-					repetecion-=1;
-				}
-				idVertice += String.valueOf(i);
-				expresionActual = vertice[j]+" ";
+				idVertice = columna + String.valueOf(i);
+				expresionActual = expresiones[j]+" ";
 		        match=0;
 		        for (int k = 0; k<expresionActual.length(); ++k)
 		        {
-		        	verticeActual="";
-		            newCharacter = expresionActual.charAt(k);
+					verticeActual = "";
+					newCharacter = expresionActual.charAt(k);
 		            // If the scanned character is an operand, add it to output.
 					if (Character.isLetterOrDigit(newCharacter))
 		            {
@@ -119,6 +104,7 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 						idarco = String.valueOf(i)+"A"+String.valueOf(j)+"C"+String.valueOf(match);
 						agregarArco(linea, datoarco, 0.0, verticeActual, idVertice);
 //						if (expresionActual.charAt(0)=='=')
+						System.out.println(idVertice);
 						obtenerVertice(idVertice).modifyExpresion(expresionActual);
 						match+=1;
 		            }
@@ -127,6 +113,16 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 		}
 		//se cargo el grafo
 		return true;
+	}
+
+	public String translateCol(int n) {
+	    char[] buf = new char[(int) floor(log(25 * (n + 1)) / log(26))];
+	    for (int i = buf.length - 1; i >= 0; i--) {
+	        n--;
+	        buf[i] = (char) ('A' + n % 26);
+	        n /= 26;
+	    }
+		return new String(buf);
 	}
 
     public boolean isNumeric(String str)
