@@ -92,7 +92,7 @@ public class OrdenTopologicoDfs{
 				//creamos el grafo de la universidad base
 				GrafoDirigido<Boolean, Integer> nuevoGrafoDirigido = new GrafoDirigido<Boolean, Integer>();
 				//cargamos el grafo de la universidad base
-				nuevoGrafoDirigido.cargarGrafo(args[0], numeroLine, transformadorInt, transformadorarcoInt);
+//				nuevoGrafoDirigido.cargarGrafo(args[0], numeroLine, transformadorInt, transformadorarcoInt);
 				DfsVisita(nuevoGrafoDirigido);//le asignamos un orden topologico
 
 			}

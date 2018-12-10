@@ -26,7 +26,7 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 	 * @return un booleano, true si se creo exitosamente el grafo, false si no
 	 * @throws IOException
 	 */
-	public Boolean cargarGrafo(String archivo, int numeroLinea, Transformer<String, V> transformer,  Transformer<String, L> transformerarco)
+	public Boolean cargarGrafo(String archivo)
 	throws IOException
 	{
 		BufferedReader Lector = new BufferedReader(new FileReader(archivo));
@@ -53,7 +53,6 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 		V dato =  null;
 		String[] le;
 		char[] alphabetUp  = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
-		char[] alphabetLow = "abcdefghijklmnopqrstuvwxyz".toCharArray();
 		int mod26;
 		int repetecion;
 		for(int i = 0; i<numeroLineas; i++)
@@ -99,7 +98,6 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 					repetecion-=1;
 				}
 				idVertice += String.valueOf(i);
-
 				expresionActual = vertice[j]+" ";
 		        match=0;
 		        for (int k = 0; k<expresionActual.length(); ++k)
@@ -120,6 +118,7 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 		            {
 						idarco = String.valueOf(i)+"A"+String.valueOf(j)+"C"+String.valueOf(match);
 						agregarArco(linea, datoarco, 0.0, verticeActual, idVertice);
+//						if (expresionActual.charAt(0)=='=')
 						obtenerVertice(idVertice).modifyExpresion(expresionActual);
 						match+=1;
 		            }
@@ -211,8 +210,16 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 	 * @return regresa el vertice que se busca o una excepcion en caso contrario
 	 */
 	public Vertice obtenerVertice( String id){
-
-		//chequeamos si algun vertice tiene ese id
+		StringBuilder sb = new StringBuilder(id);
+		for (int index = 0; index < sb.length(); index++) {
+		    char c = sb.charAt(index);
+		    if (Character.isLowerCase(c)) {
+		        sb.setCharAt(index, Character.toUpperCase(c));
+		    } else {
+		        sb.setCharAt(index, Character.toLowerCase(c));
+		    }
+		}
+		id = sb.toString();
 		for (Vertice<V> vertices: digrafo.keySet()){
 			
 			 if (vertices.getId().equals(id)){
