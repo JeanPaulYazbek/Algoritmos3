@@ -166,10 +166,14 @@ public class InfixToPostfix
         String exp = infixToPostfixFunction(input);
 //        System.out.println(exp);
         String[] expresion = exp.split(" ");
-        if (expresion.length<3)
+        if ((expresion.length==0)||(expresion.length==2))
         {
             System.out.println(Arrays.toString(expresion)+"Is Not A Expression");
             return null;
+        }
+        if (expresion.length==1)
+        {
+            return args;
         }
 //        System.out.println(Arrays.toString(expresion));
         return solve(tree_constructor(expresion)).getExpr();

@@ -10,8 +10,8 @@ public interface Grafo<V, L>
 	 * @return un booleano, true si se creo exitosamente el grafo, false si no
 	 * @throws IOException
 	 */
-	public Boolean cargarGrafo(String archivo, Transformer<String, V> transformer,
-	 Transformer<String, L> transformerarista)throws IOException;
+	//public Boolean cargarGrafo(String archivo, Transformer<String, V> transformer,
+	 //Transformer<String, L> transformerarista)throws IOException;
 
 	/**
 	 * funcion que devuelve el numero de vertices de un grafo
@@ -36,7 +36,7 @@ public interface Grafo<V, L>
 	 * @param p peso del vertice a agregar
 	 * @return true si se agrega, false en otro caso
 	 */
-	public Boolean agregarVertice(String strPosicionUltimoCaracter,V intPosicionUltimoCaracter,int posicionPrimerCaracter,int contenido,boolean operador);
+	public Boolean agregarVertice( String id, V dato, double p );
 	/**
 	 * funcion que obtiene vertice de un grafo
 	 * @param id id del vertice que se busca

@@ -26,105 +26,122 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 	 * @return un booleano, true si se creo exitosamente el grafo, false si no
 	 * @throws IOException
 	 */
-	public Boolean cargarGrafo(String archivo, Transformer<String, V> transformer,  Transformer<String, L> transformerarco)
+	public Boolean cargarGrafo(String archivo, int numeroLinea, Transformer<String, V> transformer,  Transformer<String, L> transformerarco)
 	throws IOException
-	{		
-/*
+	{
 		BufferedReader Lector = new BufferedReader(new FileReader(archivo));
 
-		String linea = Lector.readLine();//ya leimos V
-		linea = Lector.readLine();//ya leimos L
-		linea = Lector.readLine();//ya leimos O
-		linea = Lector.readLine();//nos interesa n(numero de vertices)
-		String[] cuantosVertices = linea.split(" ");
+		String linea = Lector.readLine();
+		
+		String[] cuantasCeldas = linea.split(" ");
 		
 		//Buscamos errores en la linea
-		int numeroVertices;
-		if(cuantosVertices.length != 1){//en caso de formato erroneo
+		int numeroLineas;
+		int numeroExpresiones;
+		if(cuantasCeldas.length != 2)
+		{//en caso de formato erroneo
 			return false;
 		}
 		try{
-			numeroVertices = Integer.parseInt(cuantosVertices[0]);
+			numeroLineas = Integer.parseInt(cuantasCeldas[0]);
+			numeroExpresiones = Integer.parseInt(cuantasCeldas[1]);
 		}catch(Exception e){
 			return false;//si no es un entero formato erroneo
 		}
-
-		linea = Lector.readLine();//nos interesa m(numero de lados)
-		String[] cuantosLados = linea.split(" ");
-
-		//Buscamos errores en la linea
-		int numeroLados;
-		if(cuantosLados.length != 1){//en caso de formato erroneo
-			return false;
-		}
-		try{
-			numeroLados = Integer.parseInt(cuantosLados[0]);
-		}catch(Exception e){
-			return false;//si no es un entero formato erroneo
-		}
-
-		String id;//guarda ids que leamos
-		V dato;//guarda datos que leamos
-		int posicionPrimerCaracter;//guarda posicionPrimerCaracter que leamos
 		//AGREGAR LOS VERTICES
-		for(int k = 0; k<numeroVertices; k++){
-
-			linea = Lector.readLine();//a partir de aqui son vertices
-			String[] vertice = linea.split(" ");
-
-			if(vertice.length != 3){//en caso de formato erroneo por cantidad de elementos
-				return false;
+		String idVertice;
+		V dato =  null;
+		String[] le;
+		char[] alphabetUp  = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
+		char[] alphabetLow = "abcdefghijklmnopqrstuvwxyz".toCharArray();
+		int mod26;
+		int repetecion;
+		for(int i = 0; i<numeroLineas; i++)
+		{
+			for(int j = 1; j<numeroExpresiones+1; j++)
+			{
+				idVertice="";
+				mod26 = j%26;
+				repetecion = j/26;
+				while (repetecion>=0)
+				{
+					idVertice+=alphabetUp[mod26];
+					repetecion-=1;
+				}
+				idVertice += String.valueOf(i);//el id del vertice sera el orden en que lo encontremos
+				agregarVertice(idVertice, dato, 0.0);
 			}
-
-			//BUSCAMOS ERRORES DE FORMATO
-			try{
-				id  = vertice[0];
-				posicionPrimerCaracter = Integer.valueOf(vertice[2]);
-			 	dato = transformer.transform(vertice[1]);//debemos transformar al tipo adecuado
-				
-				
-			}catch(Exception e){
-				return false;//si algunos de los datos es erroneo
-			}
-
-			agregarVertice(id, dato, posicionPrimerCaracter);
 
 		}
-
+		//AGREGAR LOS ARCOS
 		String idarco;//guarda id del arco leido
-		L datoarco;	  //guarda dato del arco leido
-		int posicionPrimerCaracterarco;//guarda posicionPrimerCaracter del arco leido
+		L datoarco = null;	  //guarda dato del arco leido
+		double pesoarco;//guarda peso del arco leido
 		String vi;		//guarda id del vertice inicial del arco que leamos
 		String vf;		//guarda id "			" final "  				"
+		String expresionActual;
+		char newCharacter;
+		String verticeActual;
+		int match;
 		//AGREGAR LOS ARCOS
-		for(int k = 0; k<numeroLados; k++){
-
+		for(int i = 0; i<numeroLineas; i++)
+		{
 			linea = Lector.readLine();//a partir de aqui son vertices
 			String[] vertice = linea.split(" ");
+			for(int j = 0; j<numeroExpresiones; j++)
+			{
+				idVertice="";
+				mod26 = j%26;
+				repetecion = j/26;
+				while (repetecion>=0)
+				{
+					idVertice+=alphabetUp[mod26];
+					repetecion-=1;
+				}
+				idVertice += String.valueOf(i);
 
-			if(vertice.length != 5){//en caso de formato erroneo por cantidad de elementos
-				return false;
+				expresionActual = vertice[j]+" ";
+		        match=0;
+		        for (int k = 0; k<expresionActual.length(); ++k)
+		        {
+		        	verticeActual="";
+		            newCharacter = expresionActual.charAt(k);
+		            // If the scanned character is an operand, add it to output.
+					if (Character.isLetterOrDigit(newCharacter))
+		            {
+		                verticeActual += newCharacter;
+		                while(Character.isLetterOrDigit(expresionActual.charAt(k+1)))
+		                {
+		                    verticeActual += expresionActual.charAt(k+1);
+		                    k+=1;
+		                }
+		            }
+		            if (!(isNumeric(verticeActual)))
+		            {
+						idarco = String.valueOf(i)+"A"+String.valueOf(j)+"C"+String.valueOf(match);
+						agregarArco(linea, datoarco, 0.0, verticeActual, idVertice);
+						obtenerVertice(idVertice).modifyExpresion(expresionActual);
+						match+=1;
+		            }
+		        }
 			}
-
-			//BUSCAMOS ERRORES DE FORMATO
-			try{
-				idarco  = vertice[0];
-				posicionPrimerCaracter = Integer.valueOf(vertice[2]);
-			 	datoarco = transformerarco.transform(vertice[1]);
-				vi = vertice[3];
-				vf = vertice[4];
-				
-			}catch(Exception e){
-				return false;//si algunos de los datos es erroneo
-			}
-
-			agregarArco(idarco, datoarco, posicionPrimerCaracter, vi, vf);
-
 		}
 		//se cargo el grafo
-*/
-		return true;		
+		return true;
 	}
+
+    public boolean isNumeric(String str)
+    {
+        try
+        {
+            double d = Double.parseDouble(str);
+        }
+        catch(NumberFormatException nfe)
+        {
+            return false;
+        }
+        return true;  
+    }
 
 	/**
 	 * funcion que calcula el numero de vertices de un digrafo
@@ -178,12 +195,12 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 	 * funcion que agrega un vertice a partir de su informacion
 	 * @param id es el id del vertice que queremos agregar
 	 * @param dato es el dato de tipo generico que queremos tener en el vertice
-	 * @param p es el posicionPrimerCaracter del vertice
+	 * @param p es el peso del vertice
 	 * @return true si se agrega en vertice, false en otro caso
 	 */
-	public Boolean agregarVertice( String id, V dato, int p,int contenido,boolean operador){
+	public Boolean agregarVertice( String id, V dato, double p ){
 		//creamos un objeto vertice e intetamos agregarlo
-		Vertice<V> nuevoVertice = new Vertice<V>(id,dato,p,contenido,operador);
+		Vertice<V> nuevoVertice = new Vertice<V>(id, dato, p);
 		return agregarVertice(nuevoVertice);
 	}
 
@@ -255,9 +272,9 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 		Vertice<V> verticeFinal = obtenerVertice(verticeB);
 		Vertice<V> vertice1 = a.getExtremoInicial();
 		Vertice<V> vertice2 = a.getExtremoFinal();
-//		if ((verticeInicial.getposicionUltimoCaracter() != vertice1.getposicionUltimoCaracter())||(verticeFinal.getposicionPrimerCaracter() != vertice2.getposicionPrimerCaracter())){
-//			return false;
-//		}
+		if ((verticeInicial.getPeso() != vertice1.getPeso())||(verticeFinal.getPeso() != vertice2.getPeso())){
+			return false;
+		}
 		if ((verticeInicial.getDato() != vertice1.getDato())||(verticeFinal.getDato() != vertice2.getDato())){
 			return false;
 		}
@@ -275,7 +292,7 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 	 * funcion que agrega arco por informacion
 	 * @param id id del arco que se quiere agregar
 	 * @param dato dato del tipo generico de arco que se quiere agregar
-	 * @param p	posicionPrimerCaracter del arco que se quiere agregar
+	 * @param p	peso del arco que se quiere agregar
 	 * @param vInicial	id del vertice inicial del arco que se quiere agregar
 	 * @param vFinal id del vertice final del arco que se quiere agregar
 	 * @return	true si se agrego el arco, false en otro caso
