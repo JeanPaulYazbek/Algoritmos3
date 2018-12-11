@@ -60,13 +60,11 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 		String columna;
 		V dato =  null;
 		matrizDeVertices= new String[numeroLineas][numeroExpresiones];
-
-		for(int j = 0; j<numeroExpresiones; j++)
+		for(int i = 0; i<numeroLineas; i++)
 		{
-			columna=translateCol(j+1);
-			for(int i = 0; i<numeroLineas; i++)
+			for(int j = 0; j<numeroExpresiones; j++)
 			{
-				idVertice = columna + String.valueOf(i+1);
+				idVertice = translateCol(j+1) + String.valueOf(i+1);
 				matrizDeVertices[i][j]= idVertice;
 				agregarVertice(idVertice, dato, 0.0);
 			}
@@ -83,11 +81,28 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 		for(int i = 0; i<numeroLineas; i++)
 		{
 			linea = Lector.readLine();//a partir de aqui son vertices
-			String[] expresiones = linea.split(" ");
+			String[] expresiones;
+			try
+			{
+				expresiones = linea.split(" ");
+			}
+			catch(Exception e)
+			{	
+				System.out.println("Numero De Lineas erroneo");
+				return false;//si no es un entero formato erroneo
+			}
 			for(int j = 0; j<numeroExpresiones; j++)
 			{
 				idVertice = matrizDeVertices[i][j];
-				expresionActual = expresiones[j]+" ";
+				try
+				{
+					expresionActual = expresiones[j]+" ";
+				}
+				catch(Exception e)
+				{	
+					System.out.println("Numero De Expresiones erroneo");
+					return false;//si no es un entero formato erroneo
+				}
 				if (expresionActual.charAt(0)=='=')
 				{
 					expresionActual = expresionActual.substring(1,expresionActual.length()-1);
