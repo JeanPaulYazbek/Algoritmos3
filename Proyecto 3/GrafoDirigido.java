@@ -238,11 +238,12 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 	 */
 	public Vertice obtenerVertice( String id){
 //		System.out.println(id);
-		for (Vertice<V> vertices: digrafo.keySet()){
-			
-			 if (vertices.getId().equals(id)){
-			 	return vertices;
-			 }
+		for (Vertice<V> vertices: digrafo.keySet())
+		{	
+			if (vertices.getId().equals(id))
+			{
+				return vertices;
+			}
 		}
 		throw new NoSuchElementException("No se encontro el vertice");
 	}
@@ -685,7 +686,7 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 		{
 			for (int j = 0; j<m; ++j)
 			{
-				cadenaGrafo += obtenerVertice(matrizDeVertices[i][j]).eval+" ";
+				cadenaGrafo += obtenerVertice(matrizDeVertices[i][j]).eval.replace(" ","")+" ";
 			}
 				cadenaGrafo += "\n";
 		}

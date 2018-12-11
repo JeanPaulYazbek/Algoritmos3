@@ -10,6 +10,7 @@ public class OrdenTopologicoDfs{
 	
 	static Boolean ciclo;
 	static int contador;
+	static Vertice<Boolean> verticeCiclo;
 	static Vertice<Boolean>[] ordenes;
 
 	public static boolean DfsVisita(GrafoDirigido<Boolean, Integer> grafoPrecedencia){
@@ -27,10 +28,19 @@ public class OrdenTopologicoDfs{
 		for(Vertice<Boolean> vert : vertices){//por cada vertice
 			if (vert.getDato() == false){//si el vertice no ha sido visitado
 				DfsRecursivo(vert, grafoPrecedencia);
-				if (ciclo){
+				if (ciclo)
+				{
 					System.out.println("Su configuración contiene un ciclo:");
-					System.out.println(Arrays.deepToString(ordenes));
-//					System.out.println("->");
+					String caminoCiclo = verticeCiclo.getId();
+					Vertice<Boolean> verticeCiclopredecesor = verticeCiclo.predecesor;
+//					System.out.println(caminoCiclo);
+//					System.out.println(verticeCiclo.predecesor.getId());
+					while(!(verticeCiclopredecesor.getId().equals(verticeCiclo.getId())))
+					{
+						caminoCiclo=verticeCiclopredecesor.getId()+"->"+caminoCiclo;
+						verticeCiclopredecesor = verticeCiclopredecesor.predecesor;
+					}
+					System.out.println(caminoCiclo);
 					return false;
 				}
 			}
@@ -49,12 +59,17 @@ public class OrdenTopologicoDfs{
 		ArrayList<Vertice<Boolean>> sucesores = grafoPrecedencia.sucesores(vertice.getId());//extraemos los sucesores del vertice actual
 
 		for(Vertice<Boolean> sucesor : sucesores){//por cada sucesor
-
+			sucesor.predecesor = vertice;
+			
 			if (sucesor.getColor().equals("Gray")){//si nos regresamos a un vertice que esta en gris actualmente es que hay un circuito
+				verticeCiclo = sucesor;
+//				System.out.println(sucesor.predecesor.getId());
 				ciclo = true;
 			}
 
 			if (sucesor.getDato() ==false){//si no ha sido visitado
+//				sucesor.predecesor = vertice;
+//				System.out.println(sucesor.predecesor.getId());
 				DfsRecursivo(sucesor, grafoPrecedencia);//llamamos la recursion
 			}
 		}
