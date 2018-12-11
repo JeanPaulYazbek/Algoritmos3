@@ -1,6 +1,8 @@
 import java.lang.Math;
 import java.util.Arrays;
 import static java.lang.Math.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Test
 {
@@ -13,6 +15,14 @@ public class Test
 	        n /= 26;
 	    }
 	    System.out.println(new String(buf));
+	    String mydata = "hola MIN(AZw1)+A2";
+		Pattern pattern = Pattern.compile("[a-zA-Z]+\\d+");
+		Matcher matcher = pattern.matcher(mydata);
+		while (matcher.find())
+		{
+		    System.out.println(matcher.group(0));
+		}
+	    System.out.println ("abc12".matches ("[a-zA-Z]+\\d+"));
 	}
 }
 /*		String idVertice;

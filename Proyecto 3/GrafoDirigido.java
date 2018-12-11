@@ -5,16 +5,21 @@ import java.util.NoSuchElementException;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import static java.lang.Math.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.Arrays;
 
 public class GrafoDirigido<V, L> implements Grafo<V, L>{
 
 	//digrafo: representamos el grafo con un diccionario donde las claves son objetos tipo vertices , y los valores listas de objetos tipo lados
 	private Hashtable<Vertice<V>, ArrayList<Arco<L>>> digrafo = new Hashtable<Vertice<V>, ArrayList<Arco<L>>>();
+	private String[][] matrizDeVertices;
 
 	/**
 	 * constructor por defecto
 	 */
-	GrafoDirigido(){
+	GrafoDirigido()
+	{
 	}
 	
 	/**
@@ -51,62 +56,69 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 		String idVertice;
 		String columna;
 		V dato =  null;
+		matrizDeVertices= new String[numeroLineas][numeroExpresiones];
 
 		for(int j = 0; j<numeroExpresiones; j++)
 		{
 			columna=translateCol(j+1);
-			for(int i = 1; i<numeroLineas+1; i++)
+			for(int i = 0; i<numeroLineas; i++)
 			{
-				idVertice = columna + String.valueOf(i);
+				idVertice = columna + String.valueOf(i+1);
+				matrizDeVertices[i][j]= idVertice;
 				agregarVertice(idVertice, dato, 0.0);
 			}
 		}
-		System.out.println(toString());
+//		System.out.println(Arrays.deepToString(matrizDeVertices));
 
 		//AGREGAR LOS ARCOS
 		String idarco;//guarda id del arco leido
 		L datoarco = null;	  //guarda dato del arco leido
 		double pesoarco;//guarda peso del arco leido
-		String vi;		//guarda id del vertice inicial del arco que leamos
-		String vf;		//guarda id "			" final "  				"
 		String expresionActual;
 		char newCharacter;
-		String verticeActual;
-		int match;
+		ArrayList<String> verticesExpresion = new ArrayList<String>();
 		//AGREGAR LOS ARCOS
-		for(int j = 0; j<numeroExpresiones; j++)
+		for(int i = 0; i<numeroLineas; i++)
 		{
 			linea = Lector.readLine();//a partir de aqui son vertices
 			String[] expresiones = linea.split(" ");
-			columna=translateCol(j+1);
-
-			for(int i = 1; i<numeroLineas+1; i++)
+			for(int j = 0; j<numeroExpresiones; j++)
 			{
-				idVertice = columna + String.valueOf(i);
+				idVertice = translateCol(j+1) + String.valueOf(i+1);
 				expresionActual = expresiones[j]+" ";
-		        match=0;
-		        for (int k = 0; k<expresionActual.length(); ++k)
+		        //Convertimos cualquier letra a Mayusculas
+				StringBuilder sb = new StringBuilder(expresionActual);
+				for (int index = 0; index < sb.length(); index++)
+				{
+					char c = sb.charAt(index);
+					if (Character.isLowerCase(c))
+					{
+						sb.setCharAt(index, Character.toUpperCase(c));
+					}
+				}
+				expresionActual = sb.toString();
+
+				Pattern pattern = Pattern.compile("[a-zA-Z]+\\d+");
+				Matcher matcher = pattern.matcher(expresionActual);
+				verticesExpresion = new ArrayList<String>();
+				while (matcher.find())
+				{
+					verticesExpresion.add(matcher.group(0));
+				}
+
+//				System.out.println((verticesExpresion));
+
+		        for (int k = 0; k<verticesExpresion.size(); ++k)
 		        {
-					verticeActual = "";
-					newCharacter = expresionActual.charAt(k);
-		            // If the scanned character is an operand, add it to output.
-					if (Character.isLetterOrDigit(newCharacter))
+		            if (estaVertice(verticesExpresion.get(k)))
 		            {
-		                verticeActual += newCharacter;
-		                while(Character.isLetterOrDigit(expresionActual.charAt(k+1)))
-		                {
-		                    verticeActual += expresionActual.charAt(k+1);
-		                    k+=1;
-		                }
-		            }
-		            if (!(isNumeric(verticeActual)))
-		            {
-						idarco = String.valueOf(i)+"A"+String.valueOf(j)+"C"+String.valueOf(match);
-						agregarArco(linea, datoarco, 0.0, verticeActual, idVertice);
+						idarco = String.valueOf(verticesExpresion.get(k))+String.valueOf(idVertice);
+//						System.out.println(verticesExpresion.get(k));
+//						System.out.println(verticeActual);
+						agregarArco(idarco, datoarco, 0.0, verticesExpresion.get(k), idVertice);
 //						if (expresionActual.charAt(0)=='=')
-						System.out.println(idVertice);
 						obtenerVertice(idVertice).modifyExpresion(expresionActual);
-						match+=1;
+						obtenerVertice(idVertice).predecesores.add(obtenerVertice(verticesExpresion.get(k)));
 		            }
 		        }
 			}
@@ -206,16 +218,7 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 	 * @return regresa el vertice que se busca o una excepcion en caso contrario
 	 */
 	public Vertice obtenerVertice( String id){
-		StringBuilder sb = new StringBuilder(id);
-		for (int index = 0; index < sb.length(); index++) {
-		    char c = sb.charAt(index);
-		    if (Character.isLowerCase(c)) {
-		        sb.setCharAt(index, Character.toUpperCase(c));
-		    } else {
-		        sb.setCharAt(index, Character.toLowerCase(c));
-		    }
-		}
-		id = sb.toString();
+//		System.out.println(id);
 		for (Vertice<V> vertices: digrafo.keySet()){
 			
 			 if (vertices.getId().equals(id)){
@@ -610,7 +613,7 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 	 * @param id id del vertice cuyos predecesores se desean conocer
 	 * @return una lista de vertices predecesores del vertice solicitado, lanza una excepcion si el vertice no esta en el grafo
 	 */
-	public ArrayList<Vertice<V>> predecesores(String id){
+/*	public ArrayList<Vertice<V>> predecesores(String id){
 		
 		ArrayList<Vertice<V>> predecesores = new ArrayList<Vertice<V>>();
 
@@ -627,7 +630,7 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 		}
 		throw new NoSuchElementException("No se encontro el vertice");
 	}
-
+*/
 	/** 
 	 * funcion que convierte  un grafo en String para impresion
 	 * @return un string que representa el grafo en su estado actual
@@ -654,6 +657,22 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 		return cadenaGrafo;
 	}
 
+	public String imprimirMatriz()
+	{	
+		String cadenaGrafo = "";
+		int n = matrizDeVertices.length;
+		int m = matrizDeVertices[0].length;
+		for (int i = 0; i<n; ++i)
+		{
+			for (int j = 0; j<m; ++j)
+			{
+				cadenaGrafo += obtenerVertice(matrizDeVertices[i][j]).eval+" ";
+			}
+				cadenaGrafo += "\n";
+		}
+		return cadenaGrafo;
+	}
+
 	/**
 	 * funcion que clona un grafo en un nuevo objeto grafo
 	 * @return regresa un objeto tipo grafo con la forma del grafo actual
@@ -663,6 +682,5 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 		GrafoDirigido<V, L> clon = new GrafoDirigido<V, L>();
 		clon.digrafo = (Hashtable)digrafo.clone();
 		return clon;
-
 	}
 }

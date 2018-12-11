@@ -1,14 +1,16 @@
-public class Vertice<E> {
+import java.util.ArrayList;
 
+public class Vertice<E> {
 	private String id; //atributo id de los vertices
 	protected E dato;    //atributo dato de los vertices
 	protected int orden;	//atributo orden topoligo
-	protected int eval;
+	protected String eval;
 	protected String color; //atributo colo para dfs visita
 	private double p;
 	protected String expr;
 	protected double costo; //atributo costo de los vertices
 	protected Vertice<E> predecesor; // predecesor de los vertices
+	protected ArrayList<Vertice<E>> predecesores;
 	protected Arista<E> aristaPredecesora;// arista predecesora de los vertices
 
 	/**
@@ -17,15 +19,17 @@ public class Vertice<E> {
 	 * @param dato dato del vertice a crear
 	 * @param p peso del vertice
 	 */
-	Vertice(String id, E dato, double p){
+	Vertice(String id, E dato, double p)
+	{
 		this.id = id;
 		this.dato = dato;
 		this.expr = new String("");
-		this.eval = Integer.MAX_VALUE;
+		this.eval = new String("");
 		this.p = p;
 		this.costo = 9999999.00;
 		this.predecesor = null;
 		this.color = "White";
+		this.predecesores = new ArrayList<Vertice<E>>();
 	}
 
 	/**

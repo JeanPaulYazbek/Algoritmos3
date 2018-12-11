@@ -33,9 +33,9 @@ public class OrdenTopologicoDfs{
 			}
 		}
 
-		for(int i = ordenes.length -  1 ; i > -1 ; i--){
-			System.out.println(ordenes[i].getId());//imprimimos los vertices en orden topologico
-		}
+//		for(int i = ordenes.length -  1 ; i > -1 ; i--){
+//			System.out.println(ordenes[i].getId());//imprimimos los vertices en orden topologico
+//		}
 		return ;
 	}
 
