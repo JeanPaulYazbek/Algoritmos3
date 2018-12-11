@@ -4,8 +4,9 @@ import java.util.Arrays;
 
 public class InfixToPostfix
 { 
+////////////////////////////////////////////////////////////////////////////////
     // A utility function to return precedence of a given operator 
-    // Higher returned value means higher precedence 
+    // Higher returned value means higher precedence
     static int Prec(String operator)
     {
         switch (operator)
@@ -23,7 +24,7 @@ public class InfixToPostfix
         }
         return -1;
     }
-
+////////////////////////////////////////////////////////////////////////////////
     public static boolean isNumeric(String str)
     {  
         try
@@ -36,7 +37,7 @@ public class InfixToPostfix
         }
         return true;  
     }
-
+////////////////////////////////////////////////////////////////////////////////
     // The main method that converts given infix expression 
     // to postfix expression.  
     static String infixToPostfixFunction(String exp)
@@ -74,8 +75,7 @@ public class InfixToPostfix
                 if (current.equals("") && (!(anteriorEraOperando)))
                 {
                     current="-";
-                    exp = exp.substring(0, i+1) + "1*" + exp.substring(i+1, exp.length());
-//                    System.out.println(exp);
+                    exp = exp.substring(0, i+1)+"1*"+exp.substring(i+1,exp.length());
                 }
                 else
                 {
@@ -98,7 +98,6 @@ public class InfixToPostfix
             // until an '(' is encountered. 
             else if (newCharacter.equals(")"))
             {
-//                anteriorEraOperando=false;
                 while (!stack.isEmpty() && stack.peek() != "(")
                     result += stack.pop()+ " ";
                 if (!stack.isEmpty() && stack.peek() != "(")
@@ -126,7 +125,6 @@ public class InfixToPostfix
                     i++;
                     newCharacter+=String.valueOf(exp.charAt(i));
                     stackPRE.push(String.valueOf(newCharacter));
-//                    System.out.println(newCharacter);
                 }
                 else if(newCharacter.equals("S"))
                 {
@@ -135,22 +133,19 @@ public class InfixToPostfix
                     i++;
                     newCharacter+=String.valueOf(exp.charAt(i));
                     stackPRE.push(String.valueOf(newCharacter));
-                    exp = exp.substring(0, i+2) + "0," + exp.substring(i+2, exp.length());
-//                    System.out.println(exp);
+                    exp = exp.substring(0, i+2)+"0,"+exp.substring(i+2,exp.length());
                 }
                 else
                 {
-                    while (!stack.isEmpty() && Prec(newCharacter) <= Prec(stack.peek()))
+                    while (!stack.isEmpty()&&Prec(newCharacter)<=Prec(stack.peek()))
                     {
                         result += stack.pop()+ " ";
                     }
                     stack.push(newCharacter);
                 }
             }
-//            System.out.println(stackPRE.size());
-//            System.out.println(result);
         }
-        // pop all the operators from the stack 
+        // pop all the operators from the stack
         while (!stack.isEmpty()) 
             result += stack.pop() + " ";
         return result;
@@ -159,7 +154,6 @@ public class InfixToPostfix
     // Driver method
     public static String driver(String args)
     { 
-//        System.out.println(args);
         String exp = infixToPostfixFunction(args.replace(" ",""));
         String[] expresion = exp.split(" ");
         if ((expresion.length==0)||(expresion.length==2))
@@ -171,11 +165,9 @@ public class InfixToPostfix
         {
             return args;
         }
-//        System.out.println(Arrays.toString(expresion));
         return solve(tree_constructor(expresion)).getExpr();
     }
 ////////////////////////////////////////////////////////////////////////////////
-
     public static boolean check_operator(String operator)
     {
         switch (operator)
@@ -190,7 +182,7 @@ public class InfixToPostfix
         }
         return false;
     }
-
+////////////////////////////////////////////////////////////////////////////////
     public static boolean check_operand(String str)
     {
         try
@@ -203,32 +195,29 @@ public class InfixToPostfix
         }
         return true;
     }
-
+////////////////////////////////////////////////////////////////////////////////
     public static ExpressionTree solve(ExpressionTree node)
     {
         ExpressionTree result = new ExpressionTree("",null,null);
         if ((check_operator(node.left.expr) && check_operator(node.right.expr)))
         {
-            result = new ExpressionTree(node.expr, solve(node.left), solve(node.right));
+            result = new ExpressionTree(node.expr,solve(node.left),solve(node.right));
         }
         else if ((check_operator(node.left.expr) && check_operand(node.right.expr)))
         {
-            result = new ExpressionTree(node.expr, solve(node.left), node.right);
+            result = new ExpressionTree(node.expr,solve(node.left),node.right);
         }
         else if ((check_operand(node.left.expr) && check_operator(node.right.expr)))
         {
-            result = new ExpressionTree(node.expr, node.left, solve(node.right));
+            result = new ExpressionTree(node.expr,node.left,solve(node.right));
         }
         else if ((check_operand(node.left.expr) && check_operand(node.right.expr)))
         {
-            result = new ExpressionTree(node.expr, node.left, node.right);
+            result = new ExpressionTree(node.expr,node.left,node.right);
         }
-//        System.out.println(result.getExpr());
-//        System.out.println(result.right.getExpr());
-//        System.out.println(result.left.getExpr());
         return result.evaluate();
     }
-
+////////////////////////////////////////////////////////////////////////////////
     public static ExpressionTree tree_constructor(String[] expresion)
     {
         int n = expresion.length;
@@ -237,20 +226,21 @@ public class InfixToPostfix
         {
             if (check_operand(expresion[i]))
             {
-                ExpressionTree operand = new ExpressionTree(expresion[i], null, null);
+                ExpressionTree operand = new ExpressionTree(expresion[i],null,null);
                 stack_tree.push(operand);
             }
             if (check_operator(expresion[i]))
             {
                 if (stack_tree.size() > 1)
                 {
-                    ExpressionTree operand2 = stack_tree.pop();
-                    ExpressionTree operand1 = stack_tree.pop();
-                    ExpressionTree operator = new ExpressionTree(expresion[i],operand1,operand2);
+                    ExpressionTree op2 = stack_tree.pop();
+                    ExpressionTree op1 = stack_tree.pop();
+                    ExpressionTree operator = new ExpressionTree(expresion[i],op1,op2);
                     stack_tree.push(operator);
                 }
             }
         }
         return stack_tree.pop();
     }
+////////////////////////////////////////////////////////////////////////////////
 }

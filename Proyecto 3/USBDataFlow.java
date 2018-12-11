@@ -24,6 +24,7 @@ public class USBDataFlow
 			return;
 		}
 		GrafoDirigido<Boolean,Integer> nuevoGrafoDirigido = new GrafoDirigido<Boolean,Integer>();
+		Vertice<Boolean> verticeActual;
 		if (nuevoGrafoDirigido.cargarGrafo(args[0]))
 		{
 			OrdenTopologicoDfs orden = new OrdenTopologicoDfs();
@@ -34,19 +35,23 @@ public class USBDataFlow
 				int m;
 		        for (int i = 0; i<n; ++i)
 				{
-					m = orden.ordenes[i].predecesores.size();
+					verticeActual = orden.ordenes[i];
+					m = verticeActual.predecesores.size();
+
 					if (m==0)
 					{
-						orden.ordenes[i].eval = orden.ordenes[i].expr;
+						verticeActual.eval = verticeActual.expr;
 					}
 					else
 					{
 				        for (int j = 0; j<m; ++j)
 						{
-							orden.ordenes[i].expr = orden.ordenes[i].expr.replace(orden.ordenes[i].predecesores.get(j).getId(),orden.ordenes[i].predecesores.get(j).eval);
+							verticeActual.expr = verticeActual.expr.replace(
+								verticeActual.predecesores.get(j).getId(),
+								verticeActual.predecesores.get(j).eval);
 						}
 					}
-					orden.ordenes[i].eval = evaluador.driver(orden.ordenes[i].expr);
+					verticeActual.eval = evaluador.driver(verticeActual.expr);
 				}
 				System.out.print(nuevoGrafoDirigido.imprimirMatriz());
 			}

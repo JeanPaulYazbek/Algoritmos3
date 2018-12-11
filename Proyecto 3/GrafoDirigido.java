@@ -21,7 +21,7 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 	GrafoDirigido()
 	{
 	}
-	
+////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * funcion que carga un grafo de un archivo de texto en el grafo
 	 * @param archivo nombre del archivo desde el que queremos cargar el grafo
@@ -46,10 +46,13 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 		{//en caso de formato erroneo
 			return false;
 		}
-		try{
+		try
+		{
 			numeroLineas = Integer.parseInt(cuantasCeldas[0]);
 			numeroExpresiones = Integer.parseInt(cuantasCeldas[1]);
-		}catch(Exception e){
+		}
+		catch(Exception e)
+		{
 			return false;//si no es un entero formato erroneo
 		}
 		//AGREGAR LOS VERTICES
@@ -68,7 +71,6 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 				agregarVertice(idVertice, dato, 0.0);
 			}
 		}
-//		System.out.println(Arrays.deepToString(matrizDeVertices));
 
 		//AGREGAR LOS ARCOS
 		String idarco;//guarda id del arco leido
@@ -110,24 +112,21 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 					verticesExpresion.add(matcher.group(0));
 				}
 
-//				System.out.println((verticesExpresion));
 				obtenerVertice(idVertice).modifyExpresion(expresionActual);
-//				System.out.println(obtenerVertice(idVertice).expr);
 
 		        for (int k = 0; k<verticesExpresion.size(); ++k)
 		        {
 		            if (estaVertice(verticesExpresion.get(k)))
 		            {
-						idarco = String.valueOf(verticesExpresion.get(k))+String.valueOf(idVertice);
-//						System.out.println(verticesExpresion.get(k));
-//						System.out.println(verticeActual);
+						idarco = String.valueOf(verticesExpresion.get(k))
+						+String.valueOf(idVertice);
 						if (verticesExpresion.get(k).equals(idVertice))
 						{
 							System.out.println("Su configuración contiene un ciclo:");
 							System.out.println(idVertice+"->"+idVertice);
 							return false;
 						}
-						agregarArco(idarco, datoarco, 0.0, verticesExpresion.get(k), idVertice);
+						agregarArco(idarco,datoarco,0.0,verticesExpresion.get(k),idVertice);
 						obtenerVertice(idVertice).predecesores.add(obtenerVertice(verticesExpresion.get(k)));
 		            }
 		            else
@@ -142,7 +141,7 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 		//se cargo el grafo
 		return true;
 	}
-
+////////////////////////////////////////////////////////////////////////////////
 	public String translateCol(int n)
 	{
 	    char[] buf = new char[(int) floor(log(25 * (n + 1)) / log(26))];
@@ -154,7 +153,7 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 	    }
 		return new String(buf);
 	}
-
+////////////////////////////////////////////////////////////////////////////////
     public boolean isNumeric(String str)
     {
         try
@@ -167,6 +166,8 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
         }
         return true;  
     }
+////////////////////////////////////////////////////////////////////////////////
+
 
 	/**
 	 * funcion que calcula el numero de vertices de un digrafo
@@ -186,17 +187,19 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 	 * funcion que calcula el numero de lados
 	 * @return entero que representa el numero de lados
 	 */
-	public int numeroDeLados(){
-
+	public int numeroDeLados()
+	{
 		int i = 0;//contador de lados
-		for (ArrayList<Arco<L>> arcosDeEsteVertice: digrafo.values()){
+		for (ArrayList<Arco<L>> arcosDeEsteVertice: digrafo.values())
+		{
 			 i = i + arcosDeEsteVertice.size();
 		}
 		return i;
 	}
 
 	/**
-	 * funcion que agrega un vertice a partir de un objeto, si no se puede retorna false y si se puede retorna true
+	 * funcion que agrega un vertice a partir de un objeto, si no se puede
+	 * retorna false y si se puede retorna true
 	 * @param v objeto de la clase vertice que se quiere agregar al grafo
 	 * @return regresa true si se agrego exitosamente
 	 */
@@ -205,13 +208,16 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 		String clave = v.getId();//clave del vertice
 		String id;				//id para comparar
 		//revisamos si ya hay un vertice con ese id
-		for (Vertice<V> vertices: digrafo.keySet()){
+		for (Vertice<V> vertices: digrafo.keySet())
+		{
 			 id = vertices.getId();
-			 if (id.equals(clave)){
+			 if (id.equals(clave))
+			 {
 			 	return false;
 			 }
 		}
-		//si no lo hay creamos una lista de lados nueva y vacia para el vertice , y agregamos el vertice y la lista al diccionario
+		//si no lo hay creamos una lista de lados nueva y vacia para el vertice,
+		// y agregamos el vertice y la lista al diccionario
 		ArrayList<Arco<L>> listadelados = new ArrayList<Arco<L>>();
 		digrafo.put(v, listadelados);
 		return true;
@@ -229,7 +235,6 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 		Vertice<V> nuevoVertice = new Vertice<V>(id, dato, p);
 		return agregarVertice(nuevoVertice);
 	}
-
 	
 	/**
 	 * funcion que obtiene un vertice segun su id
@@ -237,7 +242,6 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 	 * @return regresa el vertice que se busca o una excepcion en caso contrario
 	 */
 	public Vertice obtenerVertice( String id){
-//		System.out.println(id);
 		for (Vertice<V> vertices: digrafo.keySet())
 		{	
 			if (vertices.getId().equals(id))
@@ -256,11 +260,12 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 	public Boolean estaVertice(String id){
 
 		//revisamos si existe algun vertice con ese id en el grafo
-		for (Vertice<V> vertices: digrafo.keySet()){
-			
-			 if (vertices.getId().equals(id)){
-			 	return true;
-			 }
+		for (Vertice<V> vertices: digrafo.keySet())
+		{
+			if (vertices.getId().equals(id))
+			{
+				return true;
+			}
 		}
 		return false;
 	}
@@ -274,7 +279,8 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 		//vertices no estan
 		String verticeA = a.getExtremoInicial().getId();
 		String verticeB = a.getExtremoFinal().getId();
-		if (!(estaVertice(verticeA)) || !(estaVertice(verticeB))){
+		if (!(estaVertice(verticeA)) || !(estaVertice(verticeB)))
+		{
 			return false;
 		}
 
@@ -282,26 +288,31 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 		String id = a.getId();
 		
 		int i;
-		for (ArrayList<Arco<L>> arcosDeEsteVertice: digrafo.values()){
-			 i = arcosDeEsteVertice.size();
-			 for(int k = 0; k< i; k++){
-			 	if (arcosDeEsteVertice.get(k).getId().equals(id)){
-			 		return false;
-			 	}
-			 }
+		for (ArrayList<Arco<L>> arcosDeEsteVertice: digrafo.values())
+		{
+			i = arcosDeEsteVertice.size();
+			for(int k = 0; k< i; k++)
+			{
+				if (arcosDeEsteVertice.get(k).getId().equals(id))
+				{
+					return false;
+				}
+			}
 		}
-			
-		
 
 		//vertices con el mismo id pero diferentes datos lo cual no es valido ya que hay un solo vertice en el grafo 
 		Vertice<V> verticeInicial = obtenerVertice(verticeA);
 		Vertice<V> verticeFinal = obtenerVertice(verticeB);
 		Vertice<V> vertice1 = a.getExtremoInicial();
 		Vertice<V> vertice2 = a.getExtremoFinal();
-		if ((verticeInicial.getPeso() != vertice1.getPeso())||(verticeFinal.getPeso() != vertice2.getPeso())){
+		if ((verticeInicial.getPeso() != vertice1.getPeso())
+			||(verticeFinal.getPeso() != vertice2.getPeso()))
+		{
 			return false;
 		}
-		if ((verticeInicial.getDato() != vertice1.getDato())||(verticeFinal.getDato() != vertice2.getDato())){
+		if ((verticeInicial.getDato() != vertice1.getDato())
+			||(verticeFinal.getDato() != vertice2.getDato()))
+		{
 			return false;
 		}
 
@@ -328,17 +339,21 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 		Vertice<V> verticeInicial;
 		Vertice<V> verticeFinal;
 		//si esta el vertice lo marcamos
-		if (estaVertice(vInicial)){
+		if (estaVertice(vInicial))
+		{
 			verticeInicial = obtenerVertice(vInicial);	
 		//si no salimos
-		}else{
+		}else
+		{
 			return false;
 		}
 		//si esta el vertice lo marcamos
-		if (estaVertice(vFinal)){
+		if (estaVertice(vFinal))
+		{
 			verticeFinal = obtenerVertice(vFinal);
 		//si no salimos
-		}else{
+		}else
+		{
 			return false;
 		}
 
@@ -358,13 +373,16 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 
 		int i;//variable que nos ayudara a contar el largo de cada lista de lados en el grafo
 		//buscamos en todo el grafo si existe un arco con ese id
-		for (ArrayList<Arco<L>> arcosDeEsteVertice: digrafo.values()){
-			 i = arcosDeEsteVertice.size();
-			 for(int k = 0; k< i; k++){
-			 	if (arcosDeEsteVertice.get(k).getId().equals(id)){
-			 		return arcosDeEsteVertice.get(k);
-			 	}
-			 }
+		for (ArrayList<Arco<L>> arcosDeEsteVertice: digrafo.values())
+		{
+			i = arcosDeEsteVertice.size();
+			for(int k = 0; k< i; k++)
+			{
+				if (arcosDeEsteVertice.get(k).getId().equals(id))
+				{
+					return arcosDeEsteVertice.get(k);
+				}
+			}
 		}
 
 		throw new NoSuchElementException("No se encontro el arco");
@@ -379,14 +397,17 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 
 		int i;
 		//buscamos si existe ese arco en el garfo
-		for (ArrayList<Arco<L>> arcosDeEsteVertice: digrafo.values()){
-			 i = arcosDeEsteVertice.size();
-			 for(int k = 0; k< i; k++){
-			 	if (arcosDeEsteVertice.get(k).getId().equals(id)){
-			 		arcosDeEsteVertice.remove(k);
-			 		return true;
-			 	}
-			 }
+		for (ArrayList<Arco<L>> arcosDeEsteVertice: digrafo.values())
+		{
+			i = arcosDeEsteVertice.size();
+			for(int k = 0; k< i; k++)
+			{
+				if (arcosDeEsteVertice.get(k).getId().equals(id))
+				{
+					arcosDeEsteVertice.remove(k);
+					return true;
+				}
+			}
 		}
 		return false;
 	}
@@ -400,20 +421,22 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 	public Boolean estaLado(String u, String v){
 
 		//si ambos vertices estan lo buscamos
-		if(estaVertice(u) && estaVertice(v)){
+		if(estaVertice(u) && estaVertice(v))
+		{
 			//si el lado esta , esta en la lista de lados del vertice u
 			Vertice<V> ver = obtenerVertice(u);
 			ArrayList<Arco<L>> listadelados = digrafo.get(ver);
 			int n = listadelados.size();
 			//buscamos en la lista de lados de u
-			for(int k =0; k<n; k++){
-				if (listadelados.get(k).getExtremoFinal().getId().equals(v)){
+			for(int k =0; k<n; k++)
+			{
+				if (listadelados.get(k).getExtremoFinal().getId().equals(v))
+				{
 					return true;
 				}
 			}
 		}
 		return false;
-
 	}
 
 	/**
@@ -424,25 +447,26 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 	public Boolean eliminarVertice(String id){
 
 		//solo procedemos si el vertice esta en el grafo
-		if (estaVertice(id)){
+		if (estaVertice(id))
+		{
 
 			Vertice<V> eliminar = obtenerVertice(id);//buscamos el objeto tipo vertice
 			digrafo.remove(eliminar);//lo sacamos del grafo
 			int i;
 			//sacamos todo los arcos relacionados a ese vertice que sobrevivieron
-			for (ArrayList<Arco<L>> arcosDeEsteVertice: digrafo.values()){
+			for (ArrayList<Arco<L>> arcosDeEsteVertice: digrafo.values())
+			{
 				 i = arcosDeEsteVertice.size();
-				 for(int k = i-1; k>=0; k--){
-				 	
-				 	
-			 		if (arcosDeEsteVertice.get(k).getExtremoFinal().getId().equals(id)){
+				 for(int k = i-1; k>=0; k--)
+				 {
+			 		if (arcosDeEsteVertice.get(k).getExtremoFinal().getId().equals(id))
+			 		{
 			 			arcosDeEsteVertice.remove(k);
 				 	}
 				 }
 			}
 			
 			return true;
-		
 		}
 		return false;
 	}
@@ -451,11 +475,12 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 	 * funcion que devuelve una lista de objetos tipo vertice en el grafo
 	 * @return una lista con objetos vertices en el grafo, si no hay regresa una lista vacia 
 	 */
-	public ArrayList<Vertice<V>> vertices(){
-
+	public ArrayList<Vertice<V>> vertices()
+	{
 		ArrayList<Vertice<V>> listaVertices = new ArrayList<Vertice<V>>();
 		
-		for (Vertice<V> vertice: digrafo.keySet()){
+		for (Vertice<V> vertice: digrafo.keySet())
+		{
 			listaVertices.add(vertice);
 		}
 		return listaVertices;
@@ -469,17 +494,15 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 
 		ArrayList<Lado<L>> listaLados = new ArrayList<Lado<L>>();
 		int i;
-		for (ArrayList<Arco<L>> arcosDeEsteVertice: digrafo.values()){
-				 i = arcosDeEsteVertice.size();
-				 for(int k = 0; k< i; k++){
-			 		listaLados.add(arcosDeEsteVertice.get(k));//aqui agregamos cada arco
-			 			
-				 }
+		for (ArrayList<Arco<L>> arcosDeEsteVertice: digrafo.values())
+		{
+			i = arcosDeEsteVertice.size();
+			for(int k = 0; k< i; k++)
+			{
+				listaLados.add(arcosDeEsteVertice.get(k));//aqui agregamos cada arco
+			}
 		}
-			
-
 		return listaLados;
-
 	}
 
 	/**
@@ -490,25 +513,30 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 	public int grado(String id){
 
 		//procedemos solo si el vertice esta en el grafo
-		if (estaVertice(id)){
+		if (estaVertice(id))
+		{
 			ArrayList<Lado<L>> listaLados = new ArrayList<Lado<L>>();
 			int i;
 			int grado = 0;//grado comienza en 0
-			for (ArrayList<Arco<L>> arcosDeEsteVertice: digrafo.values()){//revisamos cada arco
+			for (ArrayList<Arco<L>> arcosDeEsteVertice: digrafo.values())
+			{//revisamos cada arco
 				 i = arcosDeEsteVertice.size();
-				 for(int k = 0; k< i; k++){
-			 		if(arcosDeEsteVertice.get(k).getExtremoFinal().getId().equals(id) || arcosDeEsteVertice.get(k).getExtremoInicial().getId().equals(id)){
+				 for(int k = 0; k< i; k++)
+				 {
+			 		if(arcosDeEsteVertice.get(k).getExtremoFinal().getId().equals(id)
+			 		 || arcosDeEsteVertice.get(k).getExtremoInicial().getId().equals(id))
+			 		{
 			 			grado = grado + 1;//si el arco tiene el vertice sumamos 1
-			 			if(arcosDeEsteVertice.get(k).getExtremoFinal().getId().equals(id) && arcosDeEsteVertice.get(k).getExtremoInicial().getId().equals(id)){
+			 			if(arcosDeEsteVertice.get(k).getExtremoFinal().getId().equals(id)
+			 			 && arcosDeEsteVertice.get(k).getExtremoInicial().getId().equals(id))
+			 			{
 			 				grado = grado +1;//si el arco es un bucle y tiene el vertice sumamos 1 mas 
 			 			}
 			 		}
 			 			
 				 }
 			}
-			
 			return grado;
-
 		}
 		throw new NoSuchElementException("No se encontro el vertice");
 	}
@@ -628,33 +656,6 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 		throw new NoSuchElementException("No se encontro el vertice");
 	}
 
-	/**
-	 * funcion analoga a "sucesores" pero calcula predecesores
-	 * @param id id del vertice cuyos predecesores se desean conocer
-	 * @return una lista de vertices predecesores del vertice solicitado, lanza una excepcion si el vertice no esta en el grafo
-	 */
-/*	public ArrayList<Vertice<V>> predecesores(String id){
-		
-		ArrayList<Vertice<V>> predecesores = new ArrayList<Vertice<V>>();
-
-		if(estaVertice(id)){
-			String idadyacente;
-			for (Vertice<V> vertice: digrafo.keySet()){
-				idadyacente = vertice.getId();
-				if (estaLado(idadyacente, id) ){
-					predecesores.add(vertice);
-				}
-
-			}
-			return predecesores;
-		}
-		throw new NoSuchElementException("No se encontro el vertice");
-	}
-*/
-	/** 
-	 * funcion que convierte  un grafo en String para impresion
-	 * @return un string que representa el grafo en su estado actual
-	*/
 	public String toString(){
 		
 		String cadenaGrafo = "";
@@ -676,7 +677,7 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 		}
 		return cadenaGrafo;
 	}
-
+////////////////////////////////////////////////////////////////////////////////
 	public String imprimirMatriz()
 	{	
 		String cadenaGrafo = "";
@@ -692,7 +693,7 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 		}
 		return cadenaGrafo;
 	}
-
+////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * funcion que clona un grafo en un nuevo objeto grafo
 	 * @return regresa un objeto tipo grafo con la forma del grafo actual
