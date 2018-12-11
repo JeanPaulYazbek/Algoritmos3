@@ -159,12 +159,8 @@ public class InfixToPostfix
     // Driver method
     public static String driver(String args)
     { 
-        String input = args;
-        // output expected -2 23 * 6 + 1 -
-        // original output 223*6+1-
-        // actual output 0 23 -2*1 +6-
-        String exp = infixToPostfixFunction(input);
-//        System.out.println(exp);
+//        System.out.println(args);
+        String exp = infixToPostfixFunction(args.replace(" ",""));
         String[] expresion = exp.split(" ");
         if ((expresion.length==0)||(expresion.length==2))
         {

@@ -84,8 +84,12 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 			String[] expresiones = linea.split(" ");
 			for(int j = 0; j<numeroExpresiones; j++)
 			{
-				idVertice = translateCol(j+1) + String.valueOf(i+1);
+				idVertice = matrizDeVertices[i][j];
 				expresionActual = expresiones[j]+" ";
+				if (expresionActual.charAt(0)=='=')
+				{
+					expresionActual = expresionActual.substring(1,expresionActual.length()-1);
+				}
 		        //Convertimos cualquier letra a Mayusculas
 				StringBuilder sb = new StringBuilder(expresionActual);
 				for (int index = 0; index < sb.length(); index++)
@@ -107,6 +111,8 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 				}
 
 //				System.out.println((verticesExpresion));
+				obtenerVertice(idVertice).modifyExpresion(expresionActual);
+//				System.out.println(obtenerVertice(idVertice).expr);
 
 		        for (int k = 0; k<verticesExpresion.size(); ++k)
 		        {
@@ -116,9 +122,13 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 //						System.out.println(verticesExpresion.get(k));
 //						System.out.println(verticeActual);
 						agregarArco(idarco, datoarco, 0.0, verticesExpresion.get(k), idVertice);
-//						if (expresionActual.charAt(0)=='=')
-						obtenerVertice(idVertice).modifyExpresion(expresionActual);
 						obtenerVertice(idVertice).predecesores.add(obtenerVertice(verticesExpresion.get(k)));
+		            }
+		            else
+		            {
+		            	System.out.println("Se ha detectado vertice invalido");
+		            	System.out.println(verticesExpresion.get(k));
+		            	return false;
 		            }
 		        }
 			}
@@ -127,9 +137,11 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 		return true;
 	}
 
-	public String translateCol(int n) {
+	public String translateCol(int n)
+	{
 	    char[] buf = new char[(int) floor(log(25 * (n + 1)) / log(26))];
-	    for (int i = buf.length - 1; i >= 0; i--) {
+	    for (int i = buf.length - 1; i >= 0; i--)
+	    {
 	        n--;
 	        buf[i] = (char) ('A' + n % 26);
 	        n /= 26;
@@ -154,10 +166,11 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 	 * funcion que calcula el numero de vertices de un digrafo
 	 * @return regresa un entero que representa el numero de vertices
 	 */
-	public int numeroDeVertices(){
-
+	public int numeroDeVertices()
+	{
 		int i = 0; //contador de vertices
-		for (Vertice<V> ids: digrafo.keySet()){
+		for (Vertice<V> ids: digrafo.keySet())
+		{
 			i = i + 1;//sumamos uno por cada vertice en el dicionario
 		}
 		return i;

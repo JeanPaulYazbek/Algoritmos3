@@ -11,7 +11,7 @@ public class OrdenTopologicoDfs{
 	static int contador;
 	static Vertice<Boolean>[] ordenes;
 
-	public static void DfsVisita(GrafoDirigido<Boolean, Integer> grafoPrecedencia){
+	public static boolean DfsVisita(GrafoDirigido<Boolean, Integer> grafoPrecedencia){
 
 		ciclo = false;
 
@@ -27,8 +27,9 @@ public class OrdenTopologicoDfs{
 			if (vert.getDato() == false){//si el vertice no ha sido visitado
 				DfsRecursivo(vert, grafoPrecedencia);
 				if (ciclo){
-					System.out.println("Ciclo encontrado!!!");
-					return;
+					System.out.println("Su configuración contiene un ciclo:"+"\n");
+//					System.out.println("->");
+					return false;
 				}
 			}
 		}
@@ -36,7 +37,7 @@ public class OrdenTopologicoDfs{
 //		for(int i = ordenes.length -  1 ; i > -1 ; i--){
 //			System.out.println(ordenes[i].getId());//imprimimos los vertices en orden topologico
 //		}
-		return ;
+		return true;
 	}
 
 	public static void DfsRecursivo(Vertice<Boolean> vertice, GrafoDirigido<Boolean, Integer> grafoPrecedencia){

@@ -4,7 +4,7 @@ public class Arco<E> extends Lado{
 	protected double p;	// peso del arco
 	protected Vertice vi;	// vertice inicial del arco
 	protected Vertice vf;	// vertice final del arco 
-
+//	HACKED
 	/**
 	 * crea arco por constructor
 	 * @param id id del arco a crear
