@@ -25,8 +25,6 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 	/**
 	 * funcion que carga un grafo de un archivo de texto en el grafo
 	 * @param archivo nombre del archivo desde el que queremos cargar el grafo
-	 * @param transformer objeto de la clase Transformer que nos ayuda a convertir de String a tipo generico del vertice
-	 * @param transformerarco objeto de la clase Transformer que nos ayuda a convertir de String a tipo generico de arco
 	 * @return un booleano, true si se creo exitosamente el grafo, false si no
 	 * @throws IOException
 	 */
@@ -44,6 +42,7 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 		int numeroExpresiones;
 		if(cuantasCeldas.length != 2)
 		{//en caso de formato erroneo
+			System.out.println("Formato Erroneo en primera linea archivo");
 			return false;
 		}
 		try
@@ -53,9 +52,10 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 		}
 		catch(Exception e)
 		{
+			System.out.println("Formato Erroneo en primera linea archivo");
 			return false;//si no es un entero formato erroneo
 		}
-		//AGREGAR LOS VERTICES
+		//AGREGAR LOS VERTICES Y LLENAR LA MATRIZ DE VERTICES
 		String idVertice;
 		String columna;
 		V dato =  null;
@@ -72,7 +72,7 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 
 		//AGREGAR LOS ARCOS
 		String idarco;//guarda id del arco leido
-		L datoarco = null;	  //guarda dato del arco leido
+		L datoarco = null;//guarda dato del arco leido
 		double pesoarco;//guarda peso del arco leido
 		String expresionActual;
 		char newCharacter;
@@ -89,7 +89,7 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 			catch(Exception e)
 			{	
 				System.out.println("Numero De Lineas erroneo");
-				return false;//si no es un entero formato erroneo
+				return false;
 			}
 			for(int j = 0; j<numeroExpresiones; j++)
 			{
@@ -101,8 +101,9 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 				catch(Exception e)
 				{	
 					System.out.println("Numero De Expresiones erroneo");
-					return false;//si no es un entero formato erroneo
+					return false;
 				}
+				//No nos interesan los =
 				if (expresionActual.charAt(0)=='=')
 				{
 					expresionActual = expresionActual.substring(1,expresionActual.length()-1);
@@ -119,6 +120,7 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 				}
 				expresionActual = sb.toString();
 
+				//Usamos regex para encontrar los vertices en la expresion
 				Pattern pattern = Pattern.compile("[a-zA-Z]+\\d+");
 				Matcher matcher = pattern.matcher(expresionActual);
 				verticesExpresion = new ArrayList<String>();
@@ -127,6 +129,7 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 					verticesExpresion.add(matcher.group(0));
 				}
 
+				//Guardamos la expresion en el atributo expr de la celda
 				obtenerVertice(idVertice).modifyExpresion(expresionActual);
 
 		        for (int k = 0; k<verticesExpresion.size(); ++k)
@@ -144,6 +147,8 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 						agregarArco(idarco,datoarco,0.0,verticesExpresion.get(k),idVertice);
 						obtenerVertice(idVertice).predecesores.add(obtenerVertice(verticesExpresion.get(k)));
 		            }
+		            // Si no encontramos el vertice, encotramos algo con el fomato
+		            // de una celda que no es una celda de la tabla
 		            else
 		            {
 		            	System.out.println("Se ha detectado vertice invalido");
@@ -157,6 +162,12 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 		return true;
 	}
 ////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * funcion que dado un entero mayor 1 devuel un string de formato
+	 * A,...,Z,AA,...,AZ,...AAA,...
+	 * @param n entero que representa la columna de la celda
+	 * @return un String, de formato A,...,Z,AA,...,AZ,...AAA,...
+	 */
 	public String translateCol(int n)
 	{
 	    char[] buf = new char[(int) floor(log(25 * (n + 1)) / log(26))];
@@ -168,19 +179,6 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 	    }
 		return new String(buf);
 	}
-////////////////////////////////////////////////////////////////////////////////
-    public boolean isNumeric(String str)
-    {
-        try
-        {
-            double d = Double.parseDouble(str);
-        }
-        catch(NumberFormatException nfe)
-        {
-            return false;
-        }
-        return true;  
-    }
 ////////////////////////////////////////////////////////////////////////////////
 
 

@@ -25,17 +25,23 @@ public class InfixToPostfix
         return -1;
     }
 ////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+    /**
+     * funcion que dado un string verifica si es un integer
+     * @param str String que se desea verificar
+     * @return true si es un int, false si no lo es
+     */
     public static boolean isNumeric(String str)
-    {  
+    {
         try
         {
-            double d = Double.parseDouble(str);
+            int d = Integer.parseInt(str);
         }
         catch(NumberFormatException nfe)
         {
             return false;
         }
-        return true;  
+        return true;
     }
 ////////////////////////////////////////////////////////////////////////////////
     // The main method that converts given infix expression 
@@ -165,6 +171,7 @@ public class InfixToPostfix
         {
             return args;
         }
+        
         return solve(tree_constructor(expresion)).getExpr();
     }
 ////////////////////////////////////////////////////////////////////////////////

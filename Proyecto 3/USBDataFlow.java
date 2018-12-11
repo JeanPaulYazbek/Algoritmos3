@@ -46,12 +46,28 @@ public class USBDataFlow
 					{
 				        for (int j = 0; j<m; ++j)
 						{
-							verticeActual.expr = verticeActual.expr.replace(
-								verticeActual.predecesores.get(j).getId(),
-								verticeActual.predecesores.get(j).eval);
+							try
+							{
+								verticeActual.expr = verticeActual.expr.replace(
+									verticeActual.predecesores.get(j).getId(),
+									verticeActual.predecesores.get(j).eval);							}
+							catch(Exception e)
+							{
+								System.out.println("Error en Expresion");
+								return;
+							}
 						}
 					}
-					verticeActual.eval = evaluador.driver(verticeActual.expr);
+					try
+					{
+						verticeActual.eval = evaluador.driver(verticeActual.expr);
+					}
+					catch(Exception e)
+					{
+						System.out.println("Error en Expresion");
+						System.out.println(verticeActual.expr);
+						return;
+					}
 				}
 				System.out.print(nuevoGrafoDirigido.imprimirMatriz());
 			}

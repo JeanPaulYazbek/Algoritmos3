@@ -16,7 +16,6 @@ public class OrdenTopologicoDfs
 	public static boolean DfsVisita(GrafoDirigido<Boolean,Integer> grafoPrecedencia)
 	{
 		ciclo = false;
-
 		contador = grafoPrecedencia.numeroDeVertices();//creamos el contador para el orden topologico
 		ArrayList<Vertice<Boolean>> vertices = grafoPrecedencia.vertices();//buscamos los vertices del grafo
 		ordenes = new Vertice[contador];//arreglo para guardar vertices donde el indice representa el orden
