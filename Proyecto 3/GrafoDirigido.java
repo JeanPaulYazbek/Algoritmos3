@@ -167,19 +167,29 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 	/**
 	 * funcion que dado un entero mayor 1 devuel un string de formato
 	 * A,...,Z,AA,...,AZ,...AAA,...
+	 * Se puede ver teoricamente como una funcion biyectiva entre el conjunto de la
+	 * cantidad de columnas {m} y el conjunto de valores numericos de los String
+	 * A, ..., Z, AA, ....., AZ, ....AAA,...
 	 * @param n entero que representa la columna de la celda
 	 * @return un String, de formato A,...,Z,AA,...,AZ,...AAA,...
 	 */
 	public String translateCol(int n)
 	{
-	    char[] buf = new char[(int) floor(log(25 * (n + 1)) / log(26))];
+		//aqui creamos un arreglo de char que tendra el String resultante
+	    char[] buf = new char[(int) floor(log(25 * (n + 1)) / log(26))];//Sabemos cuantos Char son porque el log base 26
+	    																// de n nos dice cuantas potencias de 26 fueron ne
+	    																// cesarias para producir n 
+
+	    //luego empezamos a producir los char del arreglo desde atras hacia adelante
 	    for (int i = buf.length - 1; i >= 0; i--)
 	    {
-	        n--;
-	        buf[i] = (char) ('A' + n % 26);
-	        n /= 26;
+	        n--;//reducimos en 1 n ya que en principio para el arreglo de chars se comienza en 1
+	        	//y para calcular el char correspondiente conviene empezar en 0
+	        buf[i] = (char) ('A' + n % 26);//calculamos el char sacando el modulo 26 de n y 26 y sumandolo al valor numerico base de
+	        							   // de la primera letra que es 'A'
+	        n /= 26;					   // dividimos n entre 26 para poder obtener el sgte caracter	
 	    }
-		return new String(buf);
+		return new String(buf);				//devolvemos el arreglo de char resultante lo cual es un String
 	}
 ////////////////////////////////////////////////////////////////////////////////
 
