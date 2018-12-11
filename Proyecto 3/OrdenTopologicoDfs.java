@@ -1,5 +1,6 @@
 import java.util.Hashtable;
 import java.util.ArrayList;
+import java.util.Arrays; 
 import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.io.BufferedReader;
@@ -27,7 +28,8 @@ public class OrdenTopologicoDfs{
 			if (vert.getDato() == false){//si el vertice no ha sido visitado
 				DfsRecursivo(vert, grafoPrecedencia);
 				if (ciclo){
-					System.out.println("Su configuración contiene un ciclo:"+"\n");
+					System.out.println("Su configuración contiene un ciclo:");
+					System.out.println(Arrays.deepToString(ordenes));
 //					System.out.println("->");
 					return false;
 				}

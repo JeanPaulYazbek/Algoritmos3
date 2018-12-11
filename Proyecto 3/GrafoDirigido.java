@@ -121,6 +121,12 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 						idarco = String.valueOf(verticesExpresion.get(k))+String.valueOf(idVertice);
 //						System.out.println(verticesExpresion.get(k));
 //						System.out.println(verticeActual);
+						if (verticesExpresion.get(k).equals(idVertice))
+						{
+							System.out.println("Su configuración contiene un ciclo:");
+							System.out.println(idVertice+"->"+idVertice);
+							return false;
+						}
 						agregarArco(idarco, datoarco, 0.0, verticesExpresion.get(k), idVertice);
 						obtenerVertice(idVertice).predecesores.add(obtenerVertice(verticesExpresion.get(k)));
 		            }
