@@ -1,4 +1,4 @@
 3 3
 1 2 3
 =A1+a3 =b1+B1 a3
-a?1 0 =MiN(B2,MAX(B3,B1))
+a1 0 =MiN(B2,MAX(B3,B1))

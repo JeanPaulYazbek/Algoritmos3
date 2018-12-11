@@ -121,6 +121,8 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 				expresionActual = sb.toString();
 
 				//Usamos regex para encontrar los vertices en la expresion
+				// idea basado en la respuesta usuario Wiktor Stribiżew
+				// encontrado en https://stackoverflow.com/questions/32788407/find-all-occurrences-of-substring-in-string-in-java
 				Pattern pattern = Pattern.compile("[a-zA-Z]+\\d+");
 				Matcher matcher = pattern.matcher(expresionActual);
 				verticesExpresion = new ArrayList<String>();
@@ -693,14 +695,20 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 ////////////////////////////////////////////////////////////////////////////////
 	public String imprimirMatriz()
 	{	
-		String cadenaGrafo = "";
+		String cadenaGrafo = "_|";
 		int n = matrizDeVertices.length;
 		int m = matrizDeVertices[0].length;
+		for (int j = 0; j<m; ++j)
+		{
+			cadenaGrafo += translateCol(j+1)+"|";
+		}
+		cadenaGrafo+="\n";
 		for (int i = 0; i<n; ++i)
 		{
+			cadenaGrafo += (i+1)+"|";
 			for (int j = 0; j<m; ++j)
 			{
-				cadenaGrafo += obtenerVertice(matrizDeVertices[i][j]).eval.replace(" ","")+" ";
+				cadenaGrafo += obtenerVertice(matrizDeVertices[i][j]).eval.replace(" ","")+"|";
 			}
 				cadenaGrafo += "\n";
 		}

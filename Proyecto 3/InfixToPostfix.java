@@ -44,8 +44,8 @@ public class InfixToPostfix
         return true;
     }
 ////////////////////////////////////////////////////////////////////////////////
-    // The main method that converts given infix expression 
-    // to postfix expression.  
+// idea basada en el contenido de la pagina web GeeksforGeeks
+// https://www.geeksforgeeks.org/stack-set-2-infix-to-postfix/
     static String infixToPostfixFunction(String exp)
     {
         // initializing empty String for result
@@ -174,6 +174,12 @@ public class InfixToPostfix
         
         return solve(tree_constructor(expresion)).getExpr();
     }
+
+// idea basada en la implementacion en python
+// para la resolucion de expresiones en notacion
+// polaca inversa usando arboles binarios del
+// usuario S1V1R0 en github
+// https://github.com/S1V1R0/ProyectoAlgoritmos
 ////////////////////////////////////////////////////////////////////////////////
     public static boolean check_operator(String operator)
     {

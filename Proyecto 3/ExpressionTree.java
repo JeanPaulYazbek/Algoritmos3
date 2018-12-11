@@ -1,3 +1,9 @@
+// idea basada en la implementacion en python
+// para la resolucion de expresiones en notacion
+// polaca inversa usando arboles binarios del
+// usuario S1V1R0 en github
+// https://github.com/S1V1R0/ProyectoAlgoritmos
+
 public class ExpressionTree
 {
     public String expr;
@@ -75,7 +81,7 @@ public class ExpressionTree
         {
             result=0+(izq*(der));
         }
-//        System.out.println(result);
+
         ExpressionTree solution = new ExpressionTree(String.valueOf(result),null,null);
         return solution;
     }
