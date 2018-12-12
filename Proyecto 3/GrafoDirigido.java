@@ -9,8 +9,16 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.Arrays;
 
-public class GrafoDirigido<V, L> implements Grafo<V, L>{
+/*
+* Integrantes: José Ramón Barrera Melchor / 15-10123
+*              Jean Paul Yazbek Farah     / 15-11550
+* Referencia: (1) https://stackoverflow.com/questions/32788407/find-all-occurrences-of-substring-in-string-in-java
+*			  (2) Respuesta de user988346 en
+* https://stackoverflow.com/questions/8710719/generating-an-alphabetic-sequence-in-java/20954353#20954353
+*/
 
+public class GrafoDirigido<V, L> implements Grafo<V, L>
+{
 	//digrafo: representamos el grafo con un diccionario donde las claves son objetos tipo vertices , y los valores listas de objetos tipo lados
 	private Hashtable<Vertice<V>, ArrayList<Arco<L>>> digrafo = new Hashtable<Vertice<V>, ArrayList<Arco<L>>>();
 	private String[][] matrizDeVertices;
@@ -128,8 +136,9 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 				expresionActual = sb.toString();
 
 				//Usamos regex para encontrar los vertices en la expresion
-				// idea basado en la respuesta usuario Wiktor Stribiżew
-				// encontrado en https://stackoverflow.com/questions/32788407/find-all-occurrences-of-substring-in-string-in-java
+////////////////////////////////////////////////////////////////////////////////
+// idea basada en el contenido de la Referencia (1)
+////////////////////////////////////////////////////////////////////////////////
 				Pattern pattern = Pattern.compile("[a-zA-Z]+\\d+");
 				Matcher matcher = pattern.matcher(expresionActual);
 				verticesExpresion = new ArrayList<String>();
@@ -137,6 +146,7 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 				{
 					verticesExpresion.add(matcher.group(0));
 				}
+////////////////////////////////////////////////////////////////////////////////
 
 				//Guardamos la expresion en el atributo expr de la celda
 				obtenerVertice(idVertice).modifyExpresion(expresionActual);
@@ -170,6 +180,8 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 		//se cargo el grafo
 		return true;
 	}
+////////////////////////////////////////////////////////////////////////////////
+// idea basada en el contenido de la Referencia (2)
 ////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * funcion que dado un entero mayor 1 devuel un string de formato

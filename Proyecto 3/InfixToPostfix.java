@@ -2,36 +2,15 @@ import java.util.Stack;
 import java.io.IOException;
 import java.util.Arrays;
 
+/*
+* Integrantes: José Ramón Barrera Melchor / 15-10123
+*              Jean Paul Yazbek Farah     / 15-11550
+* Referencias: (1) https://www.geeksforgeeks.org/stack-set-2-infix-to-postfix/
+*              (2) https://github.com/S1V1R0/ProyectoAlgoritmos
+*/
+
 public class InfixToPostfix
 { 
-////////////////////////////////////////////////////////////////////////////////
-    // A utility function to return precedence of a given operator 
-    // Higher returned value means higher precedence
-    /**
-    * funcion que dado un string, si es un operador algun de
-    * los operadores SUM,MIN,MAX,+,-,*, devuelve un entero que
-    * representa su precedencia, a mayor el entero mayor la precedencia
-    * @param operator String que se desea verificar si es un operador
-    * @return -1 si no es un operador registrado, [1,4] dependiendo del operador
-    */
-    private int Prec(String operator)
-    {
-        switch (operator)
-        { 
-            case "SUM":
-                return 1;
-            case "MIN":
-            case "MAX":
-                return 2;
-            case "+":
-            case "-":
-                return 3;
-            case "*":
-                return 4;
-        }
-        return -1;
-    }
-////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
     /**
     * funcion que dado un string verifica si es un integer
@@ -51,8 +30,8 @@ public class InfixToPostfix
         return true;
     }
 ////////////////////////////////////////////////////////////////////////////////
-// idea basada en el contenido de la pagina web GeeksforGeeks
-// https://www.geeksforgeeks.org/stack-set-2-infix-to-postfix/
+// idea basada en el contenido de la Referencia (1)
+////////////////////////////////////////////////////////////////////////////////
     /**
     * funcion que dado una expresion en formato infijo devuelve una expresion
     * equivalente en notacion postfija
@@ -190,6 +169,8 @@ public class InfixToPostfix
         return result;
     }
 ////////////////////////////////////////////////////////////////////////////////
+// idea basada en el contenido de la Referencia (1)
+////////////////////////////////////////////////////////////////////////////////
     /**
     * funcion que dado una expresion en formato infijo devuelve el resultado
     * de su evaluacion como string
@@ -212,12 +193,35 @@ public class InfixToPostfix
         
         return solve(tree_constructor(expresion)).getExpr();
     }
-
-// idea basada en la implementacion en python
-// para la resolucion de expresiones en notacion
-// polaca inversa usando arboles binarios del
-// usuario S1V1R0 en github
-// https://github.com/S1V1R0/ProyectoAlgoritmos
+////////////////////////////////////////////////////////////////////////////////
+// idea basada en el contenido de la Referencia (1)
+////////////////////////////////////////////////////////////////////////////////
+    /**
+    * funcion que dado un string, si es un operador algun de
+    * los operadores SUM,MIN,MAX,+,-,*, devuelve un entero que
+    * representa su precedencia, a mayor el entero mayor la precedencia
+    * @param operator String que se desea verificar si es un operador
+    * @return -1 si no es un operador registrado, [1,4] dependiendo del operador
+    */
+    private int Prec(String operator)
+    {
+        switch (operator)
+        { 
+            case "SUM":
+                return 1;
+            case "MIN":
+            case "MAX":
+                return 2;
+            case "+":
+            case "-":
+                return 3;
+            case "*":
+                return 4;
+        }
+        return -1;
+    }
+////////////////////////////////////////////////////////////////////////////////
+// idea basada en la implementacion en python de la Referencia (2)
 ////////////////////////////////////////////////////////////////////////////////
     /**
     * funcion que dado un string, si es un operador algun de
@@ -240,6 +244,8 @@ public class InfixToPostfix
         return false;
     }
 ////////////////////////////////////////////////////////////////////////////////
+// idea basada en la implementacion en python de la Referencia (2)
+////////////////////////////////////////////////////////////////////////////////
     /**
     * funcion que dado un ExpressionTree, recorre recursivamente sus hijos
     * y evalua
@@ -249,31 +255,42 @@ public class InfixToPostfix
     private ExpressionTree solve(ExpressionTree node)
     {
         ExpressionTree result = new ExpressionTree("",null,null);
-        if ((check_operator(node.left.expr) && check_operator(node.right.expr)))
+
+        if ((check_operator(node.getLeft().getExpr()) 
+            && check_operator(node.getRight().getExpr())))
         {
-            result = new ExpressionTree(node.expr,solve(node.left),solve(node.right));
+            result = new ExpressionTree(node.getExpr(),
+                solve(node.getLeft()),solve(node.getRight()));
         }
-        else if ((check_operator(node.left.expr) && isNumeric(node.right.expr)))
+        else if ((check_operator(node.getLeft().getExpr()) 
+            && isNumeric(node.getRight().getExpr())))
         {
-            result = new ExpressionTree(node.expr,solve(node.left),node.right);
+            result = new ExpressionTree(node.getExpr(),
+                solve(node.getLeft()),node.getRight());
         }
-        else if ((isNumeric(node.left.expr) && check_operator(node.right.expr)))
+        else if ((isNumeric(node.getLeft().getExpr()) 
+            && check_operator(node.getRight().getExpr())))
         {
-            result = new ExpressionTree(node.expr,node.left,solve(node.right));
+            result = new ExpressionTree(node.getExpr(),
+                node.getLeft(),solve(node.getRight()));
         }
-        else if ((isNumeric(node.left.expr) && isNumeric(node.right.expr)))
+        else if ((isNumeric(node.getLeft().getExpr()) 
+            && isNumeric(node.getRight().getExpr())))
         {
-            result = new ExpressionTree(node.expr,node.left,node.right);
+            result = new ExpressionTree(node.getExpr(),
+                node.getLeft(),node.getRight());
         }
         return result.evaluate();
     }
+////////////////////////////////////////////////////////////////////////////////
+// idea basada en la implementacion en python de la Referencia (2)
 ////////////////////////////////////////////////////////////////////////////////
     /**
     * funcion que dado un expresion, representada como arreglo de strings
     * construye un arbol binario ExpressionTree nodo por nodo que representa
     * dicha expresion y retorna la raiz de dicho arbol
     * @param expresion que se desea representar como arbol
-    * @return ExpressionTree raiz del arbol contruido
+    * @return ExpressionTree raiz del arbol construido
     *
     */
     private ExpressionTree tree_constructor(String[] expresion)

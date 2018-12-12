@@ -4,29 +4,67 @@
 // usuario S1V1R0 en github
 // https://github.com/S1V1R0/ProyectoAlgoritmos
 
+/*
+* Integrantes: José Ramón Barrera Melchor / 15-10123
+*              Jean Paul Yazbek Farah     / 15-11550
+* Referencia: https://github.com/S1V1R0/ProyectoAlgoritmos
+*/
+
 public class ExpressionTree
 {
-    public String expr;
-    public ExpressionTree left;
-    public ExpressionTree right;
+    private String expr; //expresion cuya evalucion representa el valor
+    private ExpressionTree left; // hijo izquierdo
+    private ExpressionTree right; // hijo derecho
 
+    /**
+     * contructor para crear un ExpressionTree con todos sus atributos
+     * @param expr expresion del nodo a crear
+     * @param left ExpressionTree hijo izquierdo
+     * @param right ExpressionTree hijo derecho
+     */
     ExpressionTree(String expr,ExpressionTree left,ExpressionTree right)
     {
         this.expr = expr;
         this.left = left;
         this.right = right;
     }
-
+    /**
+     * metodo para obterner la expr de un nodo
+     * @return expr del nodo
+     */
     public String getExpr()
     {
-        return String.valueOf(expr);
+        return expr;
     }
 
+    /**
+     * metodo para obterner el hijo izquierdo de un nodo
+     * @return el hijo izquierdo del nodo
+     */
+    public ExpressionTree getLeft()
+    {
+        return left;
+    }
+
+    /**
+     * metodo para obterner el hijo derecho de un nodo
+     * @return el hijo derecho del nodo
+     */
+    public ExpressionTree getRight()
+    {
+        return right;
+    }
+
+    /**
+     * metodo para obterner el hijo derecho de un nodo
+     * @return un ExpressionTree con hijos null y expr igual
+     * al resultado de la operacion
+     */
     public ExpressionTree evaluate()
     {
         int result=0;
-        int izq = Integer.valueOf(String.valueOf(this.left.getExpr()));
-        int der = Integer.valueOf(String.valueOf(this.right.getExpr()));
+        int izq = Integer.valueOf(left.getExpr());
+        int der = Integer.valueOf(right.getExpr());
 
         if (expr.equals("SUM"))
         {
