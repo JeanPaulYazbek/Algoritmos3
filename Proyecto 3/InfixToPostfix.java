@@ -7,7 +7,14 @@ public class InfixToPostfix
 ////////////////////////////////////////////////////////////////////////////////
     // A utility function to return precedence of a given operator 
     // Higher returned value means higher precedence
-    static int Prec(String operator)
+    /**
+    * funcion que dado un string, si es un operador algun de
+    * los operadores SUM,MIN,MAX,+,-,*, devuelve un entero que
+    * representa su precedencia, a mayor el entero mayor la precedencia
+    * @param operator String que se desea verificar si es un operador
+    * @return -1 si no es un operador registrado, [1,4] dependiendo del operador
+    */
+    private int Prec(String operator)
     {
         switch (operator)
         { 
@@ -27,11 +34,11 @@ public class InfixToPostfix
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
     /**
-     * funcion que dado un string verifica si es un integer
-     * @param str String que se desea verificar
-     * @return true si es un int, false si no lo es
-     */
-    public static boolean isNumeric(String str)
+    * funcion que dado un string verifica si es un integer
+    * @param str String que se desea verificar
+    * @return true si es un int, false si no lo es
+    */
+    private boolean isNumeric(String str)
     {
         try
         {
@@ -46,13 +53,17 @@ public class InfixToPostfix
 ////////////////////////////////////////////////////////////////////////////////
 // idea basada en el contenido de la pagina web GeeksforGeeks
 // https://www.geeksforgeeks.org/stack-set-2-infix-to-postfix/
-    static String infixToPostfixFunction(String exp)
+    /**
+    * funcion que dado una expresion en formato infijo devuelve una expresion
+    * equivalente en notacion postfija
+    * @param exp expresion en notacion infija que se desea pasar a postfija
+    * @return String que representa la expresion en notacion postfija
+    */
+    private String infixToPostfixFunction(String exp)
     {
-        // initializing empty String for result
         String result = new String("");
         String current = new String("");
         String newCharacter= new String("");
-        // initializing empty stack
         Stack<String> stack = new Stack<>();
         Stack<String> stackPRE = new Stack<>();
         String operatorPRE = new String("");
@@ -63,7 +74,8 @@ public class InfixToPostfix
         {
             newCharacter = String.valueOf(exp.charAt(i));
 
-            // If the scanned character is an operand, add it to output. 
+            // Si leemos un numero entero iteramos hasta encontrar algo que
+            // no sea un numero entero y lo agregamos al resultado
             if (isNumeric(newCharacter))
             {
                 current += newCharacter;
@@ -76,6 +88,8 @@ public class InfixToPostfix
                 current="";
                 anteriorEraOperando=true;
             }
+
+            // Si leemos un "-"" distinguimos si es un operando o un signo
             else if (newCharacter.equals("-"))
             {
                 if (current.equals("") && (!(anteriorEraOperando)))
@@ -83,6 +97,7 @@ public class InfixToPostfix
                     current="-";
                     exp = exp.substring(0, i+1)+"1*"+exp.substring(i+1,exp.length());
                 }
+
                 else
                 {
                     while (!stack.isEmpty() && Prec(newCharacter) <= Prec(stack.peek()))
@@ -91,26 +106,36 @@ public class InfixToPostfix
                     }
                     stack.push(newCharacter);
                 }
-
             }
-            // If the scanned character is an '(', push it to the stack. 
+
+            // Si leemos un "(", lo empilamos
             else if (newCharacter.equals("("))
             {
                 stack.push("(");
                 anteriorEraOperando=false;
             }
 
-            //  If the scanned character is an ')', pop and output from the stack  
-            // until an '(' is encountered. 
+            // Si leemos un ")", desempilamos y agregamos al resultado hasta
+            // encontrar un "("
             else if (newCharacter.equals(")"))
             {
                 while (!stack.isEmpty() && stack.peek() != "(")
+                {
                     result += stack.pop()+ " ";
+                }
+
                 if (!stack.isEmpty() && stack.peek() != "(")
-                    return "Invalid Expression"; // invalid expression                 
+                {
+                    return "Invalid Expression";
+                }
+
                 else
+                {
                     stack.pop();
+                }
             }
+
+            // Encontramos un ","
             else if (newCharacter.equals(","))
             {
                 anteriorEraOperando=false;
@@ -121,9 +146,12 @@ public class InfixToPostfix
                 }
                 stack.push(operatorPRE);
             }
-            else // an operator is encountered
+
+            // Encontramos un operador
+            else
             {
                 anteriorEraOperando=false;
+                // MIN y MAX se comportan de forma similar
                 if (newCharacter.equals("M"))
                 {
                     i++;
@@ -132,6 +160,8 @@ public class InfixToPostfix
                     newCharacter+=String.valueOf(exp.charAt(i));
                     stackPRE.push(String.valueOf(newCharacter));
                 }
+                // En el caso de SUM agregamos un "0," para volverlo un operador
+                // binario
                 else if(newCharacter.equals("S"))
                 {
                     i++;
@@ -141,6 +171,7 @@ public class InfixToPostfix
                     stackPRE.push(String.valueOf(newCharacter));
                     exp = exp.substring(0, i+2)+"0,"+exp.substring(i+2,exp.length());
                 }
+                // Otro operador
                 else
                 {
                     while (!stack.isEmpty()&&Prec(newCharacter)<=Prec(stack.peek()))
@@ -151,14 +182,21 @@ public class InfixToPostfix
                 }
             }
         }
-        // pop all the operators from the stack
-        while (!stack.isEmpty()) 
+        // Desempilamos todos los operadores de la pila
+        while (!stack.isEmpty())
+        {
             result += stack.pop() + " ";
+        }
         return result;
     }
 ////////////////////////////////////////////////////////////////////////////////
-    // Driver method
-    public static String driver(String args)
+    /**
+    * funcion que dado una expresion en formato infijo devuelve el resultado
+    * de su evaluacion como string
+    * @param args expresion en notacion infija que se desea evaluar
+    * @return String que representa el valor de la expresion
+    */
+    public String driver(String args)
     { 
         String exp = infixToPostfixFunction(args.replace(" ",""));
         String[] expresion = exp.split(" ");
@@ -181,7 +219,13 @@ public class InfixToPostfix
 // usuario S1V1R0 en github
 // https://github.com/S1V1R0/ProyectoAlgoritmos
 ////////////////////////////////////////////////////////////////////////////////
-    public static boolean check_operator(String operator)
+    /**
+    * funcion que dado un string, si es un operador algun de
+    * los operadores SUM,MIN,MAX,+,-,*, devuelve true o false
+    * @param operator String que se desea verificar si es un operador
+    * @return false si no es un operador registrado, true si lo es
+    */
+    private boolean check_operator(String operator)
     {
         switch (operator)
         { 
@@ -196,48 +240,49 @@ public class InfixToPostfix
         return false;
     }
 ////////////////////////////////////////////////////////////////////////////////
-    public static boolean check_operand(String str)
-    {
-        try
-        {
-            double d = Double.parseDouble(str);
-        }
-        catch(NumberFormatException nfe)
-        {
-            return false;
-        }
-        return true;
-    }
-////////////////////////////////////////////////////////////////////////////////
-    public static ExpressionTree solve(ExpressionTree node)
+    /**
+    * funcion que dado un ExpressionTree, recorre recursivamente sus hijos
+    * y evalua
+    * @param node raiz del arbol que se desea evaluar
+    * @return ExpressionTree cuya expr es el valor de evaluar el arbol de raiz node
+    */
+    private ExpressionTree solve(ExpressionTree node)
     {
         ExpressionTree result = new ExpressionTree("",null,null);
         if ((check_operator(node.left.expr) && check_operator(node.right.expr)))
         {
             result = new ExpressionTree(node.expr,solve(node.left),solve(node.right));
         }
-        else if ((check_operator(node.left.expr) && check_operand(node.right.expr)))
+        else if ((check_operator(node.left.expr) && isNumeric(node.right.expr)))
         {
             result = new ExpressionTree(node.expr,solve(node.left),node.right);
         }
-        else if ((check_operand(node.left.expr) && check_operator(node.right.expr)))
+        else if ((isNumeric(node.left.expr) && check_operator(node.right.expr)))
         {
             result = new ExpressionTree(node.expr,node.left,solve(node.right));
         }
-        else if ((check_operand(node.left.expr) && check_operand(node.right.expr)))
+        else if ((isNumeric(node.left.expr) && isNumeric(node.right.expr)))
         {
             result = new ExpressionTree(node.expr,node.left,node.right);
         }
         return result.evaluate();
     }
 ////////////////////////////////////////////////////////////////////////////////
-    public static ExpressionTree tree_constructor(String[] expresion)
+    /**
+    * funcion que dado un expresion, representada como arreglo de strings
+    * construye un arbol binario ExpressionTree nodo por nodo que representa
+    * dicha expresion y retorna la raiz de dicho arbol
+    * @param expresion que se desea representar como arbol
+    * @return ExpressionTree raiz del arbol contruido
+    *
+    */
+    private ExpressionTree tree_constructor(String[] expresion)
     {
         int n = expresion.length;
         Stack<ExpressionTree> stack_tree = new Stack<>();
         for (int i = 0; i<n; ++i)
         {
-            if (check_operand(expresion[i]))
+            if (isNumeric(expresion[i]))
             {
                 ExpressionTree operand = new ExpressionTree(expresion[i],null,null);
                 stack_tree.push(operand);

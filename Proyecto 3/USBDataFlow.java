@@ -13,6 +13,7 @@ public class USBDataFlow
 			System.err.println("Uso: java USBDataFlow <hojadecalculo>");
 			return;
 		}
+
 		BufferedReader Lector;
 		try
 		{
@@ -23,11 +24,15 @@ public class USBDataFlow
 			System.out.println("Archivo No Encontrado");
 			return;
 		}
+
 		GrafoDirigido<Boolean,Integer> nuevoGrafoDirigido = new GrafoDirigido<Boolean,Integer>();
 		Vertice<Boolean> verticeActual;
+
+		//si no hubo error al cargar el grafo
 		if (nuevoGrafoDirigido.cargarGrafo(args[0]))
 		{
 			OrdenTopologicoDfs orden = new OrdenTopologicoDfs();
+			//calculamos el orden topologico sobre el grafo de las celdas
 			if (orden.DfsVisita(nuevoGrafoDirigido))
 			{
 				InfixToPostfix evaluador = new InfixToPostfix();
@@ -38,6 +43,7 @@ public class USBDataFlow
 					verticeActual = orden.ordenes[i];
 					m = verticeActual.predecesores.size();
 
+					//si su expr no depende de ningun vertice
 					if (m==0)
 					{
 						verticeActual.eval = verticeActual.expr;
@@ -46,6 +52,7 @@ public class USBDataFlow
 					{
 				        for (int j = 0; j<m; ++j)
 						{
+							//reemplazamos los vertices en la expr por su eval
 							try
 							{
 								verticeActual.expr = verticeActual.expr.replace(
@@ -58,6 +65,7 @@ public class USBDataFlow
 							}
 						}
 					}
+					//evaluamos la expresion del vertice y lo guardamos en su eval
 					try
 					{
 						verticeActual.eval = evaluador.driver(verticeActual.expr);
@@ -69,6 +77,7 @@ public class USBDataFlow
 						return;
 					}
 				}
+				//mostramos en pantalla el grafo del excel
 				System.out.print(nuevoGrafoDirigido.imprimirMatriz());
 			}
 		}

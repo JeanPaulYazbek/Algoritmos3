@@ -1,17 +1,17 @@
 import java.util.ArrayList;
 
 public class Vertice<E> {
-	private String id; //atributo id de los vertices
-	protected E dato;    //atributo dato de los vertices
+	private String id;		//atributo id del vertice
+	protected E dato;		//atributo dato del vertice
 	protected int orden;	//atributo orden topoligo
-	protected String eval;
-	protected String color; //atributo colo para dfs visita
-	private double p;
-	protected String expr;
-	protected double costo; //atributo costo de los vertices
-	protected Vertice<E> predecesor; // predecesor de los vertices
-	protected ArrayList<Vertice<E>> predecesores;
-	protected Arista<E> aristaPredecesora;// arista predecesora de los vertices
+	protected String eval;	//atr. del valor que evalua el atr. expr
+	protected String color;	//atributo color para dfs visita
+	private double p;		//atributo peso
+	protected String expr;	//expresion cuya evalucion representa el valor
+	protected double costo;					//atributo costo de los vertices
+	protected Vertice<E> predecesor;		// predecesor del vertice
+	protected ArrayList<Vertice<E>> predecesores;// predecesores del vertice
+	protected Arista<E> aristaPredecesora;	// arista predecesora de los vertices
 
 	/**
 	 * contructor para crear un vertice con todos los atributos 
@@ -43,6 +43,9 @@ public class Vertice<E> {
 		this.costo = original.costo;
 		this.predecesor = this.predecesor;
 	}
+	/**
+	 * metodo para modificar el atributo expresion de un vertice
+	 */
 	public void modifyExpresion(String newExpression)
 	{
 		this.expr = newExpression;
@@ -57,7 +60,7 @@ public class Vertice<E> {
 
 	/**
 	 * metodo para obterner el id de un vertice
-	 * @return id del evrtice
+	 * @return id del vertice
 	 */
 	public String getId(){
 		return id;
@@ -95,10 +98,17 @@ public class Vertice<E> {
 		return aristaPredecesora;
 	}
 
+	/**
+	 * metodo para obterner el color de un vertice
+	 * @return color del vertice
+	 */
 	public String getColor(){
 		return color;
 	}
 
+	/**
+	 * metodo para modificar el atributo dato de un vertice
+	 */
 	public void changeDato(E nuevodato){
 
 		this.dato = nuevodato;

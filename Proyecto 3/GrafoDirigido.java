@@ -55,6 +55,7 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 			System.out.println("Formato Erroneo en primera linea archivo");
 			return false;//si no es un entero formato erroneo
 		}
+
 		//AGREGAR LOS VERTICES Y LLENAR LA MATRIZ DE VERTICES
 		String idVertice;
 		String columna;
@@ -74,14 +75,15 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 		String idarco;//guarda id del arco leido
 		L datoarco = null;//guarda dato del arco leido
 		double pesoarco;//guarda peso del arco leido
-		String expresionActual;
-		char newCharacter;
-		ArrayList<String> verticesExpresion = new ArrayList<String>();
-		//AGREGAR LOS ARCOS
+		String expresionActual;//guarda la expresion de la celda que se lee
+		ArrayList<String> verticesExpresion = new ArrayList<String>();//vertices
+		//encontrados en la expresionActual
+
 		for(int i = 0; i<numeroLineas; i++)
 		{
-			linea = Lector.readLine();//a partir de aqui son vertices
+			linea = Lector.readLine();
 			String[] expresiones;
+
 			try
 			{
 				expresiones = linea.split(" ");
@@ -91,9 +93,11 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 				System.out.println("Numero De Lineas erroneo");
 				return false;
 			}
+
 			for(int j = 0; j<numeroExpresiones; j++)
 			{
 				idVertice = matrizDeVertices[i][j];
+
 				try
 				{
 					expresionActual = expresiones[j]+" ";
@@ -103,11 +107,13 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 					System.out.println("Numero De Expresiones erroneo");
 					return false;
 				}
+
 				//No nos interesan los =
 				if (expresionActual.charAt(0)=='=')
 				{
 					expresionActual = expresionActual.substring(1,expresionActual.length()-1);
 				}
+
 		        //Convertimos cualquier letra a Mayusculas
 				StringBuilder sb = new StringBuilder(expresionActual);
 				for (int index = 0; index < sb.length(); index++)
@@ -118,6 +124,7 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 						sb.setCharAt(index, Character.toUpperCase(c));
 					}
 				}
+				
 				expresionActual = sb.toString();
 
 				//Usamos regex para encontrar los vertices en la expresion
@@ -176,23 +183,52 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 	public String translateCol(int n)
 	{
 		//aqui creamos un arreglo de char que tendra el String resultante
-	    char[] buf = new char[(int) floor(log(25 * (n + 1)) / log(26))];//Sabemos cuantos Char son porque el log base 26
-	    																// de n nos dice cuantas potencias de 26 fueron ne
-	    																// cesarias para producir n 
+	    char[] buf = new char[(int) floor(log(25 * (n + 1)) / log(26))];
+	    //Sabemos cuantos Char son porque el log base 26
+	    // de n nos dice cuantas potencias de 26 fueron ne
+	    // cesarias para producir n 
 
 	    //luego empezamos a producir los char del arreglo desde atras hacia adelante
 	    for (int i = buf.length - 1; i >= 0; i--)
 	    {
-	        n--;//reducimos en 1 n ya que en principio para el arreglo de chars se comienza en 1
-	        	//y para calcular el char correspondiente conviene empezar en 0
-	        buf[i] = (char) ('A' + n % 26);//calculamos el char sacando el modulo 26 de n y 26 y sumandolo al valor numerico base de
-	        							   // de la primera letra que es 'A'
-	        n /= 26;					   // dividimos n entre 26 para poder obtener el sgte caracter	
+	        n--;//reducimos en 1 n ya que en principio para el arreglo de chars se comienza
+	        	//en 1 y para calcular el char correspondiente conviene empezar en 0
+	        buf[i] = (char) ('A' + n % 26);
+	        //calculamos el char sacando el modulo 26 de n y 26 y sumandolo al valor
+	        //numerico base de la primera letra que es 'A'
+	        n /= 26;	// dividimos n entre 26 para poder obtener el sgte caracter	
 	    }
-		return new String(buf);				//devolvemos el arreglo de char resultante lo cual es un String
+		return new String(buf);	//devolvemos el arreglo de char resultante, un String
 	}
 ////////////////////////////////////////////////////////////////////////////////
-
+	/**
+	 * funcion recupera de la matrizDeVertices los valores evaluados de cada
+	 * celda y los concatena con formato de matriz
+	 * @return un String que que contiene el valor de todas las celdas
+	 * estructurado en forma de matriz
+	 */
+	public String imprimirMatriz()
+	{	
+		String cadenaGrafo = "_|";
+		int n = matrizDeVertices.length;
+		int m = matrizDeVertices[0].length;
+		for (int j = 0; j<m; ++j)
+		{
+			cadenaGrafo += translateCol(j+1)+"|";
+		}
+		cadenaGrafo+="\n";
+		for (int i = 0; i<n; ++i)
+		{
+			cadenaGrafo += (i+1)+"|";
+			for (int j = 0; j<m; ++j)
+			{
+				cadenaGrafo += obtenerVertice(matrizDeVertices[i][j]).eval.replace(" ","")+"|";
+			}
+				cadenaGrafo += "\n";
+		}
+		return cadenaGrafo;
+	}
+////////////////////////////////////////////////////////////////////////////////
 
 	/**
 	 * funcion que calcula el numero de vertices de un digrafo
@@ -610,12 +646,8 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 				 }
 			}
 			return lados;
-
 		}
-			
-		
 		throw new NoSuchElementException("No se encontro el vertice");
-
 	}
 
 	/**
@@ -702,29 +734,7 @@ public class GrafoDirigido<V, L> implements Grafo<V, L>{
 		}
 		return cadenaGrafo;
 	}
-////////////////////////////////////////////////////////////////////////////////
-	public String imprimirMatriz()
-	{	
-		String cadenaGrafo = "_|";
-		int n = matrizDeVertices.length;
-		int m = matrizDeVertices[0].length;
-		for (int j = 0; j<m; ++j)
-		{
-			cadenaGrafo += translateCol(j+1)+"|";
-		}
-		cadenaGrafo+="\n";
-		for (int i = 0; i<n; ++i)
-		{
-			cadenaGrafo += (i+1)+"|";
-			for (int j = 0; j<m; ++j)
-			{
-				cadenaGrafo += obtenerVertice(matrizDeVertices[i][j]).eval.replace(" ","")+"|";
-			}
-				cadenaGrafo += "\n";
-		}
-		return cadenaGrafo;
-	}
-////////////////////////////////////////////////////////////////////////////////
+
 	/**
 	 * funcion que clona un grafo en un nuevo objeto grafo
 	 * @return regresa un objeto tipo grafo con la forma del grafo actual
